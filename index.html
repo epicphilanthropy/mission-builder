@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Statement Builder — Epic Philanthropy</title>
+<script>
+// ══ FIREBASE REST API — no SDK needed ══
+const FB_URL = "https://epic-philanthropy-default-rtdb.firebaseio.com/";
+
+async function fbSet(path, val){
+  await fetch(FB_URL + path + '.json', {method:'PUT', body:JSON.stringify(val)});
+}
+async function fbGet(path){
+  const r = await fetch(FB_URL + path + '.json');
+  if(!r.ok) return null;
+  return await r.json();
+}
+async function fbUpdate(path, val){
+  await fetch(FB_URL + path + '.json', {method:'PATCH', body:JSON.stringify(val)});
+}
+// Polling-based listener (checks every 3 seconds)
+const _listeners = {};
+function fbListen(path, cb){
+  cb; // call once immediately
+  fbGet(path).then(cb);
+  _listeners[path] = setInterval(()=> fbGet(path).then(cb), 3000);
+}
+function sessPath(suffix){ return 'sessions/' + sess + '/' + suffix; }
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ice:#e9eef1; --mist:#d7e0e6; --gold:#dead2f; --gold-dark:#b8900f; --gold-light:#fdf7dc;
+  --teal:#1e5563; --teal-mid:#4f8284; --steel:#457093; --terra:#904237; --sage:#5b7666; --brown:#9b582f;
+  --bg:#f4f7f8; --surface:#fff; --border:#cfd8dc; --text:#1a2e35; --text-mid:#4a6570; --text-soft:#7a97a0;
+  --radius:10px; --shadow:0 2px 16px rgba(30,85,99,.08); --shadow-lg:0 8px 40px rgba(30,85,99,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;min-height:100vh;font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);}
+
+/* ── ENTRY ── */
+#entry-screen{
+  width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;background:var(--teal);padding:48px 24px;position:relative;overflow:hidden;
+}
+#entry-screen::before{content:'';position:absolute;top:-150px;right:-150px;width:500px;height:500px;border-radius:50%;background:rgba(222,173,47,.07);pointer-events:none;}
+#entry-screen::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:rgba(79,130,132,.12);pointer-events:none;}
+.e-logo{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.e-title{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:500;color:#fff;text-align:center;line-height:1.15;margin-bottom:12px;}
+.e-sub{font-size:14px;color:rgba(255,255,255,.6);text-align:center;max-width:460px;line-height:1.7;margin-bottom:48px;}
+.role-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:680px;position:relative;z-index:1;}
+.role-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:30px 26px;cursor:pointer;transition:all .25s;text-align:center;}
+.role-card:hover{background:rgba(255,255,255,.11);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.2);}
+.role-card.gold-card{border-color:rgba(222,173,47,.35);}
+.role-card.gold-card:hover{border-color:var(--gold);}
+.rc-icon{font-size:34px;margin-bottom:12px;}
+.rc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:#fff;margin-bottom:6px;}
+.rc-desc{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;}
+.e-form{width:100%;max-width:420px;position:relative;z-index:1;}
+.e-form-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:#fff;text-align:center;margin-bottom:22px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px;font-weight:500;}
+.fg input{width:100%;padding:13px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:15px;font-family:'Jost',sans-serif;color:#fff;outline:none;transition:border-color .2s;}
+.fg input::placeholder{color:rgba(255,255,255,.28);}
+.fg input:focus{border-color:var(--gold);background:rgba(255,255,255,.12);}
+.btn-go{width:100%;padding:14px;background:var(--gold);color:var(--teal);border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:'Jost',sans-serif;cursor:pointer;transition:all .2s;margin-top:6px;letter-spacing:.3px;}
+.btn-go:hover{background:#f0c020;transform:translateY(-1px);box-shadow:0 6px 20px rgba(222,173,47,.4);}
+.btn-back{display:block;text-align:center;margin-top:14px;font-size:13px;color:rgba(255,255,255,.4);cursor:pointer;background:none;border:none;font-family:'Jost',sans-serif;width:100%;transition:color .2s;}
+.btn-back:hover{color:rgba(255,255,255,.8);}
+.e-error{background:rgba(144,66,55,.35);border:1px solid rgba(144,66,55,.5);color:#ffc5c0;border-radius:7px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none;}
+
+/* ── APP SHELL ── */
+#app{display:none;width:100%;}
+#app.on{display:block;}
+
+/* HEADER */
+.app-hdr{width:100%;background:var(--teal);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(30,85,99,.3);}
+.hdr-brand{font-family:'Cormorant Garamond',serif;font-size:19px;color:#fff;display:flex;align-items:center;gap:10px;}
+.hdr-brand em{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);font-family:'Jost',sans-serif;font-style:normal;}
+.sess-badge{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:100px;padding:5px 14px;font-size:12px;color:rgba(255,255,255,.7);}
+.sess-badge .sc{font-weight:700;color:var(--gold);letter-spacing:1px;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.usr-badge{font-size:12px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:7px;}
+.role-tag{padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.rt-f{background:rgba(222,173,47,.2);color:var(--gold);border:1px solid rgba(222,173,47,.3);}
+.rt-p{background:rgba(79,130,132,.2);color:var(--teal-mid);border:1px solid rgba(79,130,132,.3);}
+
+/* STEP NAV */
+.step-nav{width:100%;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;padding:15px 24px;gap:0;flex-wrap:wrap;}
+.step-pill{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;color:var(--text-soft);border:2px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.step-pill.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+.step-pill.done{background:rgba(30,85,99,.08);color:var(--teal);border-color:rgba(30,85,99,.15);}
+.step-pill .sn{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:rgba(255,255,255,.2);flex-shrink:0;}
+.step-pill.done .sn{background:var(--teal);color:#fff;}
+.step-pill:not(.active):not(.done) .sn{background:var(--mist);color:var(--text-soft);}
+.step-conn{width:32px;height:2px;background:var(--border);flex-shrink:0;}
+.step-conn.done{background:var(--teal);}
+
+/* ROLE BANNER */
+.role-banner{width:100%;padding:10px 32px;font-size:13px;display:flex;align-items:center;gap:8px;}
+.rb-f{background:rgba(222,173,47,.08);border-bottom:1px solid rgba(222,173,47,.2);color:#7a5800;}
+.rb-p{background:rgba(30,85,99,.05);border-bottom:1px solid rgba(30,85,99,.1);color:var(--teal);}
+
+/* MAIN WRAP — full width with inner padding */
+.main{width:100%;max-width:1400px;margin:0 auto;padding:40px 40px 80px;}
+
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.sec-sub{font-size:14px;color:var(--text-mid);margin-bottom:28px;line-height:1.65;}
+
+/* PAGES */
+.page{display:none;width:100%;}
+.page.active{display:block;}
+
+/* ── PAGE 1 BRAIN DUMP ── */
+.brain-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px;}
+.b-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
+.b-card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.b-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.b-q{font-size:14px;font-weight:600;color:var(--text);line-height:1.3;}
+.b-epic{font-size:11px;color:var(--text-soft);font-weight:400;margin-top:2px;}
+.live-area{min-height:80px;display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.answer-item{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;border-radius:7px;font-size:13px;line-height:1.4;animation:nin .25s ease;}
+@keyframes nin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.ai-mine{background:#FFFBEA;border:1px solid #F0E68C;}
+.ai-theirs{background:var(--ice);border:1px solid var(--mist);}
+.ai-who{font-weight:700;font-size:11px;flex-shrink:0;}
+.ai-mine .ai-who{color:var(--gold-dark);}
+.ai-theirs .ai-who{color:var(--teal-mid);}
+.add-row{display:flex;gap:8px;}
+.add-input{flex:1;padding:10px 13px;border:1px solid var(--border);border-radius:7px;font-size:13px;font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);outline:none;transition:border-color .2s;}
+.add-input:focus{border-color:var(--teal-mid);background:#fff;}
+.add-btn{padding:10px 16px;background:var(--teal);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'Jost',sans-serif;white-space:nowrap;}
+.add-btn:hover{background:#164350;}
+.locked-row{opacity:.4;pointer-events:none;}
+
+/* FAC CONTROLS */
+.fac-ctrl{background:var(--gold-light);border:1px solid rgba(222,173,47,.3);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap;}
+.fac-ctrl p{font-size:13px;color:#5a4000;flex:1;line-height:1.55;}
+.p-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.p-chip{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.7);border:1px solid rgba(222,173,47,.3);font-size:12px;font-weight:500;color:var(--teal);}
+.sdot{width:7px;height:7px;border-radius:50%;}
+.sdot-s{background:#4ade80;}
+.sdot-p{background:var(--gold);}
+.btn-reveal{padding:10px 22px;background:var(--teal);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Jost',sans-serif;white-space:nowrap;transition:background .2s;}
+.btn-reveal:hover{background:#164350;}
+.btn-reveal:disabled{opacity:.5;cursor:not-allowed;}
+
+/* SHARE LINK BOX */
+.share-box{background:rgba(30,85,99,.06);border:1px solid rgba(30,85,99,.15);border-radius:var(--radius);padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.share-box p{font-size:13px;color:var(--teal);flex:1;}
+.share-box code{font-size:12px;background:rgba(30,85,99,.08);padding:3px 8px;border-radius:4px;letter-spacing:.5px;font-weight:700;color:var(--teal);}
+.btn-copy-link{padding:8px 16px;background:var(--teal);color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Jost',sans-serif;transition:background .2s;white-space:nowrap;}
+.btn-copy-link:hover{background:#164350;}
+
+/* SUBMIT BANNER */
+.sub-banner{background:var(--teal);border-radius:var(--radius);padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap;}
+.sub-banner p{font-size:14px;color:rgba(255,255,255,.82);line-height:1.6;flex:1;}
+.sub-banner strong{color:#fff;}
+.btn-submit{padding:12px 24px;background:var(--gold);color:var(--teal);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Jost',sans-serif;white-space:nowrap;transition:all .2s;}
+.btn-submit:hover{background:#f0c020;}
+.submitted-msg{background:rgba(30,85,99,.06);border:1px solid rgba(30,85,99,.12);border-radius:var(--radius);padding:14px 20px;font-size:14px;color:var(--teal);text-align:center;margin-bottom:20px;}
+
+/* TRANSITION */
+.t-band{background:var(--teal);border-radius:var(--radius);padding:22px 28px;margin:0 0 32px;display:flex;align-items:center;gap:16px;}
+.t-quote{font-family:'Cormorant Garamond',serif;font-size:52px;color:var(--gold);line-height:1;flex-shrink:0;margin-top:-10px;}
+.t-band p{font-size:14px;line-height:1.7;color:rgba(255,255,255,.75);}
+.t-band strong{color:#fff;}
+
+/* ── PAGE 2 ── */
+.p2-wrap{display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start;}
+.sidebar{position:sticky;top:78px;}
+.sb-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);max-height:calc(100vh - 120px);overflow-y:auto;}
+.sb-inner h3{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-soft);font-weight:600;margin-bottom:5px;}
+.sb-hint{font-size:12px;color:var(--text-soft);margin-bottom:14px;line-height:1.5;}
+.sb-section{margin-bottom:14px;}
+.sb-section:last-child{margin-bottom:0;}
+.sb-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;padding:3px 8px;border-radius:4px;display:inline-block;}
+.sbl-e{background:rgba(30,85,99,.08);color:var(--teal);}
+.sbl-p{background:rgba(69,112,147,.1);color:var(--steel);}
+.sbl-i{background:rgba(222,173,47,.12);color:var(--gold-dark);}
+.sbl-c{background:rgba(91,118,102,.1);color:var(--sage);}
+.sb-chip{display:flex;align-items:flex-start;gap:6px;padding:7px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;margin-bottom:5px;font-size:12px;color:var(--text);line-height:1.4;cursor:pointer;transition:all .15s;}
+.sb-chip:hover{border-color:var(--teal-mid);background:rgba(30,85,99,.04);color:var(--teal);}
+.sb-who{font-size:10px;font-weight:700;color:var(--teal-mid);flex-shrink:0;}
+.sb-arr{margin-left:auto;font-size:10px;color:var(--teal-mid);opacity:0;transition:opacity .15s;flex-shrink:0;}
+.sb-chip:hover .sb-arr{opacity:1;}
+.sb-empty{font-size:12px;color:var(--text-soft);font-style:italic;padding:3px 0;}
+
+/* BUILDER */
+.bld-main{min-width:0;}
+.step-lbl{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-soft);margin-bottom:10px;display:block;}
+.t-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.t-card{border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;background:var(--surface);}
+.t-card:hover{border-color:var(--teal-mid);box-shadow:var(--shadow);}
+.t-card.sel{border-color:var(--teal);background:rgba(30,85,99,.04);}
+.t-lbl{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.tc-prob .t-lbl{color:var(--terra);}
+.tc-act .t-lbl{color:var(--steel);}
+.tc-val .t-lbl{color:var(--sage);}
+.t-card p{font-size:12px;color:var(--text-mid);line-height:1.5;}
+
+.word-banks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.wb{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;}
+.wb h4{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-soft);font-weight:600;margin-bottom:10px;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{padding:5px 11px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid transparent;transition:all .15s;user-select:none;}
+.tag:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.1);}
+.tag.serve {background:rgba(30,85,99,.07);color:var(--teal);border-color:rgba(30,85,99,.15);}
+.tag.action{background:rgba(69,112,147,.08);color:var(--steel);border-color:rgba(69,112,147,.2);}
+.tag.belief{background:rgba(222,173,47,.1);color:var(--gold-dark);border-color:rgba(222,173,47,.25);}
+.tag.how   {background:rgba(91,118,102,.08);color:var(--sage);border-color:rgba(91,118,102,.2);}
+.tag.impact{background:rgba(144,66,55,.07);color:var(--terra);border-color:rgba(144,66,55,.18);}
+.blanks{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);}
+.bl-wrap{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:100px;border:1.5px dashed var(--border);background:var(--bg);}
+.bl-wrap span{font-size:11px;color:var(--text-soft);}
+.bl-wrap input{border:none;outline:none;background:transparent;font-size:12px;font-family:'Jost',sans-serif;color:var(--text);width:90px;}
+.bl-wrap input::placeholder{color:#b0bec5;}
+
+.bld-area{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:16px;}
+.bld-area h3{font-family:'Cormorant Garamond',serif;font-size:21px;margin-bottom:16px;color:var(--text);}
+.slot-rows{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+.slot-row{display:flex;align-items:center;gap:5px;font-size:14px;color:var(--text);flex-wrap:wrap;line-height:2.4;}
+.slot-row .st{color:var(--text-mid);font-style:italic;}
+.slot{display:inline-flex;align-items:center;gap:5px;min-width:110px;padding:5px 11px;border:2px dashed var(--border);border-radius:7px;font-size:12px;font-weight:500;color:var(--text-soft);cursor:text;background:var(--bg);transition:all .2s;}
+.slot.foc{border-color:var(--teal-mid);background:#fff;box-shadow:0 0 0 3px rgba(79,130,132,.12);}
+.slot.fil{border-color:transparent!important;background:transparent!important;padding:0!important;min-width:0!important;box-shadow:none!important;}
+.slot-in{outline:none;min-width:50px;color:var(--text);font-weight:600;font-size:13px;}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 11px;border-radius:100px;font-size:12px;font-weight:600;}
+.chip .rm{cursor:pointer;font-size:11px;opacity:.5;transition:opacity .15s;background:none;border:none;padding:0;line-height:1;}
+.chip .rm:hover{opacity:1;}
+
+.draft-out{background:var(--gold-light);border:1px solid rgba(222,173,47,.3);border-radius:var(--radius);padding:22px;margin-bottom:20px;}
+.draft-out h3{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold-dark);margin-bottom:12px;}
+#mission-preview{font-family:'Cormorant Garamond',serif;font-size:21px;line-height:1.8;color:var(--text);min-height:60px;white-space:pre-wrap;}
+.draft-ph{font-family:'Jost',sans-serif;font-style:italic;color:#b8a870;font-size:14px;}
+
+.freeform{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px;}
+.freeform label{font-size:13px;font-weight:600;color:var(--text);display:block;margin-bottom:8px;}
+.freeform textarea{width:100%;border:1px solid var(--border);border-radius:7px;padding:13px;font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.7;color:var(--text);resize:vertical;min-height:90px;background:var(--bg);outline:none;transition:border-color .2s;}
+.freeform textarea:focus{border-color:var(--teal-mid);background:#fff;}
+
+.save-bar{display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+.btn-save{padding:10px 22px;background:var(--gold);color:var(--teal);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Jost',sans-serif;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.btn-save:hover{background:#f0c020;}
+.save-ct{font-size:12px;color:var(--text-soft);}
+
+.checklist{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;}
+.checklist h3{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-soft);margin-bottom:14px;}
+.ck-item{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--ice);cursor:pointer;user-select:none;}
+.ck-item:last-child{border-bottom:none;}
+.ck-box{width:20px;height:20px;border:2px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;font-size:12px;}
+.ck-item.ck{.ck-box{background:var(--teal);border-color:var(--teal);color:#fff;}}
+.ck-item.ck .ck-box{background:var(--teal);border-color:var(--teal);color:#fff;}
+.ck-lbl{font-size:13px;color:var(--text);line-height:1.4;}
+.ck-sub{color:var(--text-soft);font-size:12px;}
+
+/* ACTION BAR */
+.act-bar{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap;}
+.btn-sec{padding:10px 22px;background:var(--surface);border:2px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif;}
+.btn-sec:hover{border-color:var(--teal);}
+.btn-pri{padding:10px 28px;background:var(--teal);border:none;border-radius:8px;font-size:14px;font-weight:600;color:#fff;cursor:pointer;transition:background .2s;font-family:'Jost',sans-serif;}
+.btn-pri:hover{background:#164350;}
+
+/* ── PAGE 3 ── */
+.drafts-grid{display:flex;flex-direction:column;gap:16px;margin-bottom:36px;}
+.d-card{background:var(--teal);border-radius:14px;padding:30px 36px;color:#fff;}
+.d-meta{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--teal-mid);margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.d-badge{font-size:11px;background:rgba(255,255,255,.1);padding:2px 9px;border-radius:4px;color:rgba(255,255,255,.65);letter-spacing:.5px;}
+.d-time{margin-left:auto;font-size:11px;color:rgba(255,255,255,.3);letter-spacing:0;}
+.d-text{font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.7;color:#fff;}
+.d-acts{display:flex;gap:8px;margin-top:16px;}
+.d-btn{padding:7px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'Jost',sans-serif;transition:all .15s;}
+.d-copy{background:rgba(255,255,255,.12);color:#fff;}
+.d-copy:hover{background:rgba(255,255,255,.22);}
+.d-del{background:rgba(144,66,55,.3);color:#f4a9a3;}
+.d-del:hover{background:rgba(144,66,55,.5);}
+.no-drafts{background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius);padding:36px;text-align:center;color:var(--text-soft);font-size:14px;line-height:1.7;}
+
+.brain-sum{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.bs-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.bs-card h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-soft);margin-bottom:10px;line-height:1.4;}
+.bs-card ul{font-size:13px;color:var(--text);list-style:none;display:flex;flex-direction:column;gap:5px;}
+.bs-card li{display:flex;align-items:flex-start;gap:6px;}
+.bs-card li::before{content:"→";color:var(--teal-mid);font-weight:700;flex-shrink:0;}
+.li-who{font-size:10px;font-weight:700;color:var(--teal-mid);flex-shrink:0;}
+.bs-card li.emp{color:var(--text-soft);font-style:italic;}
+.bs-card li.emp::before{display:none;}
+
+.next-steps{background:rgba(30,85,99,.05);border:1px solid rgba(30,85,99,.12);border-radius:var(--radius);padding:22px 26px;font-size:14px;color:var(--text);line-height:1.8;margin-bottom:28px;}
+.next-steps strong{color:var(--teal);}
+
+/* HOW TO USE */
+.htu{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px 36px;margin-bottom:28px;}
+.htu h2{font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:6px;}
+.htu-sub{font-size:14px;color:var(--text-soft);margin-bottom:26px;}
+.htu-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:22px;}
+.htu-block h3{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:13px;}
+.htu-f h3{color:var(--gold-dark);}
+.htu-p h3{color:var(--teal-mid);}
+.htu-steps{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.htu-steps li{font-size:13px;color:var(--text);line-height:1.6;display:flex;gap:8px;}
+.htu-steps li .sn{font-weight:700;color:var(--teal);flex-shrink:0;font-size:12px;width:18px;}
+.code-box{background:var(--teal);color:#fff;border-radius:8px;padding:18px 22px;font-size:13px;line-height:1.75;}
+.code-box strong{color:var(--gold);}
+
+.print-btn{display:flex;align-items:center;gap:8px;padding:10px 22px;background:var(--gold);color:var(--teal);border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;font-family:'Jost',sans-serif;}
+.print-btn:hover{background:#f0c020;}
+
+.hidden{display:none!important;}
+
+@media(max-width:900px){
+  .brain-grid,.brain-sum,.htu-grid{grid-template-columns:1fr;}
+  .p2-wrap{grid-template-columns:1fr;}
+  .sidebar{position:static;}
+  .t-picker{grid-template-columns:1fr;}
+  .word-banks{grid-template-columns:1fr;}
+  .main{padding:28px 20px 60px;}
+  .app-hdr{padding:0 20px;}
+  .role-cards{grid-template-columns:1fr;}
+}
+@media print{
+  .step-nav,.act-bar,.add-row,.t-picker,.word-banks,.checklist,.sidebar,.save-bar,
+  .freeform,.print-btn,.d-btn,.rm,.blanks,.app-hdr,.htu,.fac-ctrl,.role-banner,
+  .sub-banner,.btn-submit,.share-box{display:none!important;}
+  body{background:#fff;}
+  .page{display:block!important;}
+  .d-card{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ ENTRY ══════════ -->
+<div id="entry-screen">
+  <div class="e-logo">Epic Philanthropy</div>
+  <h1 class="e-title">Mission Statement<br>Builder</h1>
+  <p class="e-sub">A guided workshop to craft a mission statement that sounds like your family — not a nonprofit brochure.</p>
+
+  <!-- Role choice -->
+  <div class="role-cards" id="role-choice">
+    <div class="role-card gold-card" onclick="showForm('facilitator')">
+      <div class="rc-icon">🧭</div>
+      <div class="rc-title">I'm the Facilitator</div>
+      <div class="rc-desc">Create a session and guide the family through the workshop</div>
+    </div>
+    <div class="role-card" onclick="showForm('participant')">
+      <div class="rc-icon">👥</div>
+      <div class="rc-title">I'm a Participant</div>
+      <div class="rc-desc">Join a session with the code your facilitator shared</div>
+    </div>
+  </div>
+
+  <!-- Facilitator form -->
+  <div class="e-form hidden" id="form-facilitator">
+    <div class="e-form-title">Create Your Session</div>
+    <div class="e-error" id="fac-err"></div>
+    <div class="fg"><label>Family / Session Name</label><input type="text" id="fac-family" placeholder="e.g. Cobb Family" maxlength="30"></div>
+    <div class="fg"><label>Your Name</label><input type="text" id="fac-name" placeholder="e.g. Liza" maxlength="30"></div>
+    <button class="btn-go" onclick="createSession()">Create Session →</button>
+    <button class="btn-back" onclick="showChoice()">← Back</button>
+  </div>
+
+  <!-- Participant form -->
+  <div class="e-form hidden" id="form-participant">
+    <div class="e-form-title">Join the Session</div>
+    <div class="e-error" id="par-err"></div>
+    <div class="fg"><label>Session Code</label><input type="text" id="par-code" placeholder="e.g. COBBFAMILY-2026" maxlength="25" style="text-transform:uppercase" oninput="this.value=this.value.toUpperCase()"></div>
+    <div class="fg"><label>Your Name</label><input type="text" id="par-name" placeholder="e.g. James" maxlength="30"></div>
+    <button class="btn-go" onclick="joinSession()">Join Session →</button>
+    <button class="btn-back" onclick="showChoice()">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+  <header class="app-hdr">
+    <div class="hdr-brand"><em>Epic Philanthropy</em> Mission Statement Builder</div>
+    <div class="sess-badge"><div class="live-dot"></div>Session: <span class="sc" id="hdr-code">—</span></div>
+    <div class="usr-badge"><span id="hdr-name"></span><span class="role-tag" id="hdr-role"></span></div>
+  </header>
+
+  <nav class="step-nav">
+    <div class="step-pill active" id="pill-1" onclick="goTo(1)"><span class="sn">1</span>Brain Dump</div>
+    <div class="step-conn" id="con-1"></div>
+    <div class="step-pill" id="pill-2" onclick="goTo(2)"><span class="sn">2</span>Mad Libs Builder</div>
+    <div class="step-conn" id="con-2"></div>
+    <div class="step-pill" id="pill-3" onclick="goTo(3)"><span class="sn">3</span>Compare Drafts</div>
+  </nav>
+
+  <div id="rb-f" class="role-banner rb-f hidden">🧭 <strong>Facilitator View</strong> — You see all answers, control when they're revealed, and drive the Mad Libs builder.</div>
+  <div id="rb-p" class="role-banner rb-p hidden">👥 <strong>Participant View</strong> — Complete your brain dump and submit. You'll see the group's answers after the facilitator reveals them.</div>
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page-1">
+  <div class="main">
+    <div class="sec-title">Part 1 — Brain Dump Your Ideas</div>
+    <div class="sec-sub">Don't edit yourself. Drop raw ideas into each quadrant. <strong>Everything you add carries over to Part 2</strong> as the group's shared word bank.</div>
+
+    <!-- Facilitator: share link + participant status -->
+    <div id="fac-share" class="share-box hidden">
+      <p>Share this session code with participants: <code id="share-code-display"></code></p>
+      <button class="btn-copy-link" onclick="copySessionCode()">Copy Code</button>
+    </div>
+    <div id="fac-ctrl" class="fac-ctrl hidden">
+      <div style="flex:1;">
+        <p><strong>Participants in session:</strong></p>
+        <div class="p-chips" id="p-chips">Waiting for participants to join...</div>
+      </div>
+      <button class="btn-reveal" id="btn-reveal" onclick="revealAnswers()">Reveal All Answers to Participants</button>
+    </div>
+
+    <!-- Participant: submit banner -->
+    <div id="sub-banner" class="sub-banner hidden">
+      <p><strong>Fill in all four quadrants</strong> with your honest, raw ideas. Then submit when you're done — you'll see what everyone else wrote after the facilitator reveals answers.</p>
+      <button class="btn-submit" onclick="submitAnswers()">Submit My Answers →</button>
+    </div>
+    <div id="submitted-msg" class="submitted-msg hidden">✓ <strong>Your answers are submitted!</strong> Waiting for the facilitator to reveal everyone's answers...</div>
+
+    <!-- Brain dump cards -->
+    <div class="brain-grid">
+      <div class="b-card">
+        <div class="b-card-hdr"><div class="b-icon" style="background:rgba(30,85,99,.08)">😟</div><div><div class="b-q">What problem keeps you up at night?</div><div class="b-epic">Empower</div></div></div>
+        <div class="live-area" id="area-1"></div>
+        <div class="add-row" id="row-1"><input class="add-input" id="in-1" placeholder="Type and press Enter..." onkeydown="hk(event,1)"><button class="add-btn" onclick="addNote(1)">+ Add</button></div>
+      </div>
+      <div class="b-card">
+        <div class="b-card-hdr"><div class="b-icon" style="background:rgba(69,112,147,.1)">💙</div><div><div class="b-q">Why do you care about this?</div><div class="b-epic">Purpose</div></div></div>
+        <div class="live-area" id="area-2"></div>
+        <div class="add-row" id="row-2"><input class="add-input" id="in-2" placeholder="Type and press Enter..." onkeydown="hk(event,2)"><button class="add-btn" onclick="addNote(2)">+ Add</button></div>
+      </div>
+      <div class="b-card">
+        <div class="b-card-hdr"><div class="b-icon" style="background:rgba(222,173,47,.1)">📊</div><div><div class="b-q">How will you know it's working?</div><div class="b-epic">Impact</div></div></div>
+        <div class="live-area" id="area-3"></div>
+        <div class="add-row" id="row-3"><input class="add-input" id="in-3" placeholder="Type and press Enter..." onkeydown="hk(event,3)"><button class="add-btn" onclick="addNote(3)">+ Add</button></div>
+      </div>
+      <div class="b-card">
+        <div class="b-card-hdr"><div class="b-icon" style="background:rgba(91,118,102,.1)">🌱</div><div><div class="b-q">What do you want to be remembered for?</div><div class="b-epic">Change</div></div></div>
+        <div class="live-area" id="area-4"></div>
+        <div class="add-row" id="row-4"><input class="add-input" id="in-4" placeholder="Type and press Enter..." onkeydown="hk(event,4)"><button class="add-btn" onclick="addNote(4)">+ Add</button></div>
+      </div>
+    </div>
+
+    <div class="t-band">
+      <div class="t-quote">"</div>
+      <p>A good mission statement doesn't have to be fancy — <strong>it just has to be true.</strong> Everything entered above carries into Part 2 as your shared word bank. The facilitator will use these ideas to build the statement together.</p>
+    </div>
+    <div class="act-bar"><button class="btn-pri" onclick="goTo(2)">Continue to Mad Libs →</button></div>
+  </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page-2">
+  <div class="main">
+    <div class="sec-title">Part 2 — Build Your Mission Statement</div>
+    <div class="sec-sub">Pick a template, use the group's ideas from the sidebar, and save each draft. Build multiple versions — compare them all on the next page.</div>
+
+    <div id="p2-par-note" class="hidden role-banner rb-p" style="border-radius:var(--radius);border:1px solid rgba(30,85,99,.15);margin-bottom:20px;">
+      👁️ The facilitator is building the statement. You can use the word banks, but the facilitator controls the template.
+    </div>
+
+    <div class="p2-wrap">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sb-inner">
+          <h3>Group Ideas</h3>
+          <p class="sb-hint">Click any idea to insert it into the focused blank.</p>
+          <div class="sb-section"><div class="sb-lbl sbl-e">😟 Empower</div><div id="sb-1"><div class="sb-empty">No answers yet...</div></div></div>
+          <div class="sb-section"><div class="sb-lbl sbl-p">💙 Purpose</div><div id="sb-2"><div class="sb-empty">No answers yet...</div></div></div>
+          <div class="sb-section"><div class="sb-lbl sbl-i">📊 Impact</div><div id="sb-3"><div class="sb-empty">No answers yet...</div></div></div>
+          <div class="sb-section"><div class="sb-lbl sbl-c">🌱 Change</div><div id="sb-4"><div class="sb-empty">No answers yet...</div></div></div>
+        </div>
+      </div>
+
+      <!-- Builder -->
+      <div class="bld-main">
+        <span class="step-lbl">Step 1 — Choose your template</span>
+        <div class="t-picker">
+          <div class="t-card tc-prob" id="tmpl-problem" onclick="selTmpl('problem')"><div class="t-lbl">Problem Focused</div><p>Lead with what's broken and what you're doing about it.</p></div>
+          <div class="t-card tc-act"  id="tmpl-action"  onclick="selTmpl('action')"><div class="t-lbl">Action Focused</div><p>Lead with what you do and who you serve.</p></div>
+          <div class="t-card tc-val"  id="tmpl-value"   onclick="selTmpl('value')"><div class="t-lbl">Value Focused</div><p>Lead with what you believe and why it drives you.</p></div>
+        </div>
+
+        <div class="bld-area">
+          <h3 id="bld-title">← Select a template above to begin</h3>
+          <div class="slot-rows" id="slot-rows"><div style="color:var(--text-soft);font-size:14px;font-style:italic;">Click a blank to focus it, then click a word from the sidebar or word banks below to insert it.</div></div>
+        </div>
+
+        <span class="step-lbl">Step 2 — Click words to insert them (or type directly in any blank)</span>
+        <div class="word-banks">
+          <div class="wb"><h4>Who You Serve</h4>
+            <div class="tags" id="bk-serve">
+              <span class="tag serve" onclick="ins(this)">Children &amp; youth</span><span class="tag serve" onclick="ins(this)">Families</span><span class="tag serve" onclick="ins(this)">Women &amp; girls</span><span class="tag serve" onclick="ins(this)">BIPOC communities</span><span class="tag serve" onclick="ins(this)">Students</span><span class="tag serve" onclick="ins(this)">Immigrants</span><span class="tag serve" onclick="ins(this)">Veterans</span><span class="tag serve" onclick="ins(this)">People in recovery</span><span class="tag serve" onclick="ins(this)">LGBTQ+ communities</span><span class="tag serve" onclick="ins(this)">Future generations</span><span class="tag serve" onclick="ins(this)">Marginalized communities</span><span class="tag serve" onclick="ins(this)">Seniors</span><span class="tag serve" onclick="ins(this)">Rural communities</span><span class="tag serve" onclick="ins(this)">People with disabilities</span>
+            </div>
+            <div class="blanks"><div class="bl-wrap serve"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'serve')"></div><div class="bl-wrap serve"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'serve')"></div><div class="bl-wrap serve"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'serve')"></div></div>
+          </div>
+          <div class="wb"><h4>Action Words</h4>
+            <div class="tags" id="bk-action">
+              <span class="tag action" onclick="ins(this)">Supports</span><span class="tag action" onclick="ins(this)">Champions</span><span class="tag action" onclick="ins(this)">Invests in</span><span class="tag action" onclick="ins(this)">Empowers</span><span class="tag action" onclick="ins(this)">Advances</span><span class="tag action" onclick="ins(this)">Builds</span><span class="tag action" onclick="ins(this)">Creates</span><span class="tag action" onclick="ins(this)">Drives</span><span class="tag action" onclick="ins(this)">Advocates for</span><span class="tag action" onclick="ins(this)">Strengthens</span><span class="tag action" onclick="ins(this)">Protects</span><span class="tag action" onclick="ins(this)">Nurtures</span><span class="tag action" onclick="ins(this)">Amplifies</span><span class="tag action" onclick="ins(this)">Cultivates</span><span class="tag action" onclick="ins(this)">Transforms</span><span class="tag action" onclick="ins(this)">Mobilizes</span><span class="tag action" onclick="ins(this)">Elevates</span><span class="tag action" onclick="ins(this)">Fuels</span><span class="tag action" onclick="ins(this)">Catalyzes</span><span class="tag action" onclick="ins(this)">Unlocks</span><span class="tag action" onclick="ins(this)">Centers</span><span class="tag action" onclick="ins(this)">Uplifts</span><span class="tag action" onclick="ins(this)">Fosters</span><span class="tag action" onclick="ins(this)">Partners with</span><span class="tag action" onclick="ins(this)">Equips</span><span class="tag action" onclick="ins(this)">Prioritizes</span><span class="tag action" onclick="ins(this)">Expands access for</span>
+            </div>
+            <div class="blanks"><div class="bl-wrap action"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'action')"></div><div class="bl-wrap action"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'action')"></div><div class="bl-wrap action"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'action')"></div></div>
+          </div>
+          <div class="wb"><h4>Belief Starters</h4>
+            <div class="tags" id="bk-belief">
+              <span class="tag belief" onclick="ins(this)">Everyone deserves...</span><span class="tag belief" onclick="ins(this)">Change happens when...</span><span class="tag belief" onclick="ins(this)">No one should have to...</span><span class="tag belief" onclick="ins(this)">Justice demands...</span><span class="tag belief" onclick="ins(this)">True impact requires...</span><span class="tag belief" onclick="ins(this)">Communities thrive when...</span><span class="tag belief" onclick="ins(this)">People have the right to...</span><span class="tag belief" onclick="ins(this)">Real progress means...</span><span class="tag belief" onclick="ins(this)">Healing begins when...</span><span class="tag belief" onclick="ins(this)">Opportunity shouldn't depend on...</span><span class="tag belief" onclick="ins(this)">Lasting change requires...</span>
+            </div>
+            <div class="blanks"><div class="bl-wrap belief"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'belief')"></div><div class="bl-wrap belief"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'belief')"></div><div class="bl-wrap belief"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'belief')"></div></div>
+          </div>
+          <div class="wb"><h4>Impact Language</h4>
+            <div class="tags" id="bk-impact">
+              <span class="tag impact" onclick="ins(this)">Systemic change</span><span class="tag impact" onclick="ins(this)">Equity and access</span><span class="tag impact" onclick="ins(this)">Dignity and respect</span><span class="tag impact" onclick="ins(this)">Lasting legacy</span><span class="tag impact" onclick="ins(this)">Collective power</span><span class="tag impact" onclick="ins(this)">Thriving communities</span><span class="tag impact" onclick="ins(this)">Generational impact</span><span class="tag impact" onclick="ins(this)">Shared prosperity</span><span class="tag impact" onclick="ins(this)">Voices heard and valued</span><span class="tag impact" onclick="ins(this)">Community resilience</span><span class="tag impact" onclick="ins(this)">Sustainable transformation</span>
+            </div>
+            <div class="blanks"><div class="bl-wrap impact"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'impact')"></div><div class="bl-wrap impact"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'impact')"></div><div class="bl-wrap impact"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'impact')"></div></div>
+          </div>
+          <div class="wb" style="grid-column:1/-1"><h4>How You Work</h4>
+            <div class="tags" id="bk-how">
+              <span class="tag how" onclick="ins(this)">Trust-based partnerships</span><span class="tag how" onclick="ins(this)">Direct support</span><span class="tag how" onclick="ins(this)">Community collaboration</span><span class="tag how" onclick="ins(this)">Local organizing</span><span class="tag how" onclick="ins(this)">Advocacy</span><span class="tag how" onclick="ins(this)">Shared funding</span><span class="tag how" onclick="ins(this)">Capacity building</span><span class="tag how" onclick="ins(this)">Multi-year unrestricted funding</span><span class="tag how" onclick="ins(this)">Policy change</span><span class="tag how" onclick="ins(this)">Leadership development</span><span class="tag how" onclick="ins(this)">Grassroots grantmaking</span><span class="tag how" onclick="ins(this)">Community organizing</span>
+            </div>
+            <div class="blanks"><div class="bl-wrap how"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'how')"></div><div class="bl-wrap how"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'how')"></div><div class="bl-wrap how"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'how')"></div></div>
+          </div>
+        </div>
+
+        <div class="freeform"><label>✏️ Prefer to just write it? Type freely here (overrides the template preview below)</label><textarea id="ff-text" placeholder="Sometimes the best version comes from writing it yourself..." oninput="updatePreview()"></textarea></div>
+
+        <div class="draft-out"><h3>✦ Your Draft Mission Statement</h3><div id="mission-preview"><span class="draft-ph">Your mission statement will take shape here as you fill in the template above...</span></div></div>
+
+        <div class="save-bar"><button class="btn-save" id="save-btn" onclick="saveDraft()">💾 Save This Draft</button><span class="save-ct" id="save-ct">0 drafts saved — build multiple versions to compare</span></div>
+
+        <div class="checklist">
+          <h3>The Gut Check ✓</h3>
+          <div class="ck-item" onclick="tck(this)"><div class="ck-box">✓</div><div class="ck-lbl"><strong>Aligns with purpose?</strong><div class="ck-sub">When someone brings an opportunity, can you quickly tell if it fits?</div></div></div>
+          <div class="ck-item" onclick="tck(this)"><div class="ck-box">✓</div><div class="ck-lbl"><strong>Guides decisions?</strong><div class="ck-sub">Does it help you say yes — and give you permission to say no?</div></div></div>
+          <div class="ck-item" onclick="tck(this)"><div class="ck-box">✓</div><div class="ck-lbl"><strong>Clear introduction?</strong><div class="ck-sub">Could you say this at dinner and have someone immediately understand?</div></div></div>
+          <div class="ck-item" onclick="tck(this)"><div class="ck-box">✓</div><div class="ck-lbl"><strong>Sounds like you?</strong><div class="ck-sub">Read it out loud. Does it feel authentic — not consultant-written?</div></div></div>
+          <div class="ck-item" onclick="tck(this)"><div class="ck-box">✓</div><div class="ck-lbl"><strong>Would you share it proudly?</strong><div class="ck-sub">Does this inspire you and represent who your family is?</div></div></div>
+        </div>
+
+        <div class="act-bar"><button class="btn-sec" onclick="goTo(1)">← Back to Brain Dump</button><button class="btn-pri" onclick="goTo(3)">Compare All Drafts →</button></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="page-3">
+  <div class="main">
+    <div class="sec-title">Compare Your Drafts</div>
+    <div class="sec-sub">Read each one out loud. Notice which one makes the family sit up straight. That's usually the one.</div>
+    <div class="drafts-grid" id="drafts-grid"><div class="no-drafts">No drafts yet. Go back to Part 2, build a version, hit <strong>"Save This Draft"</strong> — then try all three templates.</div></div>
+
+    <div class="sec-title" style="font-size:22px;margin-bottom:4px;">The Group's Brain Dump</div>
+    <div class="sec-sub" style="margin-bottom:16px;">Every raw idea — from everyone in the room.</div>
+    <div class="brain-sum">
+      <div class="bs-card"><h4>😟 What keeps you up at night (Empower)</h4><ul id="fq-1"><li class="emp">Nothing yet</li></ul></div>
+      <div class="bs-card"><h4>💙 Why you care (Purpose)</h4><ul id="fq-2"><li class="emp">Nothing yet</li></ul></div>
+      <div class="bs-card"><h4>📊 How you'll know it's working (Impact)</h4><ul id="fq-3"><li class="emp">Nothing yet</li></ul></div>
+      <div class="bs-card"><h4>🌱 What you want to be remembered for (Change)</h4><ul id="fq-4"><li class="emp">Nothing yet</li></ul></div>
+    </div>
+
+    <!-- HOW TO USE -->
+    <div class="htu">
+      <h2>How to Use This Exercise</h2>
+      <p class="htu-sub">A quick reference for facilitators and participants — share this before your session.</p>
+      <div class="htu-grid">
+        <div class="htu-block htu-f">
+          <h3>🧭 Facilitator Steps</h3>
+          <ol class="htu-steps">
+            <li><span class="sn">1.</span>Open this tool and click <em>"I'm the Facilitator."</em> Enter the family name and your name.</li>
+            <li><span class="sn">2.</span>A <strong style="color:var(--gold-dark)">session code</strong> is created (e.g. COBBFAMILY-2026). Share it with participants before you start.</li>
+            <li><span class="sn">3.</span>Participants open the same link, click <em>"I'm a Participant,"</em> enter the code and their name.</li>
+            <li><span class="sn">4.</span>Guide Part 1 — everyone fills their brain dump on their own device. When done, click <strong>Reveal All Answers.</strong></li>
+            <li><span class="sn">5.</span>Move to Part 2. All answers appear in the shared sidebar. Pick a template and shape the draft together as a group.</li>
+            <li><span class="sn">6.</span>Save drafts. Try all three templates. Head to Part 3 to compare them side by side.</li>
+          </ol>
+        </div>
+        <div class="htu-block htu-p">
+          <h3>👥 Participant Steps</h3>
+          <ol class="htu-steps">
+            <li><span class="sn">1.</span>Open the link your facilitator shared and click <em>"I'm a Participant."</em></li>
+            <li><span class="sn">2.</span>Enter the <strong style="color:var(--teal)">session code</strong> and your name.</li>
+            <li><span class="sn">3.</span>Fill in all four brain dump quadrants with your honest, unedited ideas.</li>
+            <li><span class="sn">4.</span>Click <strong>Submit My Answers</strong> when you're done.</li>
+            <li><span class="sn">5.</span>Once the facilitator reveals answers, you'll see everyone's responses pooled together.</li>
+            <li><span class="sn">6.</span>Join the conversation about which draft sounds most like your family.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="code-box"><strong>About Session Codes:</strong> Each family gets a unique code (e.g. <strong>COBBFAMILY-2026</strong>). The facilitator creates it — participants use it to join. Sessions are stored in your browser, so the facilitator should use the same browser/device for the whole session. If participants need to reconnect, they rejoin with the same code and name.</div>
+    </div>
+
+    <div class="next-steps"><strong>Remember:</strong> This is a draft, not an engraving. A mission statement earns its permanence by being tested in real decisions. Every request that comes to your fund travels through this statement. Does it align? Yes — keep talking. No — easy pass, no guilt required. <em>That permission to say no is one of the greatest gifts your mission statement gives you.</em></div>
+
+    <div class="act-bar"><button class="btn-sec" onclick="goTo(2)">← Back to Builder</button><button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button></div>
+  </div>
+  </div>
+</div><!-- /app -->
+
+<script>
+// ══ COLOR MAP ══
+const CM = {
+  serve:   {bg:'rgba(30,85,99,.08)',   color:'#1e5563', border:'rgba(30,85,99,.2)'},
+  action:  {bg:'rgba(69,112,147,.1)',  color:'#457093', border:'rgba(69,112,147,.25)'},
+  believe: {bg:'rgba(222,173,47,.1)',  color:'#7a5800', border:'rgba(222,173,47,.3)'},
+  how:     {bg:'rgba(91,118,102,.1)',  color:'#5b7666', border:'rgba(91,118,102,.25)'},
+  impact:  {bg:'rgba(144,66,55,.08)',  color:'#904237', border:'rgba(144,66,55,.2)'},
+};
+
+const TMPLS = {
+  problem:{title:'Problem Focused Template',sentences:[
+    ['The ',{id:'p_n',l:'Fund Name',c:'serve'},' Fund exists because ',{id:'p_pr',l:'the problem / what keeps you up',c:'believe'},'.'],
+    ['We ',{id:'p_a',l:'action word',c:'action'},' ',{id:'p_w',l:'who you serve',c:'serve'},' through ',{id:'p_h',l:'how you work',c:'how'},'.'],
+    ['Success looks like ',{id:'p_i',l:'impact language',c:'impact'},'.'],
+    ['Our approach is rooted in ',{id:'p_pu',l:'your purpose or belief',c:'believe'},'.'],
+  ]},
+  action:{title:'Action Focused Template',sentences:[
+    ['The ',{id:'a_n',l:'Fund Name',c:'serve'},' Fund ',{id:'a_a',l:'action word',c:'action'},' ',{id:'a_w',l:'who you serve',c:'serve'},' because ',{id:'a_y',l:'why you care',c:'believe'},'.'],
+    ['We focus on ',{id:'a_i',l:'what success looks like',c:'impact'},' by ',{id:'a_h',l:'how you work',c:'how'},' because we believe ',{id:'a_b',l:'belief statement',c:'believe'},'.'],
+  ]},
+  value:{title:'Value Focused Template',sentences:[
+    ['We believe ',{id:'v_b',l:'belief statement',c:'believe'},'.'],
+    ["That's why the ",{id:'v_n',l:'Fund Name',c:'serve'},' Fund ',{id:'v_a',l:'action word',c:'action'},' ',{id:'v_w',l:'who you serve',c:'serve'},' to create a world where ',{id:'v_i',l:'impact language',c:'impact'},' through ',{id:'v_h',l:'how you work',c:'how'},'.'],
+    ['Our work is driven by ',{id:'v_c',l:'what you want to be remembered for',c:'impact'},'.'],
+  ]}
+};
+const TL = {problem:'Problem Focused',action:'Action Focused',value:'Value Focused'};
+
+// ══ STATE ══
+let role='', sess='', uname='', submitted=false, revealed=false;
+let myNotes={1:[],2:[],3:[],4:[]};
+let activeTmpl=null, slotData={}, focusedSlot=null, drafts=[];
+let pollTimer=null;
+
+// ══ ENTRY ══
+function showForm(t){
+  document.getElementById('role-choice').classList.add('hidden');
+  document.getElementById('form-facilitator').classList.add('hidden');
+  document.getElementById('form-participant').classList.add('hidden');
+  document.getElementById('form-'+t).classList.remove('hidden');
+  // Pre-fill code if in URL
+  if(t==='participant'){
+    const p=new URLSearchParams(window.location.search);
+    if(p.get('session')) document.getElementById('par-code').value=p.get('session').toUpperCase();
+  }
+}
+function showChoice(){
+  document.getElementById('role-choice').classList.remove('hidden');
+  document.getElementById('form-facilitator').classList.add('hidden');
+  document.getElementById('form-participant').classList.add('hidden');
+}
+
+async function createSession(){
+  const fam=document.getElementById('fac-family').value.trim();
+  const nm=document.getElementById('fac-name').value.trim();
+  const err=document.getElementById('fac-err');
+  if(!fam||!nm){err.textContent='Please fill in both fields.';err.style.display='block';return;}
+  err.style.display='none';
+  role='facilitator'; uname=nm;
+  sess=fam.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12)+'-'+new Date().getFullYear();
+  const existing = await fbGet(sessPath('meta'));
+  if(!existing){
+    await fbSet(sessPath('meta'), {family:fam, created:Date.now(), revealed:false});
+    await fbSet(sessPath('answers'), {q1:{}, q2:{}, q3:{}, q4:{}});
+    await fbSet(sessPath('participants'), {});
+    await fbSet(sessPath('drafts'), {});
+  }
+  launch();
+}
+
+async function joinSession(){
+  const code=document.getElementById('par-code').value.trim().toUpperCase();
+  const nm=document.getElementById('par-name').value.trim();
+  const err=document.getElementById('par-err');
+  if(!code||!nm){err.textContent='Please fill in both fields.';err.style.display='block';return;}
+  err.style.display='none';
+  sess=code; uname=nm;
+  const meta = await fbGet(sessPath('meta'));
+  if(!meta){err.textContent='Session not found. Double-check the code with your facilitator.';err.style.display='block';return;}
+  role='participant';
+  const ukey=uname.replace(/[^a-zA-Z0-9]/g,'_');
+  await fbUpdate(sessPath('participants/'+ukey), {submitted:false, joined:Date.now(), displayName:uname});
+  // Check if returning
+  const ans = await fbGet(sessPath('answers'));
+  if(ans){
+    [1,2,3,4].forEach(q=>{
+      const qdata = ans['q'+q] && ans['q'+q][ukey];
+      if(qdata) myNotes[q] = Object.values(qdata);
+    });
+    if(myNotes[1].length||myNotes[2].length) submitted=true;
+  }
+  revealed=meta.revealed||false;
+  launch();
+}
+
+function launch(){
+  document.getElementById('entry-screen').style.display='none';
+  const app=document.getElementById('app');
+  app.style.display='block';
+  document.getElementById('hdr-code').textContent=sess;
+  document.getElementById('hdr-name').textContent=uname;
+  const rt=document.getElementById('hdr-role');
+  if(role==='facilitator'){
+    rt.textContent='Facilitator'; rt.className='role-tag rt-f';
+    document.getElementById('rb-f').classList.remove('hidden');
+    document.getElementById('fac-share').classList.remove('hidden');
+    document.getElementById('fac-ctrl').classList.remove('hidden');
+    document.getElementById('share-code-display').textContent=sess;
+  } else {
+    rt.textContent='Participant'; rt.className='role-tag rt-p';
+    document.getElementById('rb-p').classList.remove('hidden');
+    if(!submitted){
+      document.getElementById('sub-banner').classList.remove('hidden');
+    } else {
+      document.getElementById('submitted-msg').classList.remove('hidden');
+      lockInputs();
+    }
+    // Restore my notes visually
+    [1,2,3,4].forEach(q=>{myNotes[q].forEach(t=>renderNote(q,t,true));});
+    if(revealed) renderOthersAnswers();
+  }
+  startPoll();
+  goTo(1);
+}
+
+// ══ REAL-TIME LISTENERS ══
+function startPoll(){
+  // Listen to meta (for reveal state)
+  fbListen(sessPath('meta'), meta => {
+    if(!meta) return;
+    if(meta.revealed && !revealed){
+      revealed=true;
+      if(role==='participant'){
+        document.getElementById('submitted-msg').innerHTML='✓ <strong>Answers revealed!</strong> Scroll down to see everyone\'s responses — then head to Part 2.';
+      }
+    }
+  });
+  // Listen to participants
+  fbListen(sessPath('participants'), parts => {
+    if(parts) updatePChips(parts);
+  });
+  // Listen to answers
+  fbListen(sessPath('answers'), ans => {
+    if(!ans) return;
+    const normalized = {1:{},2:{},3:{},4:{}};
+    [1,2,3,4].forEach(q=>{
+      const qdata = ans['q'+q] || {};
+      Object.entries(qdata).forEach(([ukey, notes])=>{
+        // find displayName from participants or use ukey
+        normalized[q][ukey] = Object.values(notes||{});
+      });
+    });
+    if(role==='facilitator' || revealed) renderAllAnswers(normalized, ans);
+    refreshSidebar(normalized);
+  });
+  // Listen to drafts
+  fbListen(sessPath('drafts'), d => {
+    if(!d) return;
+    const arr = Object.values(d);
+    if(arr.length > drafts.length){ drafts=arr; updateSaveCt(); }
+  });
+}
+function poll(){} // no-op, replaced by listeners
+
+function updatePChips(parts){
+  const el=document.getElementById('p-chips');
+  if(!el) return;
+  const keys=Object.keys(parts);
+  if(!keys.length){el.innerHTML='Waiting for participants...';return;}
+  el.innerHTML=keys.map(k=>{
+    const p=parts[k];
+    const name=p.displayName||k;
+    return `<span class="p-chip"><span class="sdot ${p.submitted?'sdot-s':'sdot-p'}"></span>${esc(name)}</span>`;
+  }).join('');
+}
+
+function renderAllAnswers(normalized){
+  [1,2,3,4].forEach(q=>{
+    const area=document.getElementById('area-'+q);
+    if(!area) return;
+    const shown=new Set([...area.querySelectorAll('.answer-item')].map(el=>el.dataset.key));
+    Object.entries(normalized[q]||{}).forEach(([ukey,arr])=>{
+      (arr||[]).forEach((text,i)=>{
+        const k=ukey+'::'+i;
+        if(shown.has(k)) return;
+        const d=document.createElement('div');
+        d.className='answer-item '+(ukey===uname.replace(/[^a-zA-Z0-9]/g,'_')?'ai-mine':'ai-theirs');
+        d.dataset.key=k;
+        d.innerHTML=`<span class="ai-who">${esc(ukey)}:</span> ${esc(text)}`;
+        area.appendChild(d);
+      });
+    });
+  });
+}
+
+function renderOthersAnswers(){ /* handled by listener */ }
+
+// ══ BRAIN DUMP ══
+function hk(e,q){if(e.key==='Enter'){e.preventDefault();addNote(q);}}
+function addNote(q){
+  const inp=document.getElementById('in-'+q);
+  const text=inp.value.trim();
+  if(!text) return;
+  myNotes[q].push(text);
+  renderNote(q,text,true);
+  inp.value=''; inp.focus();
+  // Save to Firebase
+  const ukey=uname.replace(/[^a-zA-Z0-9]/g,'_');
+  const noteObj={};
+  myNotes[q].forEach((t,i)=>noteObj[i]=t);
+  fbSet(sessPath('answers/q'+q+'/'+ukey), noteObj);
+}
+function renderNote(q,text){
+  const area=document.getElementById('area-'+q);
+  const d=document.createElement('div');
+  const idx=myNotes[q].length-1;
+  d.className='answer-item ai-mine';
+  d.dataset.key=uname.replace(/[^a-zA-Z0-9]/g,'_')+'::'+idx;
+  d.innerHTML=`<span class="ai-who">${esc(uname)}:</span> ${esc(text)}`;
+  area.appendChild(d);
+}
+function lockInputs(){[1,2,3,4].forEach(q=>{const r=document.getElementById('row-'+q);if(r)r.classList.add('locked-row');});}
+
+async function submitAnswers(){
+  const ukey=uname.replace(/[^a-zA-Z0-9]/g,'_');
+  await fbUpdate(sessPath('participants/'+ukey), {submitted:true});
+  submitted=true;
+  lockInputs();
+  document.getElementById('sub-banner').classList.add('hidden');
+  document.getElementById('submitted-msg').classList.remove('hidden');
+}
+
+async function revealAnswers(){
+  await fbUpdate(sessPath('meta'), {revealed:true});
+  revealed=true;
+  document.getElementById('btn-reveal').textContent='✓ Answers Revealed';
+  document.getElementById('btn-reveal').disabled=true;
+}
+
+function copySessionCode(){
+  navigator.clipboard.writeText(sess).then(()=>{
+    const b=document.querySelector('.btn-copy-link');
+    b.textContent='✓ Copied!';
+    setTimeout(()=>b.textContent='Copy Code',2000);
+  });
+}
+
+// ══ SIDEBAR ══
+function refreshSidebar(ans){
+  [1,2,3,4].forEach(q=>{
+    const sb=document.getElementById('sb-'+q);
+    if(!sb) return;
+    sb.innerHTML='';
+    const entries=Object.entries(ans[q]||{});
+    if(!entries.length){sb.innerHTML='<div class="sb-empty">No answers yet...</div>';return;}
+    entries.forEach(([who,arr])=>{
+      (arr||[]).forEach(text=>{
+        const c=document.createElement('div');
+        c.className='sb-chip';
+        c.innerHTML=`<span class="sb-who">${esc(who)}</span><span>${esc(text)}</span><span class="sb-arr">→</span>`;
+        c.onclick=()=>insertTxt(text);
+        sb.appendChild(c);
+      });
+    });
+  });
+}
+
+// ══ TEMPLATE ══
+function selTmpl(type){
+  document.querySelectorAll('.t-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('tmpl-'+type).classList.add('sel');
+  activeTmpl=type; slotData={};
+  document.getElementById('ff-text').value='';
+  renderTmpl();
+}
+function renderTmpl(){
+  if(!activeTmpl) return;
+  const tmpl=TMPLS[activeTmpl];
+  document.getElementById('bld-title').textContent=tmpl.title;
+  const cont=document.getElementById('slot-rows');
+  cont.innerHTML='';
+  tmpl.sentences.forEach(sent=>{
+    const row=document.createElement('div');
+    row.className='slot-row';
+    sent.forEach(p=>{
+      if(typeof p==='string'){const s=document.createElement('span');s.className='st';s.textContent=p;row.appendChild(s);}
+      else row.appendChild(mkSlot(p));
+    });
+    cont.appendChild(row);
+  });
+  updatePreview();
+}
+function mkSlot(p){
+  const w=document.createElement('span');
+  w.className='slot'; w.dataset.id=p.id; w.dataset.c=p.c;
+  if(slotData[p.id]){renderChip(w,slotData[p.id].t,p.c);}
+  else {
+    const lbl=document.createElement('span');
+    lbl.style.cssText='color:var(--text-soft);font-style:italic;font-size:11px;pointer-events:none;white-space:nowrap;';
+    lbl.textContent=p.l;
+    const ed=document.createElement('span');
+    ed.contentEditable='true'; ed.className='slot-in';
+    ed.dataset.slot=p.id; ed.dataset.c=p.c;
+    ed.addEventListener('focus',()=>{focusedSlot=p.id;document.querySelectorAll('.slot').forEach(s=>s.classList.remove('foc'));w.classList.add('foc');});
+    ed.addEventListener('blur',()=>w.classList.remove('foc'));
+    ed.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault();});
+    ed.addEventListener('input',()=>{const t=ed.textContent.trim();if(t)slotData[p.id]={t,c:p.c};else delete slotData[p.id];updatePreview();});
+    w.appendChild(lbl); w.appendChild(ed);
+  }
+  return w;
+}
+function renderChip(w,text,color){
+  const c=CM[color]||CM.serve;
+  w.classList.add('fil');
+  Object.assign(w.style,{border:'none',padding:'0',background:'transparent',minWidth:'0',boxShadow:'none'});
+  const id=w.dataset.id;
+  w.innerHTML=`<span class="chip" style="background:${c.bg};color:${c.color};border:1.5px solid ${c.border};">${esc(text)}<button class="rm" onclick="rmChip('${id}')">✕</button></span>`;
+}
+function rmChip(id){delete slotData[id];renderTmpl();}
+
+function insertTxt(text){
+  if(!focusedSlot){
+    const slots=document.querySelectorAll('[data-slot]');
+    for(const s of slots){if(!slotData[s.dataset.slot]){focusedSlot=s.dataset.slot;break;}}
+  }
+  if(!focusedSlot){alert('Click on a blank in the template first, then click a word.');return;}
+  const el=document.querySelector(`[data-slot="${focusedSlot}"]`);
+  const c=el?el.dataset.c:'believe';
+  slotData[focusedSlot]={t:text,c};
+  focusedSlot=null; renderTmpl(); updatePreview();
+}
+function ins(tag){insertTxt(tag.textContent.trim());}
+function ctag(e,inp,type){
+  if(e.key==='Enter'){e.preventDefault();const t=inp.value.trim();if(!t)return;
+    const bk=document.getElementById('bk-'+type);
+    const tag=document.createElement('span');tag.className='tag '+type;tag.textContent=t;tag.onclick=()=>ins(tag);bk.appendChild(tag);
+    inp.value='';inp.focus();}
+}
+
+// ══ PREVIEW ══
+function updatePreview(){
+  const ff=document.getElementById('ff-text').value.trim();
+  const prev=document.getElementById('mission-preview');
+  if(ff){prev.textContent=ff;return;}
+  if(!activeTmpl){prev.innerHTML='<span class="draft-ph">Your mission statement will take shape here as you fill in the template above...</span>';return;}
+  const text=TMPLS[activeTmpl].sentences.map(s=>s.map(p=>typeof p==='string'?p:slotData[p.id]?slotData[p.id].t:`[${p.l}]`).join('')).join(' ');
+  prev.textContent=text;
+}
+
+// ══ SAVE DRAFT ══
+async function saveDraft(){
+  const ff=document.getElementById('ff-text').value.trim();
+  const prev=document.getElementById('mission-preview').textContent.trim();
+  const text=ff||prev;
+  if(!text||text.includes('take shape')){alert('Build a mission statement first!');return;}
+  const d={text,template:activeTmpl?TL[activeTmpl]:'Free-form',timestamp:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),id:Date.now()};
+  drafts.push(d);
+  await fbSet(sessPath('drafts/'+d.id), d);
+  updateSaveCt();
+  const btn=document.getElementById('save-btn');
+  const orig=btn.innerHTML; btn.innerHTML='✓ Saved!';
+  btn.style.background='#1e5563'; btn.style.color='#fff';
+  setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.style.color='';},2000);
+}
+function updateSaveCt(){
+  const n=drafts.length;
+  document.getElementById('save-ct').textContent=n===0?'0 drafts saved — build multiple versions to compare':n===1?'1 draft saved — try another template!':n+' drafts saved — go to Compare Drafts to see them side by side';
+}
+async function delDraft(id){
+  drafts=drafts.filter(d=>d.id!==id);
+  await fbSet(sessPath('drafts/'+id), null);
+  buildFinalPage();
+}
+function cpyDraft(id){
+  const d=drafts.find(d=>d.id===id);
+  if(!d) return;
+  navigator.clipboard.writeText(d.text).then(()=>{
+    const b=document.querySelector(`[data-cp="${id}"]`);
+    if(b){const o=b.textContent;b.textContent='✓ Copied';setTimeout(()=>b.textContent=o,1800);}
+  });
+}
+
+// ══ FINAL PAGE ══
+async function buildFinalPage(){
+  const storedDrafts = await fbGet(sessPath('drafts'));
+  if(storedDrafts) drafts = Object.values(storedDrafts);
+  const grid=document.getElementById('drafts-grid');
+  grid.innerHTML='';
+  if(!drafts.length){grid.innerHTML='<div class="no-drafts">No drafts yet. Go back to Part 2, build a version, hit <strong>"Save This Draft"</strong> — then try all three templates.</div>';}
+  else {
+    drafts.forEach((d,i)=>{
+      const card=document.createElement('div');
+      card.className='d-card';
+      card.innerHTML=`<div class="d-meta">Draft ${i+1}<span class="d-badge">${esc(d.template)}</span><span class="d-time">${d.timestamp}</span></div><div class="d-text">${esc(d.text)}</div><div class="d-acts"><button class="d-btn d-copy" data-cp="${d.id}" onclick="cpyDraft(${d.id})">Copy text</button><button class="d-btn d-del" onclick="delDraft(${d.id})">Remove</button></div>`;
+      grid.appendChild(card);
+    });
+  }
+  // Brain dump summary
+  const ans = await fbGet(sessPath('answers'));
+  [1,2,3,4].forEach(q=>{
+    const el=document.getElementById('fq-'+q);
+    el.innerHTML='';
+    const qdata = (ans && ans['q'+q]) || {};
+    const entries=Object.entries(qdata);
+    if(!entries.length){el.innerHTML='<li class="emp">Nothing yet</li>';return;}
+    entries.forEach(([ukey,notes])=>{
+      Object.values(notes||{}).forEach(text=>{
+        const li=document.createElement('li');
+        li.innerHTML=`<span class="li-who">${esc(ukey)}</span> ${esc(text)}`;
+        el.appendChild(li);
+      });
+    });
+  });
+}
+
+// ══ NAV ══
+function goTo(n){
+  if(n===3) buildFinalPage();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  [1,2,3].forEach(i=>{
+    const pill=document.getElementById('pill-'+i);
+    pill.classList.remove('active','done');
+    if(i===n) pill.classList.add('active');
+    else if(i<n) pill.classList.add('done');
+  });
+  [1,2].forEach(i=>document.getElementById('con-'+i).classList.toggle('done',i<n));
+}
+
+// ══ MISC ══
+function tck(item){item.classList.toggle('ck');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// Pre-fill session code from URL param
+window.addEventListener('DOMContentLoaded',()=>{
+  const p=new URLSearchParams(window.location.search);
+  if(p.get('session')){
+    showForm('participant');
+    document.getElementById('par-code').value=p.get('session').toUpperCase();
+  }
+});
+</script>
+</body>
+</html>
