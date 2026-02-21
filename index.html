@@ -356,6 +356,7 @@ html,body{width:100%;min-height:100vh;font-family:'Jost',sans-serif;background:v
   <div class="e-form hidden" id="form-facilitator">
     <div class="e-form-title">Create Your Session</div>
     <div class="e-error" id="fac-err"></div>
+    <div class="fg"><label>Facilitator Password</label><input type="password" id="fac-pass" placeholder="Enter password"></div>
     <div class="fg"><label>Family / Session Name</label><input type="text" id="fac-family" placeholder="e.g. Cobb Family" maxlength="30"></div>
     <div class="fg"><label>Your Name</label><input type="text" id="fac-name" placeholder="e.g. Liza" maxlength="30"></div>
     <button class="btn-go" onclick="createSession()">Create Session →</button>
@@ -558,10 +559,10 @@ html,body{width:100%;min-height:100vh;font-family:'Jost',sans-serif;background:v
       <div class="bs-card"><h4>🌱 What you want to be remembered for (Change)</h4><ul id="fq-4"><li class="emp">Nothing yet</li></ul></div>
     </div>
 
-    <!-- HOW TO USE -->
-    <div class="htu">
+    <!-- HOW TO USE — shown conditionally by role -->
+    <div class="htu hidden" id="htu-facilitator">
       <h2>How to Use This Exercise</h2>
-      <p class="htu-sub">A quick reference for facilitators and participants — share this before your session.</p>
+      <p class="htu-sub">A quick reference for you and your participants.</p>
       <div class="htu-grid">
         <div class="htu-block htu-f">
           <h3>🧭 Facilitator Steps</h3>
@@ -586,7 +587,22 @@ html,body{width:100%;min-height:100vh;font-family:'Jost',sans-serif;background:v
           </ol>
         </div>
       </div>
-      <div class="code-box"><strong>About Session Codes:</strong> Each family gets a unique code (e.g. <strong>COBBFAMILY-2026</strong>). The facilitator creates it — participants use it to join. Sessions are stored in your browser, so the facilitator should use the same browser/device for the whole session. If participants need to reconnect, they rejoin with the same code and name.</div>
+      <div class="code-box"><strong>About Session Codes:</strong> Each family gets a unique code (e.g. <strong>COBBFAMILY-2026</strong>). The facilitator creates it — participants use it to join. If participants need to reconnect, they rejoin with the same code and name.</div>
+    </div>
+
+    <div class="htu hidden" id="htu-participant">
+      <h2>How to Use This Exercise</h2>
+      <p class="htu-sub">A quick guide for participants.</p>
+      <div class="htu-block htu-p" style="max-width:560px;">
+        <h3>👥 Your Steps</h3>
+        <ol class="htu-steps">
+          <li><span class="sn">1.</span>You're in! Your facilitator has set up this session for your family.</li>
+          <li><span class="sn">2.</span>Fill in all four brain dump quadrants with your honest, unedited ideas — no editing yourself!</li>
+          <li><span class="sn">3.</span>Click <strong>Submit My Answers</strong> when you're done.</li>
+          <li><span class="sn">4.</span>Once the facilitator reveals answers, you'll see everyone's responses pooled together.</li>
+          <li><span class="sn">5.</span>Join the conversation about which draft sounds most like your family.</li>
+        </ol>
+      </div>
     </div>
 
     <div class="next-steps"><strong>Remember:</strong> This is a draft, not an engraving. A mission statement earns its permanence by being tested in real decisions. Every request that comes to your fund travels through this statement. Does it align? Yes — keep talking. No — easy pass, no guilt required. <em>That permission to say no is one of the greatest gifts your mission statement gives you.</em></div>
@@ -650,10 +666,12 @@ function showChoice(){
 }
 
 async function createSession(){
+  const pass=document.getElementById('fac-pass').value;
   const fam=document.getElementById('fac-family').value.trim();
   const nm=document.getElementById('fac-name').value.trim();
   const err=document.getElementById('fac-err');
-  if(!fam||!nm){err.textContent='Please fill in both fields.';err.style.display='block';return;}
+  if(pass !== '3742'){err.textContent='Incorrect password. Please try again.';err.style.display='block';return;}
+  if(!fam||!nm){err.textContent='Please fill in all fields.';err.style.display='block';return;}
   err.style.display='none';
   role='facilitator'; uname=nm;
   sess=fam.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,12)+'-'+new Date().getFullYear();
@@ -705,9 +723,13 @@ function launch(){
     document.getElementById('fac-share').classList.remove('hidden');
     document.getElementById('fac-ctrl').classList.remove('hidden');
     document.getElementById('share-code-display').textContent=sess;
+    document.getElementById('htu-facilitator').classList.remove('hidden');
+    document.getElementById('htu-participant').classList.add('hidden');
   } else {
     rt.textContent='Participant'; rt.className='role-tag rt-p';
     document.getElementById('rb-p').classList.remove('hidden');
+    document.getElementById('htu-facilitator').classList.add('hidden');
+    document.getElementById('htu-participant').classList.remove('hidden');
     if(!submitted){
       document.getElementById('sub-banner').classList.remove('hidden');
     } else {
