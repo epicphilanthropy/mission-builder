@@ -262,6 +262,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .htu ol{padding-left:20px;}
 .htu li{font-size:14px;color:var(--text-mid);margin-bottom:7px;line-height:1.5;}
 .next-steps{background:var(--teal);color:#fff;border-radius:var(--radius);padding:28px;margin-top:24px;text-align:center;}
+.par-draft{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:10px;}
+.par-draft-who{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-soft);margin-bottom:6px;}
+.par-draft-txt{font-size:14px;color:var(--text);line-height:1.6;}
+.par-drafts-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-soft);margin-top:14px;margin-bottom:6px;padding-top:12px;border-top:1px solid var(--border);}
 .next-steps h3{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);margin-bottom:10px;}
 .next-steps p{font-size:15px;color:rgba(255,255,255,.7);max-width:500px;margin:0 auto;}
 @media(max-width:900px){
@@ -573,9 +577,9 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
       <div class="sec-title">Part 3: Compare Your Drafts</div>
       <div class="sec-sub">Read each one out loud. See which one sounds like you.</div>
       <div class="drafts-grid" id="drafts-grid">
-        <div class="draft-card dc-prob"><div class="draft-card-lbl">Problem Focused</div><textarea id="fq-1-text" placeholder="Save a draft from the Problem Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(1)">Copy</button><button class="btn-sm del" onclick="delDraft(1)">Delete</button></div></div>
-        <div class="draft-card dc-act"><div class="draft-card-lbl">Action Focused</div><textarea id="fq-2-text" placeholder="Save a draft from the Action Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(2)">Copy</button><button class="btn-sm del" onclick="delDraft(2)">Delete</button></div></div>
-        <div class="draft-card dc-val"><div class="draft-card-lbl">Value Focused</div><textarea id="fq-3-text" placeholder="Save a draft from the Value Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(3)">Copy</button><button class="btn-sm del" onclick="delDraft(3)">Delete</button></div></div>
+        <div class="draft-card dc-prob"><div class="draft-card-lbl">Problem Focused</div><textarea id="fq-1-text" placeholder="Save a draft from the Problem Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(1)">Copy</button><button class="btn-sm del" onclick="delDraft(1)">Delete</button></div><div id="par-drafts-problem"></div></div>
+        <div class="draft-card dc-act"><div class="draft-card-lbl">Action Focused</div><textarea id="fq-2-text" placeholder="Save a draft from the Action Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(2)">Copy</button><button class="btn-sm del" onclick="delDraft(2)">Delete</button></div><div id="par-drafts-action"></div></div>
+        <div class="draft-card dc-val"><div class="draft-card-lbl">Value Focused</div><textarea id="fq-3-text" placeholder="Save a draft from the Value Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(3)">Copy</button><button class="btn-sm del" onclick="delDraft(3)">Delete</button></div><div id="par-drafts-value"></div></div>
       </div>
       <div class="gut-check">
         <h3>Gut Check</h3>
@@ -811,7 +815,7 @@ function goPage(n){
   });
   const sticky=document.getElementById('sticky-draft');
   if(n===2)sticky.classList.add('visible');else sticky.classList.remove('visible');
-  if(n===3)syncBrainSum();
+  if(n===3){syncBrainSum();startDraftListener();}
   window.scrollTo(0,0);
 }
 
@@ -989,6 +993,33 @@ function saveDraft(){
   fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionCode,familyName,facilitator:myRole==='facilitator'?myName:'',template:currentTmpl,draft:text,problem:snap.q1,why:snap.q2,focus:snap.q3,impact:snap.q4})}).catch(()=>{});
 }
 
+
+function startDraftListener(){
+  if(!sessionCode)return;
+  sessPath('drafts').on('value',snap=>{
+    const data=snap.val()||{};
+    const containers={problem:'par-drafts-problem',action:'par-drafts-action',value:'par-drafts-value'};
+    Object.values(containers).forEach(id=>{
+      const el=document.getElementById(id);if(el)el.innerHTML='';
+    });
+    Object.entries(data).forEach(([key,text])=>{
+      const parts=key.split('_');
+      const who=parts.slice(0,-1).join('_');
+      const tmplType=parts[parts.length-1];
+      if(who===myName)return; // skip own drafts, already shown
+      const containerId=containers[tmplType];
+      if(!containerId)return;
+      const el=document.getElementById(containerId);
+      if(!el)return;
+      if(!el.querySelector('.par-drafts-label')){
+        const lbl=document.createElement('div');lbl.className='par-drafts-label';lbl.textContent='From the group';el.appendChild(lbl);
+      }
+      const card=document.createElement('div');card.className='par-draft';
+      card.innerHTML='<div class="par-draft-who">'+who+'</div><div class="par-draft-txt">'+text+'</div>';
+      el.appendChild(card);
+    });
+  });
+}
 function delDraft(slot){drafts[slot]='';const ta=document.getElementById('fq-'+slot+'-text');if(ta)ta.value='';const count=Object.values(drafts).filter(d=>d).length;document.getElementById('save-ct').textContent=count+' draft'+(count===1?'':'s')+' saved';}
 function cpyDraft(slot){const ta=document.getElementById('fq-'+slot+'-text');if(ta&&ta.value)navigator.clipboard.writeText(ta.value);}
 </script>
