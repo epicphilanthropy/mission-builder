@@ -581,6 +581,28 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
             <div class="bld-area-ph">← Select a template above to begin building</div>
           </div>
 
+          <!-- FUND NAME & FREEFORM -->
+          <div class="wb" style="margin-bottom:16px;background:rgba(123,104,174,.06);border-color:rgba(123,104,174,.25);">
+            <h4 style="color:#7b68ae;">Fund / Family Name</h4>
+            <p style="font-size:13px;color:var(--text-mid);margin-bottom:12px;line-height:1.5;">Type your fund or family name and click Add to fill it into the template.</p>
+            <div class="bl-wrap" style="border-color:rgba(123,104,174,.4);">
+              <span style="font-size:13px;color:#7b68ae;">+</span>
+              <input type="text" id="fund-name-input" placeholder="e.g. The Smith Family Fund" onkeydown="if(event.key==='Enter'){addFundName(this);}" style="border:none;outline:none;background:transparent;font-size:14px;font-family:'Montserrat',sans-serif;flex:1;color:var(--text);">
+              <button onclick="addFundName(document.getElementById('fund-name-input'))" style="background:#7b68ae;color:#fff;border:none;border-radius:100px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;">Add</button>
+            </div>
+          </div>
+
+          <div class="wb" style="margin-bottom:20px;">
+            <h4>✏️ Freeform Words</h4>
+            <p style="font-size:13px;color:var(--text-mid);margin-bottom:12px;line-height:1.5;">Type any word or phrase and click Add. Then <strong>click a blank</strong> in the template above to focus it, then click your word to insert it there.</p>
+            <div class="tags" id="bk-freeform" style="min-height:32px;"></div>
+            <div class="bl-wrap">
+              <span>+</span>
+              <input type="text" id="freeform-input" placeholder="Type anything..." onkeydown="if(event.key==='Enter'){addFreeform(this);}" style="border:none;outline:none;background:transparent;font-size:14px;font-family:'Montserrat',sans-serif;flex:1;color:var(--text);">
+              <button onclick="addFreeform(document.getElementById('freeform-input'))" style="background:var(--teal);color:#fff;border:none;border-radius:100px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;">Add</button>
+            </div>
+          </div>
+
           <!-- STEP 3: Your Why -->
           <span class="step-lbl" style="margin-top:4px;">Step 3 — Your Why</span>
           <div class="wb" style="margin-bottom:20px;">
@@ -871,6 +893,9 @@ window.saveDraft = saveDraft;
 window.delDraft = delDraft;
 window.cpyDraft = cpyDraft;
 window.insertCustomWhy = insertCustomWhy;
+window.insFreeform = insFreeform;
+window.addFreeform = addFreeform;
+window.addFundName = addFundName;
 
 // ── ENTRY UI ──
 function showForm(role) {
@@ -1202,10 +1227,9 @@ window.rmChip = function(btn) {
 // ── INSERT TAG ──
 function ins(tagEl) {
   if (!currentTmpl) return;
-  const type = [...tagEl.classList].find(c => ['serve','action','impact','how','where'].includes(c));
+  const type = [...tagEl.classList].find(c => ['serve','action','impact','how','where','name'].includes(c));
   if (!type) return;
-  const val = tagEl.textContent.trim();
-  // Find first unfilled slot of this type
+  const val = tagEl.textContent.replace(/✕/g,'').trim();
   const matching = Object.entries(slotEls).filter(([id, el]) => el.dataset.type === type && !slotValues[id]);
   if (matching.length) {
     const [id, slot] = matching[0];
@@ -1216,6 +1240,45 @@ function ins(tagEl) {
   }
 }
 
+function insFreeform(tagEl) {
+  if (!currentTmpl || !focusedSlot) { alert('Click a blank in the template first, then click your word.'); return; }
+  const val = tagEl.textContent.replace(/✕/g,'').trim();
+  if (!val) return;
+  const type = focusedSlot.dataset.type;
+  const id = focusedSlot.dataset.id;
+  slotValues[id] = val;
+  renderChip(focusedSlot, val, type);
+  updatePreview();
+}
+
+function addFreeform(inputEl) {
+  const val = inputEl.value.trim();
+  if (!val) return;
+  const bank = document.getElementById('bk-freeform');
+  if (!bank) return;
+  const tag = document.createElement('span');
+  tag.className = 'tag freeform';
+  tag.style.cssText = 'background:rgba(100,100,100,.1);color:var(--text);border-color:var(--border);';
+  const rmBtn = '<button style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-soft);padding:0 0 0 4px;" onclick="event.stopPropagation();this.parentElement.remove()" title="remove">✕</button>';
+  tag.innerHTML = val + ' ' + rmBtn;
+  tag.onclick = function(e) { if (e.target.tagName === 'BUTTON') return; insFreeform(this); };
+  bank.appendChild(tag);
+  inputEl.value = '';
+  inputEl.focus();
+}
+
+function addFundName(inputEl) {
+  if (!currentTmpl) { alert('Choose a template first, then add your fund name.'); return; }
+  const val = inputEl.value.trim();
+  if (!val) return;
+  const matching = Object.entries(slotEls).filter(([id, el]) => el.dataset.type === 'name');
+  if (matching.length) {
+    const [id, slot] = matching[0];
+    slotValues[id] = val;
+    renderChip(slot, val, 'name');
+    updatePreview();
+  }
+}
 function insertCustomWhy(val) {
   whyValue = val.trim();
   fillWhySlots();
