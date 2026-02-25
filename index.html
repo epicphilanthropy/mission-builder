@@ -637,7 +637,7 @@ let myRole=null, myName='', sessionCode='', familyName='';
 let focusedSlot=null, currentTmpl=null, whyValue='';
 let drafts={1:'',2:'',3:''};
 let slotValues={}, slotEls={};
-function sessPath(sub){return db.ref('sessions/'+sessionCode+'/'+sub);}
+function sessPath(sub){return sub?db.ref('sessions/'+sessionCode+'/'+sub):db.ref('sessions/'+sessionCode);}
 window.showForm=showForm; window.showChoice=showChoice; window.createSession=createSession;
 window.joinSession=joinSession; window.goPage=goPage; window.hk=hk; window.addNote=addNote;
 window.revealAnswers=revealAnswers; window.copySessionCode=copySessionCode; window.selTmpl=selTmpl;
@@ -697,11 +697,16 @@ function startPoll(){
     renderSidebar(data);renderBrainSum(data);
   });
   sessPath('revealed').on('value',snap=>{
-    if(snap.val()&&myRole==='participant'){
-      document.getElementById('submitted-msg').classList.add('hidden');
-      document.getElementById('sub-banner').classList.remove('hidden');
-      document.getElementById('sub-banner').textContent='✓ The facilitator has revealed all answers!';
+    if(snap.val()){
       [1,2,3,4].forEach(q=>document.getElementById('row-'+q).classList.remove('locked-row'));
+      if(myRole==='participant'){
+        document.getElementById('submitted-msg').classList.add('hidden');
+        document.getElementById('sub-banner').classList.remove('hidden');
+        document.getElementById('sub-banner').textContent='✓ The facilitator has revealed all answers!';
+      } else {
+        const ctrl=document.getElementById('fac-ctrl');
+        if(ctrl)ctrl.innerHTML='<p style="font-weight:600;color:var(--gold-dark);">✓ Answers revealed! Everyone can now see all responses.</p>';
+      }
     }
   });
 }
@@ -788,7 +793,7 @@ async function addNote(q){
 }
 
 async function revealAnswers(){
-  try{await sessPath('').update({revealed:true});[1,2,3,4].forEach(q=>document.getElementById('row-'+q).classList.remove('locked-row'));}
+  try{await sessPath('revealed').set(true);[1,2,3,4].forEach(q=>document.getElementById('row-'+q).classList.remove('locked-row'));}
   catch(e){console.error(e);}
 }
 
