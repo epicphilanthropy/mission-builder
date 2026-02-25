@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mission Statement Builder — Epic Philanthropy</title>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- Firebase compat (works from file://, no ES modules needed) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <style>
@@ -14,17 +13,11 @@
   --teal:#1e5563; --teal-mid:#4f8284; --steel:#457093; --terra:#904237; --sage:#5b7666; --brown:#9b582f;
   --bg:#f4f7f8; --surface:#fff; --border:#cfd8dc; --text:#1a2e35; --text-mid:#4a6570; --text-soft:#7a97a0;
   --radius:10px; --shadow:0 2px 16px rgba(30,85,99,.08); --shadow-lg:0 8px 40px rgba(30,85,99,.14);
-  /* quadrant colors */
   --q1:#1e5563; --q2:#457093; --q3:#5b7666; --q4:#904237;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);}
-
-/* ── ENTRY ── */
-#entry-screen{
-  width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;background:var(--teal);padding:48px 24px;position:relative;overflow:hidden;
-}
+#entry-screen{width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--teal);padding:48px 24px;position:relative;overflow:hidden;}
 #entry-screen::before{content:'';position:absolute;top:-150px;right:-150px;width:500px;height:500px;border-radius:50%;background:rgba(222,173,47,.07);pointer-events:none;}
 #entry-screen::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none;}
 .e-logo{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;opacity:.9;}
@@ -38,8 +31,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .rc-icon{font-size:32px;margin-bottom:10px;}
 .rc-title{font-size:17px;font-weight:700;color:#fff;margin-bottom:5px;}
 .rc-desc{font-size:13px;color:rgba(255,255,255,.5);}
-
-/* FORMS */
 .e-form{width:100%;max-width:420px;margin-top:10px;}
 .hidden{display:none!important;}
 .e-form-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:#fff;text-align:center;margin-bottom:24px;}
@@ -53,12 +44,8 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .btn-back{display:block;text-align:center;margin-top:14px;font-size:14px;color:rgba(255,255,255,.4);cursor:pointer;background:none;border:none;font-family:'Montserrat',sans-serif;width:100%;transition:color .2s;}
 .btn-back:hover{color:rgba(255,255,255,.8);}
 .e-error{background:rgba(144,66,55,.35);border:1px solid rgba(144,66,55,.5);color:#ffc5c0;border-radius:7px;padding:10px 14px;font-size:14px;margin-bottom:14px;display:none;}
-
-/* ── APP SHELL ── */
 #app{display:none;width:100%;}
 #app.on{display:block;}
-
-/* HEADER */
 .app-hdr{width:100%;background:var(--teal);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px;}
 .hdr-brand{font-family:'Cormorant Garamond',serif;font-size:17px;color:rgba(255,255,255,.7);white-space:nowrap;}
 .hdr-brand em{color:var(--gold);font-style:normal;font-weight:600;}
@@ -68,43 +55,31 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .sc{color:var(--gold);font-weight:700;letter-spacing:1px;font-size:14px;}
 .usr-badge{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.7);font-family:'Montserrat',sans-serif;}
 .role-tag{background:rgba(222,173,47,.2);color:var(--gold);padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
-
-/* STEP NAV */
 .step-nav{display:flex;align-items:center;justify-content:center;padding:16px 24px;background:var(--surface);border-bottom:1px solid var(--border);gap:0;}
 .step-pill{display:flex;align-items:center;gap:7px;padding:8px 20px;border-radius:100px;font-size:14px;font-weight:600;color:var(--text-soft);cursor:pointer;transition:all .2s;border:none;background:transparent;font-family:'Montserrat',sans-serif;}
 .step-pill.active{background:var(--teal);color:#fff;}
 .step-pill .sp-n{width:22px;height:22px;border-radius:50%;background:rgba(30,85,99,.12);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;}
 .step-pill.active .sp-n{background:rgba(255,255,255,.2);}
 .step-conn{width:32px;height:2px;background:var(--border);}
-
-/* PAGES */
 .page{display:none;}
 .page.on{display:block;}
 .main{max-width:1100px;margin:0 auto;padding:36px 28px 60px;}
 .sec-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:var(--teal);margin-bottom:6px;}
 .sec-sub{font-size:15px;color:var(--text-mid);margin-bottom:28px;line-height:1.6;}
-
-/* ROLE BANNER */
 .role-banner{padding:12px 18px;border-radius:8px;font-size:14px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
 .rb-f{background:var(--gold-light);color:var(--gold-dark);border:1px solid rgba(222,173,47,.3);}
 .rb-p{background:rgba(69,112,147,.08);color:var(--steel);border:1px solid rgba(69,112,147,.2);}
-
-/* SHARE BOX */
 .share-box{background:var(--teal);color:#fff;border-radius:var(--radius);padding:20px 24px;margin-bottom:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
 .share-box p{font-size:14px;color:rgba(255,255,255,.8);flex:1;}
 .share-code{font-size:20px;font-weight:800;letter-spacing:3px;color:var(--gold);font-family:'Montserrat',sans-serif;}
 .btn-copy{padding:9px 18px;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;transition:background .2s;}
 .btn-copy:hover{background:rgba(255,255,255,.25);}
-
-/* FAC CONTROLS */
 .fac-ctrl{background:var(--gold-light);border:1px solid rgba(222,173,47,.3);border-radius:var(--radius);padding:18px 22px;display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap;}
 .fac-ctrl p{font-size:14px;color:var(--gold-dark);flex:1;}
 .btn-reveal{padding:10px 20px;background:var(--teal);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;transition:background .2s;}
 .btn-reveal:hover{background:#164350;}
 .sub-banner{background:rgba(107,170,117,.12);border:1px solid rgba(107,170,117,.3);border-radius:8px;padding:12px 18px;font-size:14px;color:#2d6b3a;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 .submitted-msg{background:var(--teal);color:#fff;border-radius:var(--radius);padding:20px 24px;text-align:center;font-size:15px;}
-
-/* BRAIN GRID */
 .brain-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
 .b-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow);}
 .b-card-hdr{padding:18px 20px 12px;display:flex;align-items:flex-start;gap:12px;border-bottom:1px solid var(--border);}
@@ -128,8 +103,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .add-btn{padding:11px 18px;background:var(--teal);color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s;font-family:'Montserrat',sans-serif;white-space:nowrap;}
 .add-btn:hover{background:#164350;}
 .locked-row{opacity:.4;pointer-events:none;}
-
-/* T-BAND */
 .t-band{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 20px;margin-bottom:0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .t-band p{font-size:14px;color:var(--text-mid);}
 .act-bar{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:24px;border-top:1px solid var(--border);gap:12px;flex-wrap:wrap;}
@@ -138,32 +111,16 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .btn-next:hover{background:#164350;transform:translateY(-1px);}
 .btn-prev{background:transparent;color:var(--text-mid);border:1.5px solid var(--border);}
 .btn-prev:hover{border-color:var(--text-mid);color:var(--text);}
-
-/* ── STICKY DRAFT BAR ── */
-#sticky-draft{
-  position:sticky;top:0;z-index:100;
-  background:var(--teal);
-  border-bottom:2px solid rgba(222,173,47,.4);
-  padding:10px 28px;
-  display:none;
-  align-items:center;
-  gap:16px;
-  flex-wrap:wrap;
-  box-shadow:0 4px 20px rgba(30,85,99,.25);
-}
+#sticky-draft{position:sticky;top:0;z-index:100;background:var(--teal);border-bottom:2px solid rgba(222,173,47,.4);padding:10px 28px;display:none;align-items:center;gap:16px;flex-wrap:wrap;box-shadow:0 4px 20px rgba(30,85,99,.25);}
 #sticky-draft.visible{display:flex;}
 .sd-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap;flex-shrink:0;}
 #sticky-preview{font-size:15px;font-weight:600;color:#fff;line-height:1.5;flex:1;font-family:'Montserrat',sans-serif;}
 #sticky-preview .sd-ph{color:rgba(255,255,255,.35);font-style:italic;font-weight:400;}
 .sd-save{padding:7px 16px;background:var(--gold);color:var(--teal);border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;white-space:nowrap;flex-shrink:0;transition:background .2s;}
 .sd-save:hover{background:#f0c020;}
-
-/* COLOR KEY LEGEND */
 .color-key{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center;}
 .ck-item{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--text-mid);}
 .ck-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-
-/* ── PAGE 2: BUILDER ── */
 .p2-wrap{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start;}
 .sidebar{position:sticky;top:20px;}
 .sb-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);}
@@ -174,15 +131,19 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .sbl-e{background:rgba(30,85,99,.1);color:var(--teal);}
 .sbl-p{background:rgba(69,112,147,.1);color:var(--steel);}
 .sbl-i{background:rgba(91,118,102,.1);color:var(--sage);}
-.sbl-c{background:rgba(144,66,55,.1);color:var(--terra);}
-.sb-chip{display:block;font-size:12px;color:var(--text-mid);padding:5px 8px;border-radius:6px;cursor:pointer;transition:background .15s;margin-bottom:3px;line-height:1.4;}
-.sb-chip:hover{background:var(--bg);color:var(--text);}
+/* FIX 1: Impact/Change sidebar label — changed from terra/red to teal-mid */
+.sbl-c{background:rgba(79,130,132,.1);color:var(--teal-mid);}
+/* Smart sidebar insert buttons */
+.sb-idea-btn{display:block;width:100%;text-align:left;font-size:12px;padding:6px 10px;border-radius:6px;cursor:pointer;transition:all .15s;margin-bottom:4px;line-height:1.4;border:1.5px solid transparent;background:var(--bg);font-family:'Montserrat',sans-serif;color:var(--text-mid);}
+.sb-idea-btn .sb-who{font-size:10px;font-weight:700;letter-spacing:.4px;display:block;margin-bottom:1px;opacity:.7;}
+.sb-idea-btn .sb-txt{display:block;}
+.sb-idea-btn.q1:hover{background:rgba(30,85,99,.06);border-color:rgba(30,85,99,.25);color:var(--teal);}
+.sb-idea-btn.q2:hover{background:rgba(69,112,147,.06);border-color:rgba(69,112,147,.25);color:var(--steel);}
+.sb-idea-btn.q3:hover{background:rgba(91,118,102,.06);border-color:rgba(91,118,102,.25);color:var(--sage);}
+.sb-idea-btn.q4:hover{background:rgba(79,130,132,.06);border-color:rgba(79,130,132,.25);color:var(--teal-mid);}
 .sb-empty{font-size:12px;color:var(--text-soft);font-style:italic;padding:4px 0;}
-
 .bld-main{min-width:0;}
 .step-lbl{display:block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-soft);margin-bottom:12px;}
-
-/* TEMPLATE PICKER */
 .t-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
 .t-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:20px 18px;cursor:pointer;transition:all .22s;}
 .t-card:hover{border-color:var(--teal-mid);transform:translateY(-2px);}
@@ -192,8 +153,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .tc-prob.sel{border-color:var(--terra);}
 .tc-act.sel{border-color:var(--steel);}
 .tc-val.sel{border-color:var(--sage);}
-
-/* BUILDER AREA */
 .bld-area{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow);min-height:80px;}
 .bld-area-ph{font-size:15px;color:var(--text-soft);font-style:italic;text-align:center;padding:20px 0;}
 .slot-row{font-size:17px;color:var(--text);flex-wrap:wrap;line-height:2.6;margin-bottom:6px;}
@@ -205,8 +164,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 12px;border-radius:100px;font-size:14px;font-weight:600;}
 .chip .rm{cursor:pointer;font-size:12px;opacity:.5;transition:opacity .15s;background:none;border:none;padding:0;line-height:1;}
 .chip .rm:hover{opacity:1;}
-
-/* COLOR-CODED SLOTS — border/bg matches word bank color */
 .slot[data-type="serve"]{border-color:rgba(30,85,99,.4);background:rgba(30,85,99,.04);}
 .slot[data-type="serve"].foc{border-color:var(--teal);box-shadow:0 0 0 3px rgba(30,85,99,.12);}
 .slot[data-type="action"]{border-color:rgba(91,118,102,.4);background:rgba(91,118,102,.04);}
@@ -221,7 +178,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .slot[data-type="why"].foc{border-color:var(--teal-mid);box-shadow:0 0 0 3px rgba(79,130,132,.12);}
 .slot[data-type="name"]{border-color:rgba(123,104,174,.4);background:rgba(123,104,174,.04);}
 .slot[data-type="name"].foc{border-color:#7b68ae;box-shadow:0 0 0 3px rgba(123,104,174,.12);}
-/* chip colors per type */
 .chip-serve{background:rgba(30,85,99,.12)!important;color:var(--teal)!important;}
 .chip-action{background:rgba(91,118,102,.12)!important;color:var(--sage)!important;}
 .chip-impact{background:rgba(69,112,147,.12)!important;color:var(--steel)!important;}
@@ -229,8 +185,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .chip-where{background:rgba(155,130,60,.12)!important;color:var(--gold-dark)!important;}
 .chip-why{background:rgba(79,130,132,.12)!important;color:var(--teal-mid)!important;}
 .chip-name{background:rgba(123,104,174,.12)!important;color:#7b68ae!important;}
-
-/* WORD BANKS */
 .word-banks{display:flex;flex-direction:column;gap:16px;margin-bottom:20px;}
 .wb{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;}
 .wb h4{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
@@ -240,8 +194,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .bl-wrap span{font-size:13px;color:var(--text-soft);}
 .bl-wrap input{border:none;background:transparent;font-family:'Montserrat',sans-serif;font-size:14px;color:var(--text);width:120px;outline:none;}
 .blanks{display:flex;flex-wrap:wrap;gap:8px;}
-
-/* tag color variants */
 .tag.serve{background:rgba(30,85,99,.07);color:var(--teal);border-color:rgba(30,85,99,.15);}
 .tag.serve:hover,.tag.serve.used{background:var(--teal);color:#fff;border-color:var(--teal);}
 .tag.action{background:rgba(91,118,102,.08);color:var(--sage);border-color:rgba(91,118,102,.2);}
@@ -260,8 +212,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .wb h4.how{color:var(--terra);}
 .wb h4.where{color:var(--gold-dark);}
 .wb h4.why{color:var(--teal-mid);}
-
-/* DRAFT + FREEFORM */
 .draft-out{background:var(--gold-light);border:1px solid rgba(222,173,47,.35);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px;}
 .draft-out h3{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:12px;}
 #mission-preview{font-size:17px;color:var(--text);line-height:1.8;font-weight:500;font-family:'Montserrat',sans-serif;}
@@ -274,17 +224,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .freeform label{display:block;font-size:14px;font-weight:600;color:var(--text-mid);margin-bottom:10px;}
 .freeform textarea{width:100%;padding:14px;border:1px solid var(--border);border-radius:7px;font-size:15px;font-family:'Montserrat',sans-serif;color:var(--text);resize:vertical;min-height:100px;background:var(--bg);outline:none;transition:border-color .2s;line-height:1.6;}
 .freeform textarea:focus{border-color:var(--teal-mid);background:#fff;}
-
-/* CHECKLIST */
-.checklist{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:0;}
-.checklist h4{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-mid);margin-bottom:14px;}
-.ck-list{list-style:none;}
-.ck-list li{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:15px;color:var(--text);}
-.ck-list li:last-child{border-bottom:none;}
-.ck-list li::before{content:'○';color:var(--border);font-size:16px;flex-shrink:0;}
-.ck-list li.done::before{content:'✓';color:var(--sage);}
-
-/* ── PAGE 3: COMPARE ── */
 .drafts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:32px;}
 .draft-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;}
 .draft-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
@@ -298,15 +237,11 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .btn-sm:hover{border-color:var(--teal-mid);color:var(--teal);}
 .btn-sm.del{color:var(--terra);border-color:rgba(144,66,55,.2);}
 .btn-sm.del:hover{background:rgba(144,66,55,.07);}
-
-/* GUT CHECK */
 .gut-check{background:var(--gold-light);border:1.5px solid rgba(222,173,47,.35);border-radius:var(--radius);padding:28px;margin-bottom:28px;}
 .gut-check h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--teal);margin-bottom:6px;}
 .gut-check .gc-sub{font-size:15px;color:var(--text-mid);margin-bottom:20px;}
 .gc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .gc-q{background:#fff;border-radius:10px;padding:16px 20px;font-size:15px;color:var(--text);font-weight:600;border-left:4px solid var(--gold);line-height:1.5;}
-
-/* BRAIN SUMMARY */
 .brain-sum{background:var(--teal);color:#fff;border-radius:var(--radius);padding:28px;margin-top:12px;}
 .brain-sum h3{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);margin-bottom:4px;}
 .brain-sum-sub{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:20px;}
@@ -322,8 +257,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .bs-card.q3 .bs-lbl{color:rgba(91,118,102,.9);}
 .bs-card.q4 .bs-lbl{color:rgba(200,120,110,.9);}
 .bs-answers{font-size:14px;color:rgba(255,255,255,.75);line-height:1.6;font-style:italic;}
-
-/* HOW TO USE */
 .htu{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-top:20px;}
 .htu h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;}
 .htu ol{padding-left:20px;}
@@ -331,7 +264,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .next-steps{background:var(--teal);color:#fff;border-radius:var(--radius);padding:28px;margin-top:24px;text-align:center;}
 .next-steps h3{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);margin-bottom:10px;}
 .next-steps p{font-size:15px;color:rgba(255,255,255,.7);max-width:500px;margin:0 auto;}
-
 @media(max-width:900px){
   .p2-wrap{grid-template-columns:1fr;}
   .sidebar{position:static;}
@@ -345,12 +277,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 </head>
 <body>
 
-<!-- ═══════ ENTRY ═══════ -->
 <div id="entry-screen">
   <div class="e-logo">Epic Philanthropy</div>
   <h1 class="e-title">Mission Statement<br>Builder</h1>
   <p class="e-sub">A guided workshop to craft a mission statement that sounds like your family — not a nonprofit brochure.</p>
-
   <div class="role-cards" id="role-choice">
     <div class="role-card gold-card" onclick="showForm('facilitator')">
       <div class="rc-icon">🧭</div>
@@ -363,7 +293,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
       <div class="rc-desc">Join a session with the code your facilitator shared</div>
     </div>
   </div>
-
   <div class="e-form hidden" id="form-facilitator">
     <div class="e-form-title">Create Your Session</div>
     <div class="e-error" id="fac-err"></div>
@@ -373,7 +302,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
     <button class="btn-go" onclick="createSession()">Create Session →</button>
     <button class="btn-back" onclick="showChoice()">← Back</button>
   </div>
-
   <div class="e-form hidden" id="form-participant">
     <div class="e-form-title">Join the Session</div>
     <div class="e-error" id="par-err"></div>
@@ -384,14 +312,12 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
   </div>
 </div>
 
-<!-- ═══════ APP ═══════ -->
 <div id="app">
   <header class="app-hdr">
     <div class="hdr-brand"><em>Epic Philanthropy</em> Mission Statement Builder</div>
     <div class="sess-badge"><div class="live-dot"></div>Session: <span class="sc" id="hdr-code">—</span></div>
     <div class="usr-badge"><span id="hdr-name"></span><span class="role-tag" id="hdr-role"></span></div>
   </header>
-
   <nav class="step-nav">
     <button class="step-pill active" id="pill-1" onclick="goPage(1)"><span class="sp-n">1</span>Brain Dump</button>
     <div class="step-conn" id="con-1"></div>
@@ -399,20 +325,17 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
     <div class="step-conn" id="con-2"></div>
     <button class="step-pill" id="pill-3" onclick="goPage(3)"><span class="sp-n">3</span>Compare Drafts</button>
   </nav>
-
-  <!-- ══ STICKY DRAFT BAR (Page 2 only) ══ -->
   <div id="sticky-draft">
     <div class="sd-label">✦ Draft</div>
     <div id="sticky-preview"><span class="sd-ph">Select a template to start building...</span></div>
     <button class="sd-save" onclick="saveDraft()">💾 Save Draft</button>
   </div>
 
-  <!-- ══ PAGE 1: BRAIN DUMP ══ -->
+  <!-- PAGE 1 -->
   <div class="page on" id="page-1">
     <div class="main">
       <div class="sec-title">Part 1: Brain Dump Your Ideas</div>
       <div class="sec-sub">Don't filter yourself. Just answer what's true. You'll shape it into a mission statement in the next step.</div>
-
       <div class="share-box hidden" id="fac-share">
         <div>
           <p>Share this code with your participants so they can join the session:</p>
@@ -420,24 +343,17 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
         </div>
         <button class="btn-copy" onclick="copySessionCode()">Copy Code</button>
       </div>
-
       <div class="fac-ctrl hidden" id="fac-ctrl">
         <p>When everyone has added their ideas, click Reveal to show all answers to the group.</p>
         <button class="btn-reveal" onclick="revealAnswers()">Reveal All Answers</button>
       </div>
-
       <div class="sub-banner hidden" id="sub-banner">✓ Your answers have been submitted!</div>
       <div class="submitted-msg hidden" id="submitted-msg">Your answers are in! The facilitator will reveal everyone's responses when the group is ready. Hang tight. ✨</div>
-
       <div class="brain-grid">
-        <!-- Q1: THE PROBLEM -->
         <div class="b-card">
           <div class="b-card-hdr">
             <div class="b-icon" style="background:rgba(30,85,99,.08)">😟</div>
-            <div>
-              <div class="b-q">THE PROBLEM</div>
-              <div class="b-epic" style="color:var(--teal)">What keeps you up at night?</div>
-            </div>
+            <div><div class="b-q">THE PROBLEM</div><div class="b-epic" style="color:var(--teal)">What keeps you up at night?</div></div>
           </div>
           <div class="b-think">Think about:</div>
           <div class="b-prompts">
@@ -451,15 +367,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           <div class="live-area" id="area-1"></div>
           <div class="add-row" id="row-1"><input class="add-input" id="in-1" placeholder="Type and press Enter..." onkeydown="hk(event,1)"><button class="add-btn" onclick="addNote(1)">+ Add</button></div>
         </div>
-
-        <!-- Q2: YOUR WHY -->
         <div class="b-card">
           <div class="b-card-hdr">
             <div class="b-icon" style="background:rgba(69,112,147,.1)">💙</div>
-            <div>
-              <div class="b-q">YOUR WHY</div>
-              <div class="b-epic" style="color:var(--steel)">Why do you care about this?</div>
-            </div>
+            <div><div class="b-q">YOUR WHY</div><div class="b-epic" style="color:var(--steel)">Why do you care about this?</div></div>
           </div>
           <div class="b-think">Think about:</div>
           <div class="b-prompts">
@@ -473,15 +384,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           <div class="live-area" id="area-2"></div>
           <div class="add-row" id="row-2"><input class="add-input" id="in-2" placeholder="Type and press Enter..." onkeydown="hk(event,2)"><button class="add-btn" onclick="addNote(2)">+ Add</button></div>
         </div>
-
-        <!-- Q3: YOUR FOCUS -->
         <div class="b-card">
           <div class="b-card-hdr">
             <div class="b-icon" style="background:rgba(91,118,102,.1)">🎯</div>
-            <div>
-              <div class="b-q">YOUR FOCUS</div>
-              <div class="b-epic" style="color:var(--sage)">What/who will you support?</div>
-            </div>
+            <div><div class="b-q">YOUR FOCUS</div><div class="b-epic" style="color:var(--sage)">What/who will you support?</div></div>
           </div>
           <div class="b-think">Think about:</div>
           <div class="b-prompts">
@@ -495,15 +401,11 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           <div class="live-area" id="area-3"></div>
           <div class="add-row" id="row-3"><input class="add-input" id="in-3" placeholder="Type and press Enter..." onkeydown="hk(event,3)"><button class="add-btn" onclick="addNote(3)">+ Add</button></div>
         </div>
-
-        <!-- Q4: THE IMPACT/CHANGE -->
+        <!-- FIX 2: Q4 card header — changed from terra/red to teal-mid -->
         <div class="b-card">
           <div class="b-card-hdr">
-            <div class="b-icon" style="background:rgba(144,66,55,.08)">🌱</div>
-            <div>
-              <div class="b-q">THE IMPACT/CHANGE</div>
-              <div class="b-epic" style="color:var(--terra)">What change do you want to see in the world?</div>
-            </div>
+            <div class="b-icon" style="background:rgba(79,130,132,.08)">🌱</div>
+            <div><div class="b-q">THE IMPACT/CHANGE</div><div class="b-epic" style="color:var(--teal-mid)">What change do you want to see in the world?</div></div>
           </div>
           <div class="b-think">Think about:</div>
           <div class="b-prompts">
@@ -518,7 +420,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           <div class="add-row" id="row-4"><input class="add-input" id="in-4" placeholder="Type and press Enter..." onkeydown="hk(event,4)"><button class="add-btn" onclick="addNote(4)">+ Add</button></div>
         </div>
       </div>
-
       <div class="t-band">
         <p>When you're ready, move to the next step to build your mission statement.</p>
         <button class="btn-nav btn-next" onclick="goPage(2)">Build My Mission Statement →</button>
@@ -526,31 +427,25 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
     </div>
   </div>
 
-  <!-- ══ PAGE 2: BUILD ══ -->
+  <!-- PAGE 2 -->
   <div class="page" id="page-2">
     <div class="main">
       <div class="sec-title">Part 2: Build Your Mission Statement</div>
       <div class="sec-sub">Choose a template, fill in the blanks, then refine your draft.</div>
       <div class="role-banner rb-p hidden" id="p2-par-note">👥 As a participant, you can build your own draft here. The facilitator will guide the group discussion.</div>
-
       <div class="p2-wrap">
-        <!-- SIDEBAR: Group Ideas -->
         <div class="sidebar">
           <div class="sb-inner">
             <h3>Group Ideas</h3>
-            <p class="sb-hint">Click any idea to insert it into the focused blank.</p>
+            <p class="sb-hint">Click any answer to insert it into the matching blank.</p>
             <div class="sb-section"><div class="sb-lbl sbl-e">😟 The Problem</div><div id="sb-1"><div class="sb-empty">No answers yet...</div></div></div>
             <div class="sb-section"><div class="sb-lbl sbl-p">💙 Your Why</div><div id="sb-2"><div class="sb-empty">No answers yet...</div></div></div>
             <div class="sb-section"><div class="sb-lbl sbl-i">🎯 Your Focus</div><div id="sb-3"><div class="sb-empty">No answers yet...</div></div></div>
             <div class="sb-section"><div class="sb-lbl sbl-c">🌱 Impact/Change</div><div id="sb-4"><div class="sb-empty">No answers yet...</div></div></div>
           </div>
         </div>
-
-        <!-- MAIN BUILDER -->
         <div class="bld-main">
-          <!-- STEP 1: Choose template -->
           <span class="step-lbl">Step 1 — Choose Your Template</span>
-          <!-- Color key -->
           <div class="color-key">
             <span style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-soft);margin-right:4px;">Color Guide:</span>
             <div class="ck-item"><div class="ck-dot" style="background:var(--teal)"></div>Who You Serve</div>
@@ -562,26 +457,11 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
             <div class="ck-item"><div class="ck-dot" style="background:#7b68ae"></div>Fund Name</div>
           </div>
           <div class="t-picker">
-            <div class="t-card tc-prob" id="tmpl-problem" onclick="selTmpl('problem')">
-              <div class="t-lbl">Problem Focused</div>
-              <p>Lead with what's broken and what you're doing about it.</p>
-            </div>
-            <div class="t-card tc-act" id="tmpl-action" onclick="selTmpl('action')">
-              <div class="t-lbl">Action Focused</div>
-              <p>Lead with what you do and who you serve.</p>
-            </div>
-            <div class="t-card tc-val" id="tmpl-value" onclick="selTmpl('value')">
-              <div class="t-lbl">Value Focused</div>
-              <p>Lead with your personal why and what drives you.</p>
-            </div>
+            <div class="t-card tc-prob" id="tmpl-problem" onclick="selTmpl('problem')"><div class="t-lbl">Problem Focused</div><p>Lead with what's broken and what you're doing about it.</p></div>
+            <div class="t-card tc-act" id="tmpl-action" onclick="selTmpl('action')"><div class="t-lbl">Action Focused</div><p>Lead with what you do and who you serve.</p></div>
+            <div class="t-card tc-val" id="tmpl-value" onclick="selTmpl('value')"><div class="t-lbl">Value Focused</div><p>Lead with your personal why and what drives you.</p></div>
           </div>
-
-          <!-- STEP 2: Template slots -->
-          <div class="bld-area" id="bld-area">
-            <div class="bld-area-ph">← Select a template above to begin building</div>
-          </div>
-
-          <!-- FUND NAME & FREEFORM -->
+          <div class="bld-area" id="bld-area"><div class="bld-area-ph">← Select a template above to begin building</div></div>
           <div class="wb" style="margin-bottom:16px;background:rgba(123,104,174,.06);border-color:rgba(123,104,174,.25);">
             <h4 style="color:#7b68ae;">Fund / Family Name</h4>
             <p style="font-size:13px;color:var(--text-mid);margin-bottom:12px;line-height:1.5;">Type your fund or family name and click Add to fill it into the template.</p>
@@ -591,7 +471,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
               <button onclick="addFundName(document.getElementById('fund-name-input'))" style="background:#7b68ae;color:#fff;border:none;border-radius:100px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;">Add</button>
             </div>
           </div>
-
           <div class="wb" style="margin-bottom:20px;">
             <h4>✏️ Freeform Words</h4>
             <p style="font-size:13px;color:var(--text-mid);margin-bottom:12px;line-height:1.5;">Type any word or phrase and click Add. Then <strong>click a blank</strong> in the template above to focus it, then click your word to insert it there.</p>
@@ -602,8 +481,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
               <button onclick="addFreeform(document.getElementById('freeform-input'))" style="background:var(--teal);color:#fff;border:none;border-radius:100px;padding:5px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;">Add</button>
             </div>
           </div>
-
-          <!-- STEP 3: Your Why -->
           <span class="step-lbl" style="margin-top:4px;">Step 3 — Your Why</span>
           <div class="wb" style="margin-bottom:20px;">
             <h4 class="why">YOUR WHY</h4>
@@ -613,29 +490,12 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
               <div class="bl-wrap"><span>+</span><input type="text" id="why-custom-2" placeholder="Your Why" oninput="insertCustomWhy(this.value)"></div>
             </div>
           </div>
-
-          <!-- STEP 4: Word Banks -->
           <span class="step-lbl">Step 4 — Word Banks</span>
           <div class="word-banks">
-
-            <!-- WHO YOU SERVE -->
             <div class="wb">
               <h4 class="serve">Who You Serve</h4>
               <div class="tags" id="bk-serve">
-                <span class="tag serve" onclick="ins(this)">Children & youth</span>
-                <span class="tag serve" onclick="ins(this)">Families</span>
-                <span class="tag serve" onclick="ins(this)">Women & girls</span>
-                <span class="tag serve" onclick="ins(this)">BIPOC communities</span>
-                <span class="tag serve" onclick="ins(this)">Students</span>
-                <span class="tag serve" onclick="ins(this)">Immigrants</span>
-                <span class="tag serve" onclick="ins(this)">Veterans</span>
-                <span class="tag serve" onclick="ins(this)">People in recovery</span>
-                <span class="tag serve" onclick="ins(this)">LGBTQ+ communities</span>
-                <span class="tag serve" onclick="ins(this)">Future generations</span>
-                <span class="tag serve" onclick="ins(this)">Marginalized communities</span>
-                <span class="tag serve" onclick="ins(this)">Seniors</span>
-                <span class="tag serve" onclick="ins(this)">Rural communities</span>
-                <span class="tag serve" onclick="ins(this)">People with disabilities</span>
+                <span class="tag serve" onclick="ins(this)">Children & youth</span><span class="tag serve" onclick="ins(this)">Families</span><span class="tag serve" onclick="ins(this)">Women & girls</span><span class="tag serve" onclick="ins(this)">BIPOC communities</span><span class="tag serve" onclick="ins(this)">Students</span><span class="tag serve" onclick="ins(this)">Immigrants</span><span class="tag serve" onclick="ins(this)">Veterans</span><span class="tag serve" onclick="ins(this)">People in recovery</span><span class="tag serve" onclick="ins(this)">LGBTQ+ communities</span><span class="tag serve" onclick="ins(this)">Future generations</span><span class="tag serve" onclick="ins(this)">Marginalized communities</span><span class="tag serve" onclick="ins(this)">Seniors</span><span class="tag serve" onclick="ins(this)">Rural communities</span><span class="tag serve" onclick="ins(this)">People with disabilities</span>
               </div>
               <div class="blanks">
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'serve')"></div>
@@ -643,38 +503,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'serve')"></div>
               </div>
             </div>
-
-            <!-- ACTION WORDS -->
             <div class="wb">
               <h4 class="action">Action Words</h4>
               <div class="tags" id="bk-action">
-                <span class="tag action" onclick="ins(this)">Supports</span>
-                <span class="tag action" onclick="ins(this)">Champions</span>
-                <span class="tag action" onclick="ins(this)">Invests in</span>
-                <span class="tag action" onclick="ins(this)">Empowers</span>
-                <span class="tag action" onclick="ins(this)">Advances</span>
-                <span class="tag action" onclick="ins(this)">Builds</span>
-                <span class="tag action" onclick="ins(this)">Creates</span>
-                <span class="tag action" onclick="ins(this)">Drives</span>
-                <span class="tag action" onclick="ins(this)">Advocates for</span>
-                <span class="tag action" onclick="ins(this)">Strengthens</span>
-                <span class="tag action" onclick="ins(this)">Protects</span>
-                <span class="tag action" onclick="ins(this)">Nurtures</span>
-                <span class="tag action" onclick="ins(this)">Amplifies</span>
-                <span class="tag action" onclick="ins(this)">Cultivates</span>
-                <span class="tag action" onclick="ins(this)">Transforms</span>
-                <span class="tag action" onclick="ins(this)">Mobilizes</span>
-                <span class="tag action" onclick="ins(this)">Elevates</span>
-                <span class="tag action" onclick="ins(this)">Fuels</span>
-                <span class="tag action" onclick="ins(this)">Catalyzes</span>
-                <span class="tag action" onclick="ins(this)">Unlocks</span>
-                <span class="tag action" onclick="ins(this)">Centers</span>
-                <span class="tag action" onclick="ins(this)">Uplifts</span>
-                <span class="tag action" onclick="ins(this)">Fosters</span>
-                <span class="tag action" onclick="ins(this)">Partners with</span>
-                <span class="tag action" onclick="ins(this)">Equips</span>
-                <span class="tag action" onclick="ins(this)">Prioritizes</span>
-                <span class="tag action" onclick="ins(this)">Expands access for</span>
+                <span class="tag action" onclick="ins(this)">Supports</span><span class="tag action" onclick="ins(this)">Champions</span><span class="tag action" onclick="ins(this)">Invests in</span><span class="tag action" onclick="ins(this)">Empowers</span><span class="tag action" onclick="ins(this)">Advances</span><span class="tag action" onclick="ins(this)">Builds</span><span class="tag action" onclick="ins(this)">Creates</span><span class="tag action" onclick="ins(this)">Drives</span><span class="tag action" onclick="ins(this)">Advocates for</span><span class="tag action" onclick="ins(this)">Strengthens</span><span class="tag action" onclick="ins(this)">Protects</span><span class="tag action" onclick="ins(this)">Nurtures</span><span class="tag action" onclick="ins(this)">Amplifies</span><span class="tag action" onclick="ins(this)">Cultivates</span><span class="tag action" onclick="ins(this)">Transforms</span><span class="tag action" onclick="ins(this)">Mobilizes</span><span class="tag action" onclick="ins(this)">Elevates</span><span class="tag action" onclick="ins(this)">Fuels</span><span class="tag action" onclick="ins(this)">Catalyzes</span><span class="tag action" onclick="ins(this)">Unlocks</span><span class="tag action" onclick="ins(this)">Centers</span><span class="tag action" onclick="ins(this)">Uplifts</span><span class="tag action" onclick="ins(this)">Fosters</span><span class="tag action" onclick="ins(this)">Partners with</span><span class="tag action" onclick="ins(this)">Equips</span><span class="tag action" onclick="ins(this)">Prioritizes</span><span class="tag action" onclick="ins(this)">Expands access for</span>
               </div>
               <div class="blanks">
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'action')"></div>
@@ -682,21 +514,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'action')"></div>
               </div>
             </div>
-
-            <!-- IMPACT/CHANGE WORDS -->
             <div class="wb">
               <h4 class="impact">Impact/Change Words</h4>
               <div class="tags" id="bk-impact">
-                <span class="tag impact" onclick="ins(this)">Systemic change</span>
-                <span class="tag impact" onclick="ins(this)">Equity and access</span>
-                <span class="tag impact" onclick="ins(this)">Dignity and respect</span>
-                <span class="tag impact" onclick="ins(this)">Collective power</span>
-                <span class="tag impact" onclick="ins(this)">Thriving communities</span>
-                <span class="tag impact" onclick="ins(this)">Generational impact</span>
-                <span class="tag impact" onclick="ins(this)">Shared prosperity</span>
-                <span class="tag impact" onclick="ins(this)">Voices heard and valued</span>
-                <span class="tag impact" onclick="ins(this)">Community resilience</span>
-                <span class="tag impact" onclick="ins(this)">Sustainable transformation</span>
+                <span class="tag impact" onclick="ins(this)">Systemic change</span><span class="tag impact" onclick="ins(this)">Equity and access</span><span class="tag impact" onclick="ins(this)">Dignity and respect</span><span class="tag impact" onclick="ins(this)">Collective power</span><span class="tag impact" onclick="ins(this)">Thriving communities</span><span class="tag impact" onclick="ins(this)">Generational impact</span><span class="tag impact" onclick="ins(this)">Shared prosperity</span><span class="tag impact" onclick="ins(this)">Voices heard and valued</span><span class="tag impact" onclick="ins(this)">Community resilience</span><span class="tag impact" onclick="ins(this)">Sustainable transformation</span>
               </div>
               <div class="blanks">
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'impact')"></div>
@@ -704,23 +525,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'impact')"></div>
               </div>
             </div>
-
-            <!-- HOW YOU WORK -->
             <div class="wb">
               <h4 class="how">How You Work</h4>
               <div class="tags" id="bk-how">
-                <span class="tag how" onclick="ins(this)">Trust-based partnerships</span>
-                <span class="tag how" onclick="ins(this)">Direct support</span>
-                <span class="tag how" onclick="ins(this)">Community collaboration</span>
-                <span class="tag how" onclick="ins(this)">Local organizing</span>
-                <span class="tag how" onclick="ins(this)">Advocacy</span>
-                <span class="tag how" onclick="ins(this)">Shared funding</span>
-                <span class="tag how" onclick="ins(this)">Capacity building</span>
-                <span class="tag how" onclick="ins(this)">Multi-year unrestricted funding</span>
-                <span class="tag how" onclick="ins(this)">Policy change</span>
-                <span class="tag how" onclick="ins(this)">Leadership development</span>
-                <span class="tag how" onclick="ins(this)">Grassroots grantmaking</span>
-                <span class="tag how" onclick="ins(this)">Community organizing</span>
+                <span class="tag how" onclick="ins(this)">Trust-based partnerships</span><span class="tag how" onclick="ins(this)">Direct support</span><span class="tag how" onclick="ins(this)">Community collaboration</span><span class="tag how" onclick="ins(this)">Local organizing</span><span class="tag how" onclick="ins(this)">Advocacy</span><span class="tag how" onclick="ins(this)">Shared funding</span><span class="tag how" onclick="ins(this)">Capacity building</span><span class="tag how" onclick="ins(this)">Multi-year unrestricted funding</span><span class="tag how" onclick="ins(this)">Policy change</span><span class="tag how" onclick="ins(this)">Leadership development</span><span class="tag how" onclick="ins(this)">Grassroots grantmaking</span><span class="tag how" onclick="ins(this)">Community organizing</span>
               </div>
               <div class="blanks">
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'how')"></div>
@@ -728,74 +536,47 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'how')"></div>
               </div>
             </div>
-
-            <!-- WHERE YOU GIVE -->
             <div class="wb">
               <h4 class="where">Where You Give</h4>
               <div class="tags" id="bk-where">
-                <span class="tag where" onclick="ins(this)">Local</span>
-                <span class="tag where" onclick="ins(this)">Regional</span>
-                <span class="tag where" onclick="ins(this)">National</span>
-                <span class="tag where" onclick="ins(this)">International</span>
+                <span class="tag where" onclick="ins(this)">Local</span><span class="tag where" onclick="ins(this)">Regional</span><span class="tag where" onclick="ins(this)">National</span><span class="tag where" onclick="ins(this)">International</span>
               </div>
               <div class="blanks">
                 <div class="bl-wrap"><span>+</span><input type="text" placeholder="your own..." onkeydown="ctag(event,this,'where')"></div>
               </div>
             </div>
-
-          </div><!-- end word-banks -->
-
-          <!-- STEP 5: Draft Preview -->
+          </div>
           <div class="draft-out">
             <h3>✦ Your Draft Mission Statement</h3>
             <div id="mission-preview"><span class="draft-ph">Your mission statement will take shape here as you fill in the template above...</span></div>
           </div>
-
           <div class="save-bar">
             <button class="btn-save" id="save-btn" onclick="saveDraft()">💾 Save This Draft</button>
             <span class="save-ct" id="save-ct">0 drafts saved — build multiple versions to compare</span>
           </div>
-
-          <!-- STEP 6: Free write -->
           <div class="freeform">
             <label>✏️ Prefer to just write it? Type freely here (overrides the template preview below)</label>
             <textarea id="ff-text" placeholder="Sometimes the best version comes from writing it yourself..." oninput="updatePreview()"></textarea>
           </div>
-
           <div class="act-bar">
             <button class="btn-nav btn-prev" onclick="goPage(1)">← Back</button>
             <button class="btn-nav btn-next" onclick="goPage(3)">Compare Drafts →</button>
           </div>
-        </div><!-- end bld-main -->
-      </div><!-- end p2-wrap -->
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ══ PAGE 3: COMPARE ══ -->
+  <!-- PAGE 3 -->
   <div class="page" id="page-3">
     <div class="main">
       <div class="sec-title">Part 3: Compare Your Drafts</div>
       <div class="sec-sub">Read each one out loud. See which one sounds like you.</div>
-
       <div class="drafts-grid" id="drafts-grid">
-        <div class="draft-card dc-prob">
-          <div class="draft-card-lbl">Problem Focused</div>
-          <textarea id="fq-1-text" placeholder="Save a draft from the Problem Focused template to see it here..."></textarea>
-          <div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(1)">Copy</button><button class="btn-sm del" onclick="delDraft(1)">Delete</button></div>
-        </div>
-        <div class="draft-card dc-act">
-          <div class="draft-card-lbl">Action Focused</div>
-          <textarea id="fq-2-text" placeholder="Save a draft from the Action Focused template to see it here..."></textarea>
-          <div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(2)">Copy</button><button class="btn-sm del" onclick="delDraft(2)">Delete</button></div>
-        </div>
-        <div class="draft-card dc-val">
-          <div class="draft-card-lbl">Value Focused</div>
-          <textarea id="fq-3-text" placeholder="Save a draft from the Value Focused template to see it here..."></textarea>
-          <div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(3)">Copy</button><button class="btn-sm del" onclick="delDraft(3)">Delete</button></div>
-        </div>
+        <div class="draft-card dc-prob"><div class="draft-card-lbl">Problem Focused</div><textarea id="fq-1-text" placeholder="Save a draft from the Problem Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(1)">Copy</button><button class="btn-sm del" onclick="delDraft(1)">Delete</button></div></div>
+        <div class="draft-card dc-act"><div class="draft-card-lbl">Action Focused</div><textarea id="fq-2-text" placeholder="Save a draft from the Action Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(2)">Copy</button><button class="btn-sm del" onclick="delDraft(2)">Delete</button></div></div>
+        <div class="draft-card dc-val"><div class="draft-card-lbl">Value Focused</div><textarea id="fq-3-text" placeholder="Save a draft from the Value Focused template to see it here..."></textarea><div class="dc-actions"><button class="btn-sm" onclick="cpyDraft(3)">Copy</button><button class="btn-sm del" onclick="delDraft(3)">Delete</button></div></div>
       </div>
-
-      <!-- GUT CHECK -->
       <div class="gut-check">
         <h3>Gut Check</h3>
         <div class="gc-sub">Read each draft out loud. Then ask yourself:</div>
@@ -807,8 +588,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           <div class="gc-q" style="grid-column:1/-1;">Which one makes us want to take action?</div>
         </div>
       </div>
-
-      <!-- BRAIN DUMP SUMMARY -->
       <div class="brain-sum">
         <h3>Group's Brain Dump</h3>
         <div class="brain-sum-sub">Your raw ideas from Part 1 — in case you want to revisit them.</div>
@@ -819,7 +598,6 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           <div class="bs-card q4"><div class="bs-lbl">🌱 Impact/Change</div><div class="bs-answers" id="bs-4">Nothing added yet.</div></div>
         </div>
       </div>
-
       <div class="htu hidden" id="htu-facilitator">
         <h4>Facilitator Notes</h4>
         <ol>
@@ -829,23 +607,19 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           <li>The final statement is saved automatically when participants submit.</li>
         </ol>
       </div>
-
       <div class="next-steps">
         <h3>What Comes Next</h3>
         <p>Your mission statement is a living document. Use it as a filter for every giving decision — if it doesn't connect to this, it's probably not the right fit.</p>
       </div>
-
       <div class="act-bar">
         <button class="btn-nav btn-prev" onclick="goPage(2)">← Back to Builder</button>
         <button class="btn-nav btn-next" onclick="window.print()">🖨️ Print / Save</button>
       </div>
     </div>
   </div>
-
-</div><!-- end #app -->
+</div>
 
 <script>
-// ── FIREBASE (compat SDK — works from file:// and all browsers) ──
 const firebaseConfig = {
   apiKey: "AIzaSyDzYW4EeXy_0hrzs-ADKEhF9y6CKjvF6Q0",
   authDomain: "epic-mission-builder.firebaseapp.com",
@@ -855,546 +629,363 @@ const firebaseConfig = {
   messagingSenderId: "561834463026",
   appId: "1:561834463026:web:06a1f86f5a41ba3fff112b"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-
 const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbw7Q6VeJIu5FcU2kyNDI6MIRiQ2HIwP5WtXTW9aCN1-mEDXd9mhDUlfo88BX15_LSo/exec';
 const FAC_PASS = '3742';
+let myRole=null, myName='', sessionCode='', familyName='';
+let focusedSlot=null, currentTmpl=null, whyValue='';
+let drafts={1:'',2:'',3:''};
+let slotValues={}, slotEls={};
+function sessPath(sub){return db.ref('sessions/'+sessionCode+'/'+sub);}
+window.showForm=showForm; window.showChoice=showChoice; window.createSession=createSession;
+window.joinSession=joinSession; window.goPage=goPage; window.hk=hk; window.addNote=addNote;
+window.revealAnswers=revealAnswers; window.copySessionCode=copySessionCode; window.selTmpl=selTmpl;
+window.ins=ins; window.ctag=ctag; window.updatePreview=updatePreview; window.saveDraft=saveDraft;
+window.delDraft=delDraft; window.cpyDraft=cpyDraft; window.insertCustomWhy=insertCustomWhy;
+window.insFreeform=insFreeform; window.addFreeform=addFreeform; window.addFundName=addFundName;
 
-// ── STATE ──
-let myRole = null;
-let myName = '';
-let sessionCode = '';
-let familyName = '';
-let focusedSlot = null;
-let drafts = { 1: '', 2: '', 3: '' };
-let currentTmpl = null;
-let pollTimer = null;
-let whyValue = '';
+function showForm(role){document.getElementById('role-choice').classList.add('hidden');document.getElementById('form-facilitator').classList.add('hidden');document.getElementById('form-participant').classList.add('hidden');document.getElementById('form-'+role).classList.remove('hidden');}
+function showChoice(){document.getElementById('role-choice').classList.remove('hidden');document.getElementById('form-facilitator').classList.add('hidden');document.getElementById('form-participant').classList.add('hidden');}
 
-function sessPath(sub) { return db.ref(`sessions/${sessionCode}/${sub}`); }
-
-// Expose globals
-window.showForm = showForm;
-window.showChoice = showChoice;
-window.createSession = createSession;
-window.joinSession = joinSession;
-window.goPage = goPage;
-window.hk = hk;
-window.addNote = addNote;
-window.revealAnswers = revealAnswers;
-window.copySessionCode = copySessionCode;
-window.selTmpl = selTmpl;
-window.ins = ins;
-window.ctag = ctag;
-window.updatePreview = updatePreview;
-window.saveDraft = saveDraft;
-window.delDraft = delDraft;
-window.cpyDraft = cpyDraft;
-window.insertCustomWhy = insertCustomWhy;
-window.insFreeform = insFreeform;
-window.addFreeform = addFreeform;
-window.addFundName = addFundName;
-
-// ── ENTRY UI ──
-function showForm(role) {
-  document.getElementById('role-choice').classList.add('hidden');
-  document.getElementById('form-facilitator').classList.add('hidden');
-  document.getElementById('form-participant').classList.add('hidden');
-  document.getElementById('form-' + role).classList.remove('hidden');
-}
-function showChoice() {
-  document.getElementById('role-choice').classList.remove('hidden');
-  document.getElementById('form-facilitator').classList.add('hidden');
-  document.getElementById('form-participant').classList.add('hidden');
+async function createSession(){
+  const pass=document.getElementById('fac-pass').value.trim();
+  const fam=document.getElementById('fac-family').value.trim();
+  const name=document.getElementById('fac-name').value.trim();
+  const err=document.getElementById('fac-err');err.style.display='none';
+  if(pass!==FAC_PASS){err.textContent='Incorrect password. Please try again.';err.style.display='block';return;}
+  if(!fam){err.textContent='Please enter a family or session name.';err.style.display='block';return;}
+  if(!name){err.textContent='Please enter your name.';err.style.display='block';return;}
+  sessionCode=fam.replace(/[^a-zA-Z0-9]/g,'').toUpperCase()+'-'+new Date().getFullYear();
+  familyName=fam;myName=name;myRole='facilitator';
+  try{await sessPath('').set({family:fam,facilitator:name,created:Date.now(),revealed:false,answers:{1:{},2:{},3:{},4:{}}});launch();}
+  catch(e){err.textContent='Could not create session. Check your connection.';err.style.display='block';}
 }
 
-// ── CREATE SESSION ──
-async function createSession() {
-  const pass = document.getElementById('fac-pass').value.trim();
-  const fam = document.getElementById('fac-family').value.trim();
-  const name = document.getElementById('fac-name').value.trim();
-  const err = document.getElementById('fac-err');
-  err.style.display = 'none';
-  if (pass !== FAC_PASS) { err.textContent = 'Incorrect password. Please try again.'; err.style.display = 'block'; return; }
-  if (!fam) { err.textContent = 'Please enter a family or session name.'; err.style.display = 'block'; return; }
-  if (!name) { err.textContent = 'Please enter your name.'; err.style.display = 'block'; return; }
-  sessionCode = fam.replace(/[^a-zA-Z0-9]/g, '').toUpperCase() + '-' + new Date().getFullYear();
-  familyName = fam;
-  myName = name;
-  myRole = 'facilitator';
-  try {
-    await sessPath('').set({ family: fam, facilitator: name, created: Date.now(), revealed: false, answers: {1:{},2:{},3:{},4:{}} });
-    launch();
-  } catch(e) {
-    err.textContent = 'Could not create session. Check your connection.'; err.style.display = 'block';
-  }
+async function joinSession(){
+  const code=document.getElementById('par-code').value.trim().toUpperCase();
+  const name=document.getElementById('par-name').value.trim();
+  const err=document.getElementById('par-err');err.style.display='none';
+  if(!code){err.textContent='Please enter the session code.';err.style.display='block';return;}
+  if(!name){err.textContent='Please enter your name.';err.style.display='block';return;}
+  try{
+    const snap=await db.ref('sessions/'+code).get();
+    if(!snap.exists()){err.textContent='Session not found. Check the code and try again.';err.style.display='block';return;}
+    sessionCode=code;familyName=snap.val().family||code;myName=name;myRole='participant';launch();
+  }catch(e){err.textContent='Could not join session. Check your connection.';err.style.display='block';}
 }
 
-// ── JOIN SESSION ──
-async function joinSession() {
-  const code = document.getElementById('par-code').value.trim().toUpperCase();
-  const name = document.getElementById('par-name').value.trim();
-  const err = document.getElementById('par-err');
-  err.style.display = 'none';
-  if (!code) { err.textContent = 'Please enter the session code.'; err.style.display = 'block'; return; }
-  if (!name) { err.textContent = 'Please enter your name.'; err.style.display = 'block'; return; }
-  try {
-    const snap = await db.ref(`sessions/${code}`).get();
-    if (!snap.exists()) { err.textContent = 'Session not found. Check the code and try again.'; err.style.display = 'block'; return; }
-    sessionCode = code;
-    familyName = snap.val().family || code;
-    myName = name;
-    myRole = 'participant';
-    launch();
-  } catch(e) {
-    err.textContent = 'Could not join session. Check your connection.'; err.style.display = 'block';
-  }
-}
-
-// ── LAUNCH APP ──
-function launch() {
-  document.getElementById('entry-screen').style.display = 'none';
-  const app = document.getElementById('app');
-  app.classList.add('on');
-  document.getElementById('hdr-code').textContent = sessionCode;
-  document.getElementById('hdr-name').textContent = myName;
-  document.getElementById('hdr-role').textContent = myRole === 'facilitator' ? 'Facilitator' : 'Participant';
-  if (myRole === 'facilitator') {
+function launch(){
+  document.getElementById('entry-screen').style.display='none';
+  document.getElementById('app').classList.add('on');
+  document.getElementById('hdr-code').textContent=sessionCode;
+  document.getElementById('hdr-name').textContent=myName;
+  document.getElementById('hdr-role').textContent=myRole==='facilitator'?'Facilitator':'Participant';
+  if(myRole==='facilitator'){
     document.getElementById('fac-share').classList.remove('hidden');
-    document.getElementById('share-code-display').textContent = sessionCode;
+    document.getElementById('share-code-display').textContent=sessionCode;
     document.getElementById('fac-ctrl').classList.remove('hidden');
     document.getElementById('htu-facilitator').classList.remove('hidden');
-  } else {
-    document.getElementById('p2-par-note').classList.remove('hidden');
-  }
+  }else{document.getElementById('p2-par-note').classList.remove('hidden');}
   startPoll();
 }
 
-// ── LIVE POLL ──
-function startPoll() {
-  sessPath('answers').on('value', snap => {
-    const data = snap.val() || {};
-    [1,2,3,4].forEach(q => renderAllAnswers(q, data[q] || {}));
-    renderSidebar(data);
-    renderBrainSum(data);
+function startPoll(){
+  sessPath('answers').on('value',snap=>{
+    const data=snap.val()||{};
+    [1,2,3,4].forEach(q=>renderAllAnswers(q,data[q]||{}));
+    renderSidebar(data);renderBrainSum(data);
   });
-  sessPath('revealed').on('value', snap => {
-    if (snap.val() && myRole === 'participant') {
+  sessPath('revealed').on('value',snap=>{
+    if(snap.val()&&myRole==='participant'){
       document.getElementById('submitted-msg').classList.add('hidden');
       document.getElementById('sub-banner').classList.remove('hidden');
-      document.getElementById('sub-banner').textContent = '✓ The facilitator has revealed all answers!';
-      [1,2,3,4].forEach(q => document.getElementById('row-'+q).classList.remove('locked-row'));
+      document.getElementById('sub-banner').textContent='✓ The facilitator has revealed all answers!';
+      [1,2,3,4].forEach(q=>document.getElementById('row-'+q).classList.remove('locked-row'));
     }
   });
 }
 
-function renderAllAnswers(q, answers) {
-  const area = document.getElementById('area-' + q);
-  if (!area) return;
-  area.innerHTML = '';
-  Object.entries(answers).forEach(([who, txt]) => {
-    const div = document.createElement('div');
-    div.className = 'answer-item ' + (who === myName ? 'ai-mine' : 'ai-theirs');
-    div.innerHTML = `<span class="ai-who">${who}:</span><span class="ai-txt">${txt}</span>`;
+function renderAllAnswers(q,answers){
+  const area=document.getElementById('area-'+q);if(!area)return;
+  area.innerHTML='';
+  Object.entries(answers).forEach(([who,txt])=>{
+    const div=document.createElement('div');
+    div.className='answer-item '+(who===myName?'ai-mine':'ai-theirs');
+    div.innerHTML='<span class="ai-who">'+who+':</span><span class="ai-txt">'+txt+'</span>';
     area.appendChild(div);
   });
 }
 
-function renderSidebar(data) {
-  [1,2,3,4].forEach(q => {
-    const sb = document.getElementById('sb-' + q);
-    if (!sb) return;
-    const answers = data[q] || {};
-    const entries = Object.entries(answers);
-    if (!entries.length) { sb.innerHTML = '<div class="sb-empty">No answers yet...</div>'; return; }
-    sb.innerHTML = entries.map(([who,txt]) =>
-      `<div class="sb-chip" onclick="insertSbChip('${txt.replace(/'/g,"\\'")}')"><strong>${who}:</strong> ${txt}</div>`
-    ).join('');
+// FIX 3: Smart sidebar — each question maps to its matching slot type
+// Q1 (Problem) → problem slot, Q2 (Why) → why slot, Q3 (Focus) → serve slot, Q4 (Impact) → impact slot
+const Q_TO_SLOT={1:'problem',2:'why',3:'serve',4:'impact'};
+
+function renderSidebar(data){
+  [1,2,3,4].forEach(q=>{
+    const sb=document.getElementById('sb-'+q);if(!sb)return;
+    const answers=data[q]||{};
+    const entries=Object.entries(answers);
+    if(!entries.length){sb.innerHTML='<div class="sb-empty">No answers yet...</div>';return;}
+    const slotType=Q_TO_SLOT[q];
+    sb.innerHTML=entries.map(([who,txt])=>{
+      const safe=txt.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      return '<button class="sb-idea-btn q'+q+'" onclick="insertSbAnswer(\''+safe+'\',\''+slotType+'\')">'
+        +'<span class="sb-who">'+who+'</span>'
+        +'<span class="sb-txt">'+txt+'</span>'
+        +'</button>';
+    }).join('');
   });
 }
 
-function renderBrainSum(data) {
-  [1,2,3,4].forEach(q => {
-    const el = document.getElementById('bs-' + q);
-    if (!el) return;
-    const answers = data[q] || {};
-    const entries = Object.entries(answers);
-    el.textContent = entries.length ? entries.map(([w,t]) => `${w}: ${t}`).join(' • ') : 'Nothing added yet.';
-  });
-}
-
-window.insertSbChip = function(txt) {
-  if (focusedSlot) {
-    const type = focusedSlot.dataset.type;
-    const inp = focusedSlot.querySelector('.slot-in');
-    if (inp) { inp.textContent = txt; renderChip(focusedSlot, txt, type); updatePreview(); }
+window.insertSbAnswer=function(txt,slotType){
+  if(slotType==='why'){
+    const w1=document.getElementById('why-custom-1');
+    if(w1){w1.value=txt;insertCustomWhy(txt);}
+    return;
+  }
+  if(!currentTmpl){alert('Choose a template first, then click an idea to insert it.');return;}
+  // Insert into first empty slot of matching type
+  const matching=Object.entries(slotEls).filter(([id,el])=>el.dataset.type===slotType&&!slotValues[id]);
+  if(matching.length){
+    const[id,slot]=matching[0];
+    slotValues[id]=txt;renderChip(slot,txt,slotType);updatePreview();return;
+  }
+  // Fallback: use focused slot if available
+  if(focusedSlot){
+    const type=focusedSlot.dataset.type;const id=focusedSlot.dataset.id;
+    slotValues[id]=txt;renderChip(focusedSlot,txt,type);updatePreview();return;
+  }
+  // Last fallback: add to freeform bank
+  const bank=document.getElementById('bk-freeform');
+  if(bank){
+    const tag=document.createElement('span');
+    tag.className='tag freeform';
+    tag.style.cssText='background:rgba(100,100,100,.1);color:var(--text);border-color:var(--border);';
+    tag.innerHTML=txt+' <button style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-soft);padding:0 0 0 4px;" onclick="event.stopPropagation();this.parentElement.remove()">✕</button>';
+    tag.onclick=function(e){if(e.target.tagName==='BUTTON')return;insFreeform(this);};
+    bank.appendChild(tag);
   }
 };
 
-// ── ADD NOTES ──
-function hk(e, q) { if (e.key === 'Enter') { e.preventDefault(); addNote(q); } }
-
-async function addNote(q) {
-  const inp = document.getElementById('in-' + q);
-  const txt = inp.value.trim();
-  if (!txt) return;
-  inp.value = '';
-  try {
-    await sessPath(`answers/${q}`).update({ [myName]: txt });
-    if (myRole === 'participant') {
-      document.getElementById('row-' + q).classList.add('locked-row');
-    }
-  } catch(e) { console.error(e); }
-}
-
-// ── REVEAL ANSWERS ──
-async function revealAnswers() {
-  try {
-    await sessPath('').update({ revealed: true });
-    [1,2,3,4].forEach(q => document.getElementById('row-'+q).classList.remove('locked-row'));
-  } catch(e) { console.error(e); }
-}
-
-function copySessionCode() {
-  navigator.clipboard.writeText(sessionCode).then(() => {
-    const btn = document.querySelector('.btn-copy');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy Code', 2000);
+function renderBrainSum(data){
+  [1,2,3,4].forEach(q=>{
+    const el=document.getElementById('bs-'+q);if(!el)return;
+    const entries=Object.entries(data[q]||{});
+    el.textContent=entries.length?entries.map(([w,t])=>w+': '+t).join(' • '):'Nothing added yet.';
   });
 }
 
-// ── PAGE NAV ──
-function goPage(n) {
-  [1,2,3].forEach(i => {
-    document.getElementById('page-'+i).classList.toggle('on', i===n);
-    document.getElementById('pill-'+i).classList.toggle('active', i===n);
+function hk(e,q){if(e.key==='Enter'){e.preventDefault();addNote(q);}}
+
+async function addNote(q){
+  const inp=document.getElementById('in-'+q);const txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  try{
+    await sessPath('answers/'+q).update({[myName]:txt});
+    if(myRole==='participant')document.getElementById('row-'+q).classList.add('locked-row');
+  }catch(e){console.error(e);}
+}
+
+async function revealAnswers(){
+  try{await sessPath('').update({revealed:true});[1,2,3,4].forEach(q=>document.getElementById('row-'+q).classList.remove('locked-row'));}
+  catch(e){console.error(e);}
+}
+
+function copySessionCode(){
+  navigator.clipboard.writeText(sessionCode).then(()=>{
+    const btn=document.querySelector('.btn-copy');btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy Code',2000);
   });
-  // Show sticky bar only on page 2
-  const sticky = document.getElementById('sticky-draft');
-  if (n === 2) sticky.classList.add('visible');
-  else sticky.classList.remove('visible');
-  if (n===3) syncBrainSum();
+}
+
+function goPage(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('page-'+i).classList.toggle('on',i===n);
+    document.getElementById('pill-'+i).classList.toggle('active',i===n);
+  });
+  const sticky=document.getElementById('sticky-draft');
+  if(n===2)sticky.classList.add('visible');else sticky.classList.remove('visible');
+  if(n===3)syncBrainSum();
   window.scrollTo(0,0);
 }
 
-function syncBrainSum() {
-  [1,2,3,4].forEach(q => {
-    const area = document.getElementById('area-'+q);
-    const bs = document.getElementById('bs-'+q);
-    if (!area || !bs) return;
-    const items = [...area.querySelectorAll('.ai-txt')].map(e=>e.textContent);
-    bs.textContent = items.length ? items.join(' • ') : 'Nothing added yet.';
+function syncBrainSum(){
+  [1,2,3,4].forEach(q=>{
+    const area=document.getElementById('area-'+q);const bs=document.getElementById('bs-'+q);if(!area||!bs)return;
+    const items=[...area.querySelectorAll('.ai-txt')].map(e=>e.textContent);
+    bs.textContent=items.length?items.join(' • '):'Nothing added yet.';
   });
 }
 
-// ── TEMPLATES ──
-const TMPLS = {
-  problem: {
-    label: 'Problem Focused',
-    rows: [
-      [{t:'The '},{s:'name',l:'Fund Name / Your Name / Your Family\'s Name'},{t:' exists because '},{s:'problem',l:'the problem / what keeps you up at night'},{t:' in '},{s:'where',l:'where you give'},{t:'.'}],
-      [{t:'We '},{s:'action',l:'action word'},{t:' '},{s:'serve',l:'who you serve'},{t:' through '},{s:'how',l:'how you work'},{t:'.'}],
-      [{t:'We won\'t stop until '},{s:'impact',l:'the change you want to see'},{t:' because '},{s:'why',l:'your why'},{t:'.'}],
-    ]
-  },
-  action: {
-    label: 'Action Focused',
-    rows: [
-      [{t:'The '},{s:'name',l:'Fund Name / Your Name / Your Family\'s Name'},{t:' '},{s:'action',l:'action word'},{t:' '},{s:'serve',l:'who you serve'},{t:' in '},{s:'where',l:'where you give'},{t:' because '},{s:'why',l:'your why'},{t:'.'}],
-      [{t:'We focus on '},{s:'impact',l:'the change you want to see'},{t:' through '},{s:'how',l:'how you work'},{t:'.'}],
-    ]
-  },
-  value: {
-    label: 'Value Focused',
-    rows: [
-      [{t:'Because '},{s:'why',l:'your why'},{t:', the '},{s:'name',l:'Fund Name / Your Name / Your Family\'s Name'},{t:' '},{s:'action',l:'action word'},{t:' '},{s:'serve',l:'who you serve'},{t:' in '},{s:'where',l:'where you give'},{t:'.'}],
-      [{t:'Our focus is '},{s:'impact',l:'the change you want to see'},{t:' through '},{s:'how',l:'how you work'},{t:'.'}],
-    ]
-  }
+const TMPLS={
+  problem:{label:'Problem Focused',rows:[
+    [{t:'The '},{s:'name',l:"Fund Name / Your Name / Your Family's Name"},{t:' exists because '},{s:'problem',l:'the problem / what keeps you up at night'},{t:' in '},{s:'where',l:'where you give'},{t:'.'}],
+    [{t:'We '},{s:'action',l:'action word'},{t:' '},{s:'serve',l:'who you serve'},{t:' through '},{s:'how',l:'how you work'},{t:'.'}],
+    [{t:"We won't stop until "},{s:'impact',l:'the change you want to see'},{t:' because '},{s:'why',l:'your why'},{t:'.'}],
+  ]},
+  action:{label:'Action Focused',rows:[
+    [{t:'The '},{s:'name',l:"Fund Name / Your Name / Your Family's Name"},{t:' '},{s:'action',l:'action word'},{t:' '},{s:'serve',l:'who you serve'},{t:' in '},{s:'where',l:'where you give'},{t:' because '},{s:'why',l:'your why'},{t:'.'}],
+    [{t:'We focus on '},{s:'impact',l:'the change you want to see'},{t:' through '},{s:'how',l:'how you work'},{t:'.'}],
+  ]},
+  value:{label:'Value Focused',rows:[
+    [{t:'Because '},{s:'why',l:'your why'},{t:', the '},{s:'name',l:"Fund Name / Your Name / Your Family's Name"},{t:' '},{s:'action',l:'action word'},{t:' '},{s:'serve',l:'who you serve'},{t:' in '},{s:'where',l:'where you give'},{t:'.'}],
+    [{t:'Our focus is '},{s:'impact',l:'the change you want to see'},{t:' through '},{s:'how',l:'how you work'},{t:'.'}],
+  ]}
 };
 
-let slotValues = {};
-let slotEls = {};
-
-function selTmpl(type) {
-  currentTmpl = type;
-  ['problem','action','value'].forEach(t => {
-    document.getElementById('tmpl-'+t).classList.toggle('sel', t===type);
-  });
-  slotValues = {};
-  slotEls = {};
-  renderTmpl(type);
+function selTmpl(type){
+  currentTmpl=type;
+  ['problem','action','value'].forEach(t=>document.getElementById('tmpl-'+t).classList.toggle('sel',t===type));
+  slotValues={};slotEls={};renderTmpl(type);
   document.getElementById('sticky-draft').classList.add('visible');
 }
 
-function renderTmpl(type) {
-  const tmpl = TMPLS[type];
-  const area = document.getElementById('bld-area');
-  area.innerHTML = '';
-  tmpl.rows.forEach((row, ri) => {
-    const div = document.createElement('div');
-    div.className = 'slot-row';
-    row.forEach(part => {
-      if (part.t !== undefined) {
-        const sp = document.createElement('span');
-        sp.className = 'st';
-        sp.textContent = part.t;
-        div.appendChild(sp);
-      } else {
-        const slotId = type + '_' + ri + '_' + part.s;
-        const slot = mkSlot(slotId, part.l, part.s);
-        slotEls[slotId] = slot;
-        div.appendChild(slot);
-      }
+function renderTmpl(type){
+  const tmpl=TMPLS[type];const area=document.getElementById('bld-area');area.innerHTML='';
+  tmpl.rows.forEach((row,ri)=>{
+    const div=document.createElement('div');div.className='slot-row';
+    row.forEach(part=>{
+      if(part.t!==undefined){const sp=document.createElement('span');sp.className='st';sp.textContent=part.t;div.appendChild(sp);}
+      else{const slotId=type+'_'+ri+'_'+part.s;const slot=mkSlot(slotId,part.l,part.s);slotEls[slotId]=slot;div.appendChild(slot);}
     });
     area.appendChild(div);
   });
-  // Pre-fill why slot if already set
-  if (whyValue) fillWhySlots();
+  if(whyValue)fillWhySlots();
   updatePreview();
 }
 
-// color map for slot types
-const TYPE_COLORS = {
-  serve: 'var(--teal)', action: 'var(--sage)', impact: 'var(--steel)',
-  how: 'var(--terra)', where: 'var(--gold-dark)', why: 'var(--teal-mid)', name: '#7b68ae'
-};
+const TYPE_COLORS={serve:'var(--teal)',action:'var(--sage)',impact:'var(--steel)',how:'var(--terra)',where:'var(--gold-dark)',why:'var(--teal-mid)',name:'#7b68ae',problem:'var(--teal)'};
 
-function mkSlot(id, label, type) {
-  const div = document.createElement('div');
-  div.className = 'slot';
-  div.dataset.id = id;
-  div.dataset.type = type;
-  const inp = document.createElement('span');
-  inp.className = 'slot-in';
-  inp.contentEditable = 'true';
-  inp.setAttribute('data-placeholder', label);
-  inp.style.minWidth = '60px';
-  inp.addEventListener('focus', () => {
-    focusedSlot = div;
-    div.classList.add('foc');
-  });
-  inp.addEventListener('blur', () => {
-    div.classList.remove('foc');
-    const v = inp.textContent.trim();
-    slotValues[id] = v;
-    if (v) renderChip(div, v, type);
-    else { div.innerHTML = ''; addSlotPh(div, label, type); div.appendChild(inp); div.classList.remove('fil'); }
+function mkSlot(id,label,type){
+  const div=document.createElement('div');div.className='slot';div.dataset.id=id;div.dataset.type=type;
+  const inp=document.createElement('span');inp.className='slot-in';inp.contentEditable='true';
+  inp.setAttribute('data-placeholder',label);inp.style.minWidth='60px';
+  inp.addEventListener('focus',()=>{focusedSlot=div;div.classList.add('foc');});
+  inp.addEventListener('blur',()=>{
+    div.classList.remove('foc');const v=inp.textContent.trim();slotValues[id]=v;
+    if(v)renderChip(div,v,type);
+    else{div.innerHTML='';addSlotPh(div,label,type);div.appendChild(inp);div.classList.remove('fil');}
     updatePreview();
   });
-  inp.addEventListener('input', () => { slotValues[id] = inp.textContent.trim(); updatePreview(); });
-  // Colored placeholder
-  addSlotPh(div, label, type);
-  div.appendChild(inp);
-  inp.addEventListener('focus', () => { div.querySelector('.slot-ph') && (div.querySelector('.slot-ph').style.display='none'); });
-  inp.addEventListener('blur', () => { if (!inp.textContent.trim()) { const ph = div.querySelector('.slot-ph'); if(ph) ph.style.display=''; } });
+  inp.addEventListener('input',()=>{slotValues[id]=inp.textContent.trim();updatePreview();});
+  addSlotPh(div,label,type);div.appendChild(inp);
+  inp.addEventListener('focus',()=>{const ph=div.querySelector('.slot-ph');if(ph)ph.style.display='none';});
+  inp.addEventListener('blur',()=>{if(!inp.textContent.trim()){const ph=div.querySelector('.slot-ph');if(ph)ph.style.display='';}});
   return div;
 }
 
-function addSlotPh(div, label, type) {
-  const ph = document.createElement('span');
-  ph.className = 'slot-ph';
-  ph.style.cssText = `color:${TYPE_COLORS[type]||'var(--text-soft)'};font-size:12px;font-style:italic;pointer-events:none;opacity:.8;`;
-  ph.textContent = label;
-  div.appendChild(ph);
+function addSlotPh(div,label,type){
+  const ph=document.createElement('span');ph.className='slot-ph';
+  ph.style.cssText='color:'+(TYPE_COLORS[type]||'var(--text-soft)')+';font-size:12px;font-style:italic;pointer-events:none;opacity:.8;';
+  ph.textContent=label;div.appendChild(ph);
 }
 
-function renderChip(slot, val, type) {
-  const t = type || slot.dataset.type;
-  slot.innerHTML = '';
-  slot.classList.add('fil');
-  const chip = document.createElement('span');
-  chip.className = `chip chip-${t}`;
-  chip.innerHTML = `${val} <button class="rm" onclick="rmChip(this)" title="remove">✕</button>`;
+function renderChip(slot,val,type){
+  const t=type||slot.dataset.type;slot.innerHTML='';slot.classList.add('fil');
+  const chip=document.createElement('span');chip.className='chip chip-'+t;
+  chip.innerHTML=val+' <button class="rm" onclick="rmChip(this)" title="remove">✕</button>';
   slot.appendChild(chip);
 }
 
-window.rmChip = function(btn) {
-  const slot = btn.closest('.slot');
-  const id = slot.dataset.id;
-  const type = slot.dataset.type;
-  slot.classList.remove('fil');
-  slotValues[id] = '';
-  const label = slot.querySelector('.slot-in') ? slot.querySelector('.slot-in').getAttribute('data-placeholder') : '';
-  const newSlot = mkSlot(id, label || id, type);
-  slot.parentNode.replaceChild(newSlot, slot);
-  slotEls[id] = newSlot;
+window.rmChip=function(btn){
+  const slot=btn.closest('.slot');const id=slot.dataset.id;const type=slot.dataset.type;
+  slot.classList.remove('fil');slotValues[id]='';
+  const label=slot.querySelector('.slot-in')?slot.querySelector('.slot-in').getAttribute('data-placeholder'):'';
+  const newSlot=mkSlot(id,label||id,type);slot.parentNode.replaceChild(newSlot,slot);slotEls[id]=newSlot;
   updatePreview();
 };
 
-// ── INSERT TAG ──
-function ins(tagEl) {
-  if (!currentTmpl) return;
-  const type = [...tagEl.classList].find(c => ['serve','action','impact','how','where','name'].includes(c));
-  if (!type) return;
-  const val = tagEl.textContent.replace(/✕/g,'').trim();
-  const matching = Object.entries(slotEls).filter(([id, el]) => el.dataset.type === type && !slotValues[id]);
-  if (matching.length) {
-    const [id, slot] = matching[0];
-    slotValues[id] = val;
-    renderChip(slot, val, type);
-    tagEl.classList.add('used');
-    updatePreview();
+// FIX: single clean ins() — no duplicate declarations
+function ins(tagEl){
+  if(!currentTmpl)return;
+  const type=[...tagEl.classList].find(c=>['serve','action','impact','how','where','name'].includes(c));
+  if(!type)return;
+  const val=tagEl.textContent.replace(/✕/g,'').trim();
+  const matching=Object.entries(slotEls).filter(([id,el])=>el.dataset.type===type&&!slotValues[id]);
+  if(matching.length){
+    const[id,slot]=matching[0];slotValues[id]=val;renderChip(slot,val,type);tagEl.classList.add('used');updatePreview();
   }
 }
 
-function insFreeform(tagEl) {
-  if (!currentTmpl || !focusedSlot) { alert('Click a blank in the template first, then click your word.'); return; }
-  const val = tagEl.textContent.replace(/✕/g,'').trim();
-  if (!val) return;
-  const type = focusedSlot.dataset.type;
-  const id = focusedSlot.dataset.id;
-  slotValues[id] = val;
-  renderChip(focusedSlot, val, type);
-  updatePreview();
+function insFreeform(tagEl){
+  if(!currentTmpl||!focusedSlot){alert('Click a blank in the template first, then click your word.');return;}
+  const val=tagEl.textContent.replace(/✕/g,'').trim();if(!val)return;
+  const type=focusedSlot.dataset.type;const id=focusedSlot.dataset.id;
+  slotValues[id]=val;renderChip(focusedSlot,val,type);updatePreview();
 }
 
-function addFreeform(inputEl) {
-  const val = inputEl.value.trim();
-  if (!val) return;
-  const bank = document.getElementById('bk-freeform');
-  if (!bank) return;
-  const tag = document.createElement('span');
-  tag.className = 'tag freeform';
-  tag.style.cssText = 'background:rgba(100,100,100,.1);color:var(--text);border-color:var(--border);';
-  const rmBtn = '<button style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-soft);padding:0 0 0 4px;" onclick="event.stopPropagation();this.parentElement.remove()" title="remove">✕</button>';
-  tag.innerHTML = val + ' ' + rmBtn;
-  tag.onclick = function(e) { if (e.target.tagName === 'BUTTON') return; insFreeform(this); };
-  bank.appendChild(tag);
-  inputEl.value = '';
-  inputEl.focus();
+function addFreeform(inputEl){
+  const val=inputEl.value.trim();if(!val)return;
+  const bank=document.getElementById('bk-freeform');if(!bank)return;
+  const tag=document.createElement('span');tag.className='tag freeform';
+  tag.style.cssText='background:rgba(100,100,100,.1);color:var(--text);border-color:var(--border);';
+  tag.innerHTML=val+' <button style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--text-soft);padding:0 0 0 4px;" onclick="event.stopPropagation();this.parentElement.remove()" title="remove">✕</button>';
+  tag.onclick=function(e){if(e.target.tagName==='BUTTON')return;insFreeform(this);};
+  bank.appendChild(tag);inputEl.value='';inputEl.focus();
 }
 
-function addFundName(inputEl) {
-  if (!currentTmpl) { alert('Choose a template first, then add your fund name.'); return; }
-  const val = inputEl.value.trim();
-  if (!val) return;
-  const matching = Object.entries(slotEls).filter(([id, el]) => el.dataset.type === 'name');
-  if (matching.length) {
-    const [id, slot] = matching[0];
-    slotValues[id] = val;
-    renderChip(slot, val, 'name');
-    updatePreview();
-  }
-}
-function insertCustomWhy(val) {
-  whyValue = val.trim();
-  fillWhySlots();
-  updatePreview();
+function addFundName(inputEl){
+  if(!currentTmpl){alert('Choose a template first, then add your fund name.');return;}
+  const val=inputEl.value.trim();if(!val)return;
+  const matching=Object.entries(slotEls).filter(([id,el])=>el.dataset.type==='name');
+  if(matching.length){const[id,slot]=matching[0];slotValues[id]=val;renderChip(slot,val,'name');updatePreview();}
 }
 
-function fillWhySlots() {
-  Object.entries(slotEls).forEach(([id, slot]) => {
-    if (slot.dataset.type === 'why') {
-      slotValues[id] = whyValue;
-      if (whyValue) renderChip(slot, whyValue, 'why');
-      else {
-        slot.classList.remove('fil');
-        slot.innerHTML = '';
-        addSlotPh(slot, 'your why', 'why');
-        const inp = document.createElement('span');
-        inp.className = 'slot-in';
-        inp.contentEditable = 'true';
-        slot.appendChild(inp);
-      }
+function insertCustomWhy(val){whyValue=val.trim();fillWhySlots();updatePreview();}
+
+function fillWhySlots(){
+  Object.entries(slotEls).forEach(([id,slot])=>{
+    if(slot.dataset.type==='why'){
+      slotValues[id]=whyValue;
+      if(whyValue)renderChip(slot,whyValue,'why');
+      else{slot.classList.remove('fil');slot.innerHTML='';addSlotPh(slot,'your why','why');const inp=document.createElement('span');inp.className='slot-in';inp.contentEditable='true';slot.appendChild(inp);}
     }
   });
 }
 
-function ctag(e, input, type) {
-  if (e.key === 'Enter' && input.value.trim()) {
-    e.preventDefault();
-    const bank = document.getElementById('bk-' + type);
-    if (bank) {
-      const tag = document.createElement('span');
-      tag.className = 'tag ' + type;
-      tag.textContent = input.value.trim();
-      tag.onclick = function() { ins(this); };
-      bank.appendChild(tag);
-      ins(tag);
-      input.value = '';
-    }
+function ctag(e,input,type){
+  if(e.key==='Enter'&&input.value.trim()){
+    e.preventDefault();const bank=document.getElementById('bk-'+type);
+    if(bank){const tag=document.createElement('span');tag.className='tag '+type;tag.textContent=input.value.trim();tag.onclick=function(){ins(this);};bank.appendChild(tag);ins(tag);input.value='';}
   }
 }
 
-// ── PREVIEW ──
-function updatePreview() {
-  const ff = document.getElementById('ff-text').value.trim();
-  const preview = document.getElementById('mission-preview');
-  const stickyPrev = document.getElementById('sticky-preview');
-  if (ff) {
-    preview.textContent = ff;
-    if (stickyPrev) stickyPrev.textContent = ff;
-    return;
-  }
-  if (!currentTmpl) return;
-  const tmpl = TMPLS[currentTmpl];
-  let text = '';
-  tmpl.rows.forEach(row => {
-    row.forEach(part => {
-      if (part.t !== undefined) {
-        text += part.t;
-      } else {
-        const slotId = Object.keys(slotValues).find(k => k.endsWith('_'+part.s) && k.startsWith(currentTmpl));
-        const v = (part.s === 'why' ? whyValue : (slotId ? slotValues[slotId] : '')) || '';
-        text += v || `[${part.l}]`;
+function updatePreview(){
+  const ff=document.getElementById('ff-text').value.trim();
+  const preview=document.getElementById('mission-preview');const stickyPrev=document.getElementById('sticky-preview');
+  if(ff){preview.textContent=ff;if(stickyPrev)stickyPrev.textContent=ff;return;}
+  if(!currentTmpl)return;
+  const tmpl=TMPLS[currentTmpl];let text='';
+  tmpl.rows.forEach(row=>{
+    row.forEach(part=>{
+      if(part.t!==undefined){text+=part.t;}
+      else{
+        const slotId=Object.keys(slotValues).find(k=>k.endsWith('_'+part.s)&&k.startsWith(currentTmpl));
+        const v=(part.s==='why'?whyValue:(slotId?slotValues[slotId]:''))||'';
+        text+=v||'['+part.l+']';
       }
     });
-    text += ' ';
+    text+=' ';
   });
-  const result = text.trim();
-  preview.textContent = result;
-  if (stickyPrev) stickyPrev.textContent = result;
+  const result=text.trim();preview.textContent=result;if(stickyPrev)stickyPrev.textContent=result;
 }
 
-// ── SAVE DRAFT ──
-function saveDraft() {
-  if (!currentTmpl) return;
-  const text = document.getElementById('mission-preview').textContent;
-  const tmplMap = { problem: 1, action: 2, value: 3 };
-  const slot = tmplMap[currentTmpl];
-  drafts[slot] = text;
-  const ta = document.getElementById('fq-'+slot+'-text');
-  if (ta) ta.value = text;
-  const count = Object.values(drafts).filter(d=>d).length;
-  document.getElementById('save-ct').textContent = count + ' draft' + (count===1?'':'s') + ' saved';
-  // Save to Firebase
-  if (sessionCode) {
-    sessPath('drafts').update({ [myName + '_' + currentTmpl]: text });
-  }
-  // Save to Google Sheets
-  const snap = {};
-  [1,2,3,4].forEach(q => {
-    const area = document.getElementById('area-'+q);
-    const txts = area ? [...area.querySelectorAll('.ai-txt')].map(e=>e.textContent).join('; ') : '';
-    snap['q'+q] = txts;
-  });
-  fetch(SHEETS_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      sessionCode, familyName, facilitator: myRole==='facilitator'?myName:'', template: currentTmpl,
-      draft: text, problem: snap.q1, why: snap.q2, focus: snap.q3, impact: snap.q4
-    })
-  }).catch(()=>{});
+function saveDraft(){
+  if(!currentTmpl)return;
+  const text=document.getElementById('mission-preview').textContent;
+  const tmplMap={problem:1,action:2,value:3};const slot=tmplMap[currentTmpl];
+  drafts[slot]=text;const ta=document.getElementById('fq-'+slot+'-text');if(ta)ta.value=text;
+  const count=Object.values(drafts).filter(d=>d).length;
+  document.getElementById('save-ct').textContent=count+' draft'+(count===1?'':'s')+' saved';
+  if(sessionCode)sessPath('drafts').update({[myName+'_'+currentTmpl]:text});
+  const snap={};
+  [1,2,3,4].forEach(q=>{const area=document.getElementById('area-'+q);snap['q'+q]=area?[...area.querySelectorAll('.ai-txt')].map(e=>e.textContent).join('; '):''});
+  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({sessionCode,familyName,facilitator:myRole==='facilitator'?myName:'',template:currentTmpl,draft:text,problem:snap.q1,why:snap.q2,focus:snap.q3,impact:snap.q4})}).catch(()=>{});
 }
 
-function delDraft(slot) {
-  drafts[slot] = '';
-  const ta = document.getElementById('fq-'+slot+'-text');
-  if (ta) ta.value = '';
-  const count = Object.values(drafts).filter(d=>d).length;
-  document.getElementById('save-ct').textContent = count + ' draft' + (count===1?'':'s') + ' saved';
-}
-
-function cpyDraft(slot) {
-  const ta = document.getElementById('fq-'+slot+'-text');
-  if (ta && ta.value) navigator.clipboard.writeText(ta.value);
-}
-
+function delDraft(slot){drafts[slot]='';const ta=document.getElementById('fq-'+slot+'-text');if(ta)ta.value='';const count=Object.values(drafts).filter(d=>d).length;document.getElementById('save-ct').textContent=count+' draft'+(count===1?'':'s')+' saved';}
+function cpyDraft(slot){const ta=document.getElementById('fq-'+slot+'-text');if(ta&&ta.value)navigator.clipboard.writeText(ta.value);}
 </script>
 </body>
 </html>
