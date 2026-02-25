@@ -147,7 +147,10 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .btn-prev:hover{border-color:var(--text-mid);color:var(--text);}
 
 /* ── STICKY BUILD AREA ── */
-.bld-sticky-wrap{position:sticky;top:0;z-index:50;background:var(--bg);padding-bottom:12px;padding-top:8px;box-shadow:0 4px 16px rgba(30,85,99,.1);}
+.bld-sticky-wrap{position:fixed;top:106px;left:0;right:0;z-index:50;background:var(--bg);padding:12px 28px;box-shadow:0 4px 16px rgba(30,85,99,.15);display:none;}
+.bld-sticky-wrap.visible{display:block;}
+.bld-sticky-placeholder{height:0;}
+.bld-sticky-placeholder.active{height:520px;}
 .bld-sticky-footer{display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap;}
 .btn-save-sticky{padding:8px 20px;background:var(--teal);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;white-space:nowrap;transition:background .2s;}
 .btn-save-sticky:hover{background:var(--teal-mid);}
@@ -573,6 +576,7 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
               <span class="bld-sticky-ct" id="bld-sticky-ct"></span>
             </div>
           </div>
+          <div class="bld-sticky-placeholder" id="bld-sticky-ph"></div>
 
           <!-- STEP 3: Your Why -->
           <span class="step-lbl" style="margin-top:4px;">Step 3 — Your Why</span>
@@ -1040,6 +1044,8 @@ function goPage(n) {
     document.getElementById('pill-'+i).classList.toggle('active', i===n);
   });
   if (n===3) syncBrainSum();
+  const _bsw = document.querySelector('.bld-sticky-wrap');
+  if(_bsw){_bsw.classList.toggle('visible',n===2);const _bsph=document.getElementById('bld-sticky-ph');if(_bsph)_bsph.classList.toggle('active',n===2);}
   window.scrollTo(0,0);
 }
 
