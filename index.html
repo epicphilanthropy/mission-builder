@@ -18,7 +18,7 @@
   --q1:#1e5563; --q2:#457093; --q3:#5b7666; --q4:#904237;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);overflow-x:clip;}
+html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
 
 /* ── FULL BLEED (breaks out of Squarespace containers) ── */
 #entry-screen, #app {
@@ -146,15 +146,25 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
 .btn-prev{background:transparent;color:var(--text-mid);border:1.5px solid var(--border);}
 .btn-prev:hover{border-color:var(--text-mid);color:var(--text);}
 
-/* ── STICKY BUILD AREA ── */
-.bld-sticky-wrap{position:fixed;top:106px;left:0;right:0;z-index:50;background:var(--bg);padding:12px 28px;box-shadow:0 4px 16px rgba(30,85,99,.15);display:none;}
-.bld-sticky-wrap.visible{display:block;}
-.bld-sticky-placeholder{height:0;}
-.bld-sticky-placeholder.active{height:520px;}
-.bld-sticky-footer{display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap;}
-.btn-save-sticky{padding:8px 20px;background:var(--teal);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;white-space:nowrap;transition:background .2s;}
-.btn-save-sticky:hover{background:var(--teal-mid);}
-.bld-sticky-ct{font-size:12px;color:var(--text-soft);font-style:italic;}
+/* ── STICKY DRAFT BAR ── */
+#sticky-draft{
+  position:sticky;top:0;z-index:100;
+  background:var(--teal);
+  border-bottom:2px solid rgba(222,173,47,.4);
+  padding:10px 28px;
+  display:none;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  box-shadow:0 4px 20px rgba(30,85,99,.25);
+}
+#sticky-draft.visible{display:flex;}
+.sd-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);white-space:nowrap;flex-shrink:0;}
+#sticky-preview{font-size:15px;font-weight:600;color:#fff;line-height:1.5;flex:1;font-family:'Montserrat',sans-serif;}
+#sticky-preview .sd-ph{color:rgba(255,255,255,.35);font-style:italic;font-weight:400;}
+.sd-save{padding:7px 16px;background:var(--gold);color:var(--teal);border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif;white-space:nowrap;flex-shrink:0;transition:background .2s;}
+.sd-save:hover{background:#f0c020;}
+
 /* COLOR KEY LEGEND */
 .color-key{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center;}
 .ck-item{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--text-mid);}
@@ -397,6 +407,13 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
     <button class="step-pill" id="pill-3" onclick="goPage(3)"><span class="sp-n">3</span>Compare Drafts</button>
   </nav>
 
+  <!-- ══ STICKY DRAFT BAR (Page 2 only) ══ -->
+  <div id="sticky-draft">
+    <div class="sd-label">✦ Draft</div>
+    <div id="sticky-preview"><span class="sd-ph">Select a template to start building...</span></div>
+    <button class="sd-save" onclick="saveDraft()">💾 Save Draft</button>
+  </div>
+
   <!-- ══ PAGE 1: BRAIN DUMP ══ -->
   <div class="page on" id="page-1">
     <div class="main">
@@ -567,16 +584,9 @@ html,body{width:100%;min-height:100vh;font-family:'Montserrat',sans-serif;backgr
           </div>
 
           <!-- STEP 2: Template slots -->
-          <div class="bld-sticky-wrap">
-            <div class="bld-area" id="bld-area">
-              <div class="bld-area-ph">← Select a template above to begin building</div>
-            </div>
-            <div class="bld-sticky-footer">
-              <button class="btn-save-sticky" onclick="saveDraft()">💾 Save This Draft</button>
-              <span class="bld-sticky-ct" id="bld-sticky-ct"></span>
-            </div>
+          <div class="bld-area" id="bld-area">
+            <div class="bld-area-ph">← Select a template above to begin building</div>
           </div>
-          <div class="bld-sticky-placeholder" id="bld-sticky-ph"></div>
 
           <!-- STEP 3: Your Why -->
           <span class="step-lbl" style="margin-top:4px;">Step 3 — Your Why</span>
@@ -1043,9 +1053,11 @@ function goPage(n) {
     document.getElementById('page-'+i).classList.toggle('on', i===n);
     document.getElementById('pill-'+i).classList.toggle('active', i===n);
   });
+  // Show sticky bar only on page 2
+  const sticky = document.getElementById('sticky-draft');
+  if (n === 2) sticky.classList.add('visible');
+  else sticky.classList.remove('visible');
   if (n===3) syncBrainSum();
-  const _bsw = document.querySelector('.bld-sticky-wrap');
-  if(_bsw){_bsw.classList.toggle('visible',n===2);const _bsph=document.getElementById('bld-sticky-ph');if(_bsph)_bsph.classList.toggle('active',n===2);}
   window.scrollTo(0,0);
 }
 
@@ -1096,6 +1108,7 @@ function selTmpl(type) {
   slotValues = {};
   slotEls = {};
   renderTmpl(type);
+  document.getElementById('sticky-draft').classList.add('visible');
 }
 
 function renderTmpl(type) {
@@ -1254,8 +1267,10 @@ function ctag(e, input, type) {
 function updatePreview() {
   const ff = document.getElementById('ff-text').value.trim();
   const preview = document.getElementById('mission-preview');
+  const stickyPrev = document.getElementById('sticky-preview');
   if (ff) {
     preview.textContent = ff;
+    if (stickyPrev) stickyPrev.textContent = ff;
     return;
   }
   if (!currentTmpl) return;
@@ -1275,6 +1290,7 @@ function updatePreview() {
   });
   const result = text.trim();
   preview.textContent = result;
+  if (stickyPrev) stickyPrev.textContent = result;
 }
 
 // ── SAVE DRAFT ──
@@ -1287,7 +1303,6 @@ function saveDraft() {
   const ta = document.getElementById('fq-'+slot+'-text');
   if (ta) ta.value = text;
   const count = Object.values(drafts).filter(d=>d).length;
-  const _bsc = document.getElementById('bld-sticky-ct'); if(_bsc) _bsc.textContent = document.getElementById('save-ct').textContent;
   document.getElementById('save-ct').textContent = count + ' draft' + (count===1?'':'s') + ' saved';
   // Save to Firebase
   if (sessionCode) {
