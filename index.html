@@ -31,9 +31,7 @@
             --c-action: #1b3a5c;  /* Financial Advisors (Navy) */
             --c-how: #dead2f;     /* Golden Yellow */
             --c-where: #1e5563;   /* Dark Teal */
-            
-            /* Changed Fund color to match the "subtle green" (Medium Teal) instead of the harsh Epic Ink */
-            --c-fund: #4f8284;    
+            --c-fund: #4f8284;    /* Medium Teal for consistent highlighting */
         }
 
         body { font-family: 'Montserrat', sans-serif; background-color: var(--epic-dark-teal); color: var(--white); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
@@ -98,7 +96,7 @@
         .item-impact { border-left-color: var(--c-impact); }
         .item-focus { border-left-color: var(--c-focus); }
 
-        .empty-state { color: #a0a0a0; font-style: italic; font-size: 14px; font-weight: 300; line-height: 1.6; padding: 5px; }
+        .empty-state { color: #a0a0a0; font-style: italic; font-size: 14px; font-weight: 300; line-height: 1.6; padding: 5px; margin-top: 10px; }
         .empty-state strong { font-weight: 600; font-style: normal; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #b0b0b0; display: block; margin-bottom: 8px; }
 
         /* --- BUILDER AREA --- */
@@ -138,7 +136,8 @@
         .btn-save:hover { background: var(--epic-medium-teal); }
 
         /* Word Bank Sidebar Colors */
-        .word-bank-sidebar { background: var(--white); border: 1px solid var(--white); border-radius: 8px; padding: 20px; max-height: 700px; overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        /* Note: Added position:relative so we can scroll smoothly inside it */
+        .word-bank-sidebar { position: relative; background: var(--white); border: 1px solid var(--white); border-radius: 8px; padding: 20px; max-height: 700px; overflow-y: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.05); scroll-behavior: smooth; }
         .word-bank-section { margin-bottom: 25px; }
         .word-bank-section h4 { margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--light-gray); padding-bottom: 5px; }
         
@@ -325,9 +324,8 @@
                 <!-- Word Bank Sidebar -->
                 <div class="word-bank-sidebar" id="word-sidebar">
 
-                    <!-- NEW FUND / FAMILY NAME BANK -->
                     <div class="word-bank-section sec-fund">
-                        <h4>Fund / Family Name</h4>
+                        <h4 id="bank-fund-header">Fund / Family Name</h4>
                         <div id="bank-fund">
                             <span class="word-chip" onclick="insertWord(this)" id="chip-fam-1">The Family</span>
                             <span class="word-chip" onclick="insertWord(this)" id="chip-fam-2">The Foundation</span>
@@ -339,7 +337,7 @@
                     </div>
 
                     <div class="word-bank-section sec-focus">
-                        <h4>Who You Serve</h4>
+                        <h4 id="bank-who-header">Who You Serve</h4>
                         <div id="bank-who">
                             <span class="word-chip" onclick="insertWord(this)">Children & youth</span>
                             <span class="word-chip" onclick="insertWord(this)">Families</span>
@@ -358,7 +356,7 @@
                     </div>
 
                     <div class="word-bank-section sec-action">
-                        <h4>Action Words</h4>
+                        <h4 id="bank-action-header">Action Words</h4>
                         <div id="bank-action">
                             <span class="word-chip" onclick="insertWord(this)">Support(s)</span>
                             <span class="word-chip" onclick="insertWord(this)">Champion(s)</span>
@@ -385,7 +383,7 @@
                     </div>
 
                     <div class="word-bank-section sec-impact">
-                        <h4>Impact & Change Words</h4>
+                        <h4 id="bank-impact-header">Impact & Change Words</h4>
                         <div id="bank-impact">
                             <span class="word-chip" onclick="insertWord(this)">Systemic change</span>
                             <span class="word-chip" onclick="insertWord(this)">Equity and access</span>
@@ -401,7 +399,7 @@
                     </div>
 
                     <div class="word-bank-section sec-how">
-                        <h4>How You Work</h4>
+                        <h4 id="bank-how-header">How You Work</h4>
                         <div id="bank-how">
                             <span class="word-chip" onclick="insertWord(this)">Trust-based partnerships</span>
                             <span class="word-chip" onclick="insertWord(this)">Direct support</span>
@@ -417,7 +415,7 @@
                     </div>
 
                     <div class="word-bank-section sec-where">
-                        <h4>Where You Give</h4>
+                        <h4 id="bank-where-header">Where You Give</h4>
                         <div id="bank-where">
                             <span class="word-chip" onclick="insertWord(this)">Local</span>
                             <span class="word-chip" onclick="insertWord(this)">Regional</span>
@@ -462,7 +460,6 @@
         let myRole = ''; let myName = ''; let mySession = ''; let justFamilyName = '';
         const FACILITATOR_PASSWORD = '3742';
 
-        // UPDATED WITH 12 NEW EXAMPLES
         const emptyStates = {
             q1: `<div class="empty-state"><strong>Examples:</strong>- Food insecurity<br>- Lack of arts funding<br>- Climate change<br>- Unequal access to healthcare<br>- Youth mental health crisis</div>`,
             q2: `<div class="empty-state"><strong>Examples:</strong>- Everyone deserves a fair start<br>- Art heals communities<br>- Education is the great equalizer<br>- We must protect our planet<br>- Health is a human right</div>`,
@@ -506,7 +503,6 @@
             if(justFamilyName) {
                 document.getElementById('celeb-family-name').innerText = `👑 The ${justFamilyName} Family Mission Statement 👑`;
                 
-                // Auto-fill the custom family name chips!
                 document.getElementById('chip-fam-1').innerText = `The ${justFamilyName} Family`;
                 document.getElementById('chip-fam-2').innerText = `The ${justFamilyName} Foundation`;
                 document.getElementById('chip-fam-3').innerText = `The ${justFamilyName} Fund`;
@@ -590,7 +586,10 @@
                 } else if (type === 'value') {
                     draftArea.innerHTML = `Because <span class="blank blank-belief focused" onclick="focusBlank(this)">[ your why ]</span>, the <span class="blank blank-fund" onclick="focusBlank(this)">[ Fund / Family Name ]</span> <span class="blank blank-action" onclick="focusBlank(this)">[ action word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ who you serve ]</span> in <span class="blank blank-where" onclick="focusBlank(this)">[ where you give ]</span>. Our focus is <span class="blank blank-impact" onclick="focusBlank(this)">[ impact & change ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ how you work ]</span>.`;
                 }
-                currentFocusedBlank = draftArea.querySelector('.blank.focused');
+                
+                // Set initial focus and scroll to it
+                const firstBlank = draftArea.querySelector('.blank.focused');
+                if (firstBlank) focusBlank(firstBlank);
             }
         }
 
@@ -599,6 +598,26 @@
             document.querySelectorAll('.blank').forEach(b => b.classList.remove('focused'));
             element.classList.add('focused');
             currentFocusedBlank = element;
+
+            // SCROLL TO WORD BANK LOGIC
+            let targetBankId = null;
+            if (element.classList.contains('blank-fund')) targetBankId = 'bank-fund-header';
+            else if (element.classList.contains('blank-focus')) targetBankId = 'bank-who-header';
+            else if (element.classList.contains('blank-action')) targetBankId = 'bank-action-header';
+            else if (element.classList.contains('blank-impact')) targetBankId = 'bank-impact-header';
+            else if (element.classList.contains('blank-how')) targetBankId = 'bank-how-header';
+            else if (element.classList.contains('blank-where')) targetBankId = 'bank-where-header';
+
+            if (targetBankId) {
+                const targetHeader = document.getElementById(targetBankId);
+                const sidebar = document.getElementById('word-sidebar');
+                if (targetHeader && sidebar) {
+                    sidebar.scrollTo({
+                        top: targetHeader.parentElement.offsetTop - 20, 
+                        behavior: 'smooth'
+                    });
+                }
+            }
         }
 
         function insertWord(chipElement) {
@@ -641,6 +660,7 @@
             const currentIndex = allBlanks.indexOf(currentFocusedBlank);
             
             if (currentIndex >= 0 && currentIndex < allBlanks.length - 1) {
+                // By calling focusBlank, it will also automatically scroll the sidebar!
                 focusBlank(allBlanks[currentIndex + 1]);
             } else {
                 currentFocusedBlank.classList.remove('focused');
@@ -711,10 +731,11 @@
                     const listDiv = document.getElementById('list-' + quadId);
                     const quadData = allData[quadId] || {};
                     
-                    if (Object.keys(quadData).length === 0) {
-                        listDiv.innerHTML = emptyStates[quadId];
-                    } else {
-                        listDiv.innerHTML = ''; 
+                    // Clear the list entirely
+                    listDiv.innerHTML = ''; 
+                    
+                    // 1. Add user-submitted ideas if any exist
+                    if (Object.keys(quadData).length > 0) {
                         Object.values(quadData).forEach(idea => {
                             const div = document.createElement('div');
                             div.className = `idea-item ${mapClass[quadId]}`;
@@ -723,6 +744,9 @@
                             listDiv.appendChild(div);
                         });
                     }
+
+                    // 2. ALWAYS add the grey examples at the bottom of the list
+                    listDiv.insertAdjacentHTML('beforeend', emptyStates[quadId]);
                 });
             });
 
