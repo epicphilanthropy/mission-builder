@@ -1,554 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mission Statement Builder</title>
-  
-  <!-- Montserrat Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Firebase (V8 Compat) -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Statement Builder | Epic Philanthropy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Epic Philanthropy Brand Colors */
+            --epic-ink: #0d2b32;
+            --epic-gold: #D4AF37; 
+            --epic-teal: #008080;
+            --light-bg: #fdfdfd;
+            --white: #ffffff;
+            --gray: #e0e0e0;
+            --text-dark: #333333;
+        }
 
-  <style>
-    /* ---------------- BRAND & BASE STYLES ---------------- */
-    :root {
-      --epic-teal: #008080;
-      --epic-gold: #D4AF37;
-      --bg-light: #f9f9f9;
-      --text-main: #333333;
-    }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--epic-ink);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-main);
-      margin: 0;
-      padding: 20px;
-      line-height: 1.6;
-    }
+        header {
+            width: 100%;
+            background-color: var(--white);
+            padding: 25px 0;
+            text-align: center;
+            border-bottom: 4px solid var(--epic-gold);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
 
-    h1, h2, h3 {
-      color: var(--epic-teal);
-    }
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-    button {
-      background-color: var(--epic-teal);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 20px;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+        header span {
+            font-weight: 300;
+            color: var(--epic-teal);
+        }
 
-    button:hover {
-      background-color: #006666;
-    }
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 50px auto;
+            text-align: center;
+        }
 
-    .btn-gold {
-      background-color: var(--epic-gold);
-      color: #333;
-    }
-    
-    .btn-gold:hover {
-      background-color: #bfa030;
-    }
+        .intro-text {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+            font-weight: 400;
+        }
 
-    /* ---------------- HEADER & SECRET KNOCK ---------------- */
-    #app-header {
-      text-align: center;
-      margin-bottom: 30px;
-      cursor: default;
-      /* Prevents text highlighting when triple-clicking */
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
+        .role-cards {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-    /* ---------------- QUADRANT LAYOUT (STEP 1) ---------------- */
-    .grid-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
+        .role-card {
+            flex: 1;
+            min-width: 280px;
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    @media (max-width: 768px) {
-      .grid-container {
-        grid-template-columns: 1fr;
-      }
-    }
+        .role-card:hover {
+            border-color: var(--epic-gold);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
 
-    .quadrant {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      border-top: 5px solid var(--epic-teal);
-    }
+        .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
 
-    .input-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
+        .role-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            color: var(--epic-ink);
+            font-weight: 600;
+        }
 
-    .input-group input {
-      flex-grow: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-family: 'Montserrat', sans-serif;
-    }
+        .role-card p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #555;
+        }
 
-    .idea-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
+        /* Login Forms */
+        .login-form {
+            display: none;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            max-width: 450px;
+            margin: 0 auto;
+            text-align: left;
+            border: 1px solid var(--gray);
+        }
 
-    .idea-list li {
-      background: #f1f1f1;
-      margin-bottom: 8px;
-      padding: 8px 12px;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .login-form h3 {
+            margin-top: 0;
+            color: var(--epic-ink);
+            font-size: 22px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
 
-    .remove-btn {
-      background: transparent;
-      color: #999;
-      padding: 0 5px;
-      font-size: 1.2rem;
-    }
-    .remove-btn:hover {
-      color: #ff4444;
-      background: transparent;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    /* ---------------- WAITING SCREEN (STEP 2) ---------------- */
-    #step-2-waiting {
-      display: none;
-      text-align: center;
-      margin-top: 100px;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--epic-ink);
+        }
 
-    .waiting-pulse {
-      color: var(--epic-gold);
-      font-size: 1.8rem;
-      font-weight: 700;
-      animation: waitPulse 2s infinite;
-    }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray);
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--epic-teal);
+        }
 
-    @keyframes waitPulse {
-      0% { opacity: 0.6; transform: scale(0.98); }
-      50% { opacity: 1; transform: scale(1.05); }
-      100% { opacity: 0.6; transform: scale(0.98); }
-    }
+        .btn {
+            background-color: var(--epic-ink);
+            color: var(--white);
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+        }
 
-    /* ---------------- MAD LIBS BUILDER (STEP 3) ---------------- */
-    #step-3-madlibs {
-      display: none;
-    }
+        .btn:hover {
+            background-color: var(--epic-teal);
+        }
 
-    /* Color Themes for the Categories */
-    .theme-problem { background-color: #e6ccff; color: #4c0099; border: 2px solid #cc99ff; }
-    .theme-action { background-color: #ffcccc; color: #990000; border: 2px solid #ff9999; }
-    .theme-focus { background-color: #cce5ff; color: #0044cc; border: 2px solid #99ccff; }
-    .theme-impact { background-color: #ccffcc; color: #006600; border: 2px solid #99ff99; }
+        .back-btn {
+            background: none;
+            color: var(--epic-ink);
+            border: none;
+            padding: 0;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            text-decoration: underline;
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+        .back-btn:hover {
+            color: var(--epic-teal);
+        }
 
-    .mad-lib-template {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-      margin-bottom: 40px;
-      font-size: 1.2rem;
-      line-height: 2.2;
-      text-align: center;
-    }
-
-    .mad-lib-blank {
-      display: inline-block;
-      padding: 5px 15px;
-      margin: 0 5px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: transform 0.2s;
-    }
-
-    .mad-lib-blank:hover {
-      transform: scale(1.05);
-    }
-
-    .word-banks-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .word-bank {
-      padding: 20px;
-      border-radius: 12px;
-    }
-
-    .word-bank h3 {
-      margin-top: 0;
-      color: inherit; /* Matches the theme color */
-    }
-
-    .word-bank ul {
-      padding-left: 20px;
-    }
-
-    /* Glow animation for when a user clicks a mad lib blank */
-    .highlight-pulse {
-      animation: bankPulse 1.5s ease-out;
-    }
-
-    @keyframes bankPulse {
-      0% { box-shadow: 0 0 0 0 rgba(100, 100, 100, 0.5); }
-      70% { box-shadow: 0 0 0 15px rgba(100, 100, 100, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(100, 100, 100, 0); }
-    }
-
-    /* ---------------- FACILITATOR DASHBOARD ---------------- */
-    #facilitator-dashboard {
-      display: none;
-      background: #333;
-      color: white;
-      padding: 20px;
-      border-radius: 12px;
-      margin-top: 50px;
-    }
-    
-    #facilitator-dashboard h2 {
-      color: var(--epic-gold);
-    }
-  </style>
+    </style>
 </head>
 <body>
 
-  <!-- Header with Secret Knock (Triple click to open Facilitator Dashboard) -->
-  <div id="app-header" onclick="handleSecretKnock()">
-    <h1>Mission Statement Builder</h1>
-    <p>Let's build your family's philanthropic vision together.</p>
-  </div>
+    <header>
+        <h1>Epic Philanthropy <span>Mission Statement Builder</span></h1>
+    </header>
 
-  <!-- STEP 1: BRAIN DUMP -->
-  <div id="step-1-brainstorm">
-    <div class="grid-container">
-      
-      <!-- Quadrant: The Problem -->
-      <div class="quadrant">
-        <h3 style="color: #4c0099;">1. The Problem</h3>
-        <p>What breaks your heart or needs fixing?</p>
-        <div class="input-group">
-          <input type="text" id="input-problem" placeholder="Type a word or phrase...">
-          <button onclick="addIdea('problem')">Add</button>
-        </div>
-        <ul id="list-problem" class="idea-list"></ul>
-      </div>
-
-      <!-- Quadrant: Action Words (The Why) -->
-      <div class="quadrant">
-        <h3 style="color: #990000;">2. Action Words (Your Why)</h3>
-        <p>Verbs that describe how you operate (e.g., Support, Build, Disrupt).</p>
-        <div class="input-group">
-          <input type="text" id="input-action" placeholder="Type an action word...">
-          <button onclick="addIdea('action')">Add</button>
-        </div>
-        <ul id="list-action" class="idea-list"></ul>
-      </div>
-
-      <!-- Quadrant: Your Focus -->
-      <div class="quadrant">
-        <h3 style="color: #0044cc;">3. Your Focus</h3>
-        <p>Who or what are you helping? (e.g., Education, Oceans, Local Youth).</p>
-        <div class="input-group">
-          <input type="text" id="input-focus" placeholder="Type a focus area...">
-          <button onclick="addIdea('focus')">Add</button>
-        </div>
-        <ul id="list-focus" class="idea-list"></ul>
-      </div>
-
-      <!-- Quadrant: The Impact -->
-      <div class="quadrant">
-        <h3 style="color: #006600;">4. The Impact</h3>
-        <p>What does success look like?</p>
-        <div class="input-group">
-          <input type="text" id="input-impact" placeholder="Type the desired impact...">
-          <button onclick="addIdea('impact')">Add</button>
-        </div>
-        <ul id="list-impact" class="idea-list"></ul>
-      </div>
-
-    </div>
-    
-    <div style="text-align: center;">
-      <button class="btn-gold" style="font-size: 1.2rem; padding: 15px 30px;" onclick="submitIdeas()">Submit Ideas to Group</button>
-    </div>
-  </div>
-
-  <!-- STEP 2: WAITING SCREEN -->
-  <div id="step-2-waiting">
-    <div class="waiting-pulse">
-      Hang tight!<br>Waiting for the facilitator to reveal the group's ideas...
-    </div>
-  </div>
-
-  <!-- STEP 3: MAD LIBS BUILDER -->
-  <div id="step-3-madlibs">
-    
-    <div class="mad-lib-template">
-      <h3>Draft Your Statement</h3>
-      <p>Click any highlighted word below to jump to that word bank!</p>
-      
-      <div>
-        "We exist to 
-        <span class="mad-lib-blank theme-action" onclick="scrollToBank('bank-action')">[ Action Word ]</span> 
-        the 
-        <span class="mad-lib-blank theme-problem" onclick="scrollToBank('bank-problem')">[ Problem ]</span> 
-        through 
-        <span class="mad-lib-blank theme-focus" onclick="scrollToBank('bank-focus')">[ Focus Area ]</span> 
-        so that 
-        <span class="mad-lib-blank theme-impact" onclick="scrollToBank('bank-impact')">[ Impact ]</span>."
-      </div>
-    </div>
-
-    <!-- Word Banks -->
-    <div class="word-banks-grid">
-      <div id="bank-problem" class="word-bank theme-problem">
-        <h3>Group's Problems</h3>
-        <ul id="group-list-problem"></ul>
-      </div>
-
-      <div id="bank-action" class="word-bank theme-action">
-        <h3>Group's Action Words</h3>
-        <ul id="group-list-action"></ul>
-      </div>
-
-      <div id="bank-focus" class="word-bank theme-focus">
-        <h3>Group's Focus Areas</h3>
-        <ul id="group-list-focus"></ul>
-      </div>
-
-      <div id="bank-impact" class="word-bank theme-impact">
-        <h3>Group's Impact Goals</h3>
-        <ul id="group-list-impact"></ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- FACILITATOR DASHBOARD (Hidden by default) -->
-  <div id="facilitator-dashboard">
-    <h2>Facilitator Controls</h2>
-    <p>Use these buttons to move everyone to the next stage.</p>
-    <button onclick="setGlobalState('brainstorm')">1. Back to Brainstorm</button>
-    <button class="btn-gold" onclick="setGlobalState('madlibs')">2. Reveal Mad Libs to Group</button>
-    <button style="background: #cc0000;" onclick="clearAllData()">Clear All Data (Reset)</button>
-  </div>
-
-  <!-- JAVASCRIPT LOGIC -->
-  <script>
-    // ==========================================
-    // 1. FIREBASE SETUP
-    // ==========================================
-    const firebaseConfig = {
-      apiKey: "AIzaSyDzYW4EeXy_0hrzs-ADKEhF9y6CKjvF6Q0",
-      authDomain: "epic-mission-builder.firebaseapp.com",
-      databaseURL: "https://epic-mission-builder-default-rtdb.firebaseio.com",
-      projectId: "epic-mission-builder",
-      storageBucket: "epic-mission-builder.firebasestorage.app",
-      messagingSenderId: "561834463026",
-      appId: "1:561834463026:web:06a1f86f5a41ba3fff112b"
-    };
-
-    // Initialize Firebase only if it hasn't been already
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.database();
-
-    // ==========================================
-    // 2. LOCAL STATE (For holding ideas before submitting)
-    // ==========================================
-    let userIdeas = {
-      problem: [],
-      action: [],
-      focus: [],
-      impact: []
-    };
-
-    // Allows hitting "Enter" to add an idea
-    ['problem', 'action', 'focus', 'impact'].forEach(quadrant => {
-      const inputEl = document.getElementById('input-' + quadrant);
-      if(inputEl) {
-        inputEl.addEventListener('keypress', function (e) {
-          if (e.key === 'Enter') {
-            addIdea(quadrant);
-          }
-        });
-      }
-    });
-
-    function addIdea(quadrant) {
-      const input = document.getElementById('input-' + quadrant);
-      const val = input.value.trim();
-      
-      if (val !== "") {
-        userIdeas[quadrant].push(val);
-        input.value = ""; // Clear box
-        renderLocalList(quadrant);
-      }
-    }
-
-    function renderLocalList(quadrant) {
-      const ul = document.getElementById('list-' + quadrant);
-      ul.innerHTML = "";
-      
-      userIdeas[quadrant].forEach((idea, index) => {
-        const li = document.createElement('li');
-        li.innerText = idea;
+    <div class="container" id="landing-container">
+        <p class="intro-text">A guided workshop to craft a mission statement that sounds like your family — not a nonprofit brochure.</p>
         
-        // Add a remove button
-        const removeBtn = document.createElement('button');
-        removeBtn.innerText = "x";
-        removeBtn.className = "remove-btn";
-        removeBtn.onclick = () => {
-          userIdeas[quadrant].splice(index, 1);
-          renderLocalList(quadrant);
-        };
+        <div class="role-cards">
+            <div class="role-card" onclick="showForm('facilitator-form')">
+                <div class="icon">🧭</div>
+                <h2>I'm the Facilitator</h2>
+                <p>Create a session and guide the family through the workshop</p>
+            </div>
+            
+            <div class="role-card" onclick="showForm('participant-form')">
+                <div class="icon">👥</div>
+                <h2>I'm a Participant</h2>
+                <p>Join a session with the code your facilitator shared</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="form-container" style="display: none;">
         
-        li.appendChild(removeBtn);
-        ul.appendChild(li);
-      });
-    }
+        <!-- Facilitator Form -->
+        <div class="login-form" id="facilitator-form">
+            <h3>Create Your Session</h3>
+            <div class="form-group">
+                <label>Facilitator Password</label>
+                <input type="password" id="fac-pass" placeholder="Enter password">
+            </div>
+            <div class="form-group">
+                <label>Family / Session Name</label>
+                <input type="text" id="fac-session" placeholder="e.g., COBBFAMILY">
+            </div>
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="fac-name" placeholder="Your name">
+            </div>
+            <button class="btn" onclick="alert('Firebase connect coming in Step 2!')">Create Session →</button>
+            <button class="back-btn" onclick="goBack()">← Back</button>
+        </div>
 
-    // ==========================================
-    // 3. SUBMITTING & UI FLOW
-    // ==========================================
-    function submitIdeas() {
-      // Push local ideas to Firebase
-      ['problem', 'action', 'focus', 'impact'].forEach(quadrant => {
-        userIdeas[quadrant].forEach(idea => {
-          db.ref('ideas/' + quadrant).push({ text: idea });
-        });
-      });
+        <!-- Participant Form -->
+        <div class="login-form" id="participant-form">
+            <h3>Join the Session</h3>
+            <div class="form-group">
+                <label>Session Code</label>
+                <input type="text" id="part-session" placeholder="e.g., COBBFAMILY-2026">
+            </div>
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="part-name" placeholder="Your name">
+            </div>
+            <button class="btn" onclick="alert('Firebase connect coming in Step 2!')">Join Session →</button>
+            <button class="back-btn" onclick="goBack()">← Back</button>
+        </div>
+    </div>
 
-      // Show Waiting Screen locally
-      document.getElementById('step-1-brainstorm').style.display = 'none';
-      document.getElementById('step-2-waiting').style.display = 'block';
-    }
-
-    // Listen for Global State changes (Controlled by Facilitator)
-    db.ref('globalState').on('value', (snapshot) => {
-      const state = snapshot.val() || 'brainstorm';
-      
-      const step1 = document.getElementById('step-1-brainstorm');
-      const step2 = document.getElementById('step-2-waiting');
-      const step3 = document.getElementById('step-3-madlibs');
-
-      if (state === 'brainstorm') {
-        // Only show brainstorm if they haven't submitted yet
-        // If they are on waiting screen, stay on waiting screen
-        if (step2.style.display !== 'block') {
-          step1.style.display = 'block';
-          step3.style.display = 'none';
+    <script>
+        function showForm(formId) {
+            document.getElementById('landing-container').style.display = 'none';
+            document.getElementById('form-container').style.display = 'block';
+            
+            document.getElementById('facilitator-form').style.display = 'none';
+            document.getElementById('participant-form').style.display = 'none';
+            
+            document.getElementById(formId).style.display = 'block';
         }
-      } else if (state === 'madlibs') {
-        step1.style.display = 'none';
-        step2.style.display = 'none';
-        step3.style.display = 'block';
-      }
-    });
 
-    // Listen for Group Ideas to populate Word Banks
-    ['problem', 'action', 'focus', 'impact'].forEach(quadrant => {
-      db.ref('ideas/' + quadrant).on('value', (snapshot) => {
-        const groupUl = document.getElementById('group-list-' + quadrant);
-        if(groupUl) {
-          groupUl.innerHTML = "";
-          snapshot.forEach((childSnapshot) => {
-            const idea = childSnapshot.val().text;
-            const li = document.createElement('li');
-            li.innerText = idea;
-            groupUl.appendChild(li);
-          });
+        function goBack() {
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('landing-container').style.display = 'block';
+            
+            // Clear out the inputs when going back
+            document.querySelectorAll('input').forEach(input => input.value = '');
         }
-      });
-    });
-
-    // ==========================================
-    // 4. MAD LIBS SCROLLING
-    // ==========================================
-    function scrollToBank(bankId) {
-      const bankElement = document.getElementById(bankId);
-      if (bankElement) {
-        // Smooth scroll
-        bankElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        // Add pulse effect
-        bankElement.classList.add('highlight-pulse');
-        
-        // Remove pulse class after animation finishes so it can trigger again
-        setTimeout(() => {
-          bankElement.classList.remove('highlight-pulse');
-        }, 1500);
-      }
-    }
-
-    // ==========================================
-    // 5. SECRET KNOCK & FACILITATOR CONTROLS
-    // ==========================================
-    let clickCount = 0;
-    let clickTimer;
-
-    function handleSecretKnock() {
-      clickCount++;
-      
-      if (clickCount === 1) {
-        // Start 800ms timer on first click
-        clickTimer = setTimeout(() => {
-          clickCount = 0; // Reset if they didn't click 3 times fast enough
-        }, 800);
-      } else if (clickCount === 3) {
-        clearTimeout(clickTimer);
-        clickCount = 0;
-        
-        // Toggle Facilitator Dashboard
-        const dash = document.getElementById('facilitator-dashboard');
-        dash.style.display = (dash.style.display === 'block') ? 'none' : 'block';
-      }
-    }
-
-    function setGlobalState(newState) {
-      db.ref('globalState').set(newState);
-    }
-
-    function clearAllData() {
-      if(confirm("Are you sure you want to delete all group ideas and reset the tool?")) {
-        db.ref('ideas').remove();
-        db.ref('globalState').set('brainstorm');
-        // Clear local inputs
-        userIdeas = { problem: [], action: [], focus: [], impact: [] };
-        ['problem', 'action', 'focus', 'impact'].forEach(renderLocalList);
-        document.getElementById('step-2-waiting').style.display = 'none';
-        document.getElementById('step-1-brainstorm').style.display = 'block';
-      }
-    }
-
-  </script>
+    </script>
 </body>
 </html>
