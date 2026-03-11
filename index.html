@@ -21,115 +21,23 @@
             --dark-gray: #333333;
         }
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--epic-bg);
-            color: var(--white);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--epic-bg); color: var(--white); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { max-width: 800px; width: 90%; margin: 80px auto; text-align: center; }
+        .eyebrow { color: var(--epic-gold); font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        
+        h1 { font-weight: 600; font-size: 52px; line-height: 1.2; margin: 0 0 20px 0; }
+        h1 span { font-style: italic; font-weight: 300; color: var(--epic-gold); }
 
-        .container {
-            max-width: 800px;
-            width: 90%;
-            margin: 80px auto;
-            text-align: center;
-        }
-
-        .eyebrow {
-            color: var(--epic-gold);
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-weight: 600;
-            font-size: 52px;
-            line-height: 1.2;
-            margin: 0 0 20px 0;
-        }
-
-        h1 span {
-            font-style: italic;
-            font-weight: 300;
-            color: var(--epic-gold);
-        }
-
-        .intro-text {
-            font-size: 18px;
-            font-weight: 300;
-            line-height: 1.6;
-            margin-bottom: 60px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .instruction-box {
-            background: var(--off-white);
-            color: var(--epic-ink);
-            padding: 40px;
-            border-radius: 8px;
-            text-align: left;
-            max-width: 500px;
-            margin: 0 auto 40px auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .instruction-box p {
-            margin: 0 0 20px 0;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .instruction-box p:last-child {
-            margin-bottom: 0;
-        }
-
-        .btn-primary {
-            background-color: var(--epic-gold);
-            color: var(--white);
-            border: none;
-            padding: 16px 40px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            transition: opacity 0.3s ease;
-        }
-
+        .intro-text { font-size: 18px; font-weight: 300; line-height: 1.6; margin-bottom: 60px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .instruction-box { background: var(--off-white); color: var(--epic-ink); padding: 40px; border-radius: 8px; text-align: left; max-width: 500px; margin: 0 auto 40px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .instruction-box p { margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; }
+        .instruction-box p:last-child { margin-bottom: 0; }
+        
+        .btn-primary { background-color: var(--epic-gold); color: var(--white); border: none; padding: 16px 40px; font-size: 18px; font-weight: 600; border-radius: 4px; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: opacity 0.3s ease; }
         .btn-primary:hover { opacity: 0.9; }
-
-        .facilitator-link {
-            display: block;
-            margin-top: 20px;
-            color: var(--epic-gold);
-            font-size: 14px;
-            text-decoration: underline;
-            font-weight: 300;
-            cursor: pointer;
-            background: none;
-            border: none;
-            font-family: 'Montserrat', sans-serif;
-            text-align: center; /* FIXED: Centered */
-            width: 100%;
-        }
-
-        .form-container {
-            display: none;
-            max-width: 400px;
-            margin: 0 auto;
-            text-align: left;
-        }
-
+        
+        .facilitator-link { display: block; margin-top: 20px; color: var(--epic-gold); font-size: 14px; text-decoration: underline; font-weight: 300; cursor: pointer; background: none; border: none; font-family: 'Montserrat', sans-serif; text-align: center; width: 100%; }
+        .form-container { display: none; max-width: 400px; margin: 0 auto; text-align: left; }
         .form-group { margin-bottom: 25px; }
         .form-group label { display: block; margin-bottom: 8px; font-size: 15px; color: var(--white); }
         .form-group input { width: 100%; padding: 15px; border: none; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 16px; box-sizing: border-box; background: rgba(255,255,255,0.1); color: var(--white); }
@@ -138,28 +46,17 @@
         .back-link { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 14px; display: block; margin-top: 20px; text-align: center; cursor: pointer; }
 
         /* --- WORKSPACE --- */
-        #workspace-view {
-            display: none;
-            width: 100%;
-            max-width: 1200px; /* Made wider to fit builder */
-            margin: 40px auto;
-            background: var(--off-white);
-            color: var(--epic-ink);
-            border-radius: 8px;
-            padding: 40px;
-            box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
+        #workspace-view { display: none; width: 100%; max-width: 1200px; margin: 40px auto; background: var(--off-white); color: var(--epic-ink); border-radius: 8px; padding: 40px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .session-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-gray); padding-bottom: 20px; margin-bottom: 30px; }
         .session-header h2 { margin: 0; font-size: 24px; font-weight: 600; }
-        .session-header p { margin: 5px 0 0 0; font-size: 14px; color: #666; }
+        .session-header p { margin: 5px 0 0 0; font-size: 14px; color: #666; display: flex; align-items: center; gap: 10px; }
         .role-badge { background: var(--epic-gold); color: var(--white); padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-copy { background: #ddd; border: none; padding: 2px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: 'Montserrat', sans-serif;}
+        .btn-copy:hover { background: #ccc; }
 
         /* --- QUADRANTS --- */
         .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 50px;}
         @media (max-width: 768px) { .quadrant-grid { grid-template-columns: 1fr; } }
-        
         .quadrant-card { background: var(--white); border: 1px solid var(--light-gray); border-radius: 8px; padding: 25px; display: flex; flex-direction: column; }
         .quadrant-card h3 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; color: var(--epic-ink); }
         .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
@@ -171,118 +68,30 @@
         .idea-author { font-size: 11px; color: #888; margin-left: 10px; }
 
         /* --- BUILDER AREA --- */
-        .builder-section {
-            border-top: 4px solid var(--epic-ink);
-            padding-top: 40px;
-            margin-top: 40px;
-        }
+        .builder-section { border-top: 4px solid var(--epic-ink); padding-top: 40px; margin-top: 40px; }
+        .builder-layout { display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
+        @media (max-width: 900px) { .builder-layout { grid-template-columns: 1fr; } }
 
-        .builder-layout {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 30px;
-        }
-
-        @media (max-width: 900px) {
-            .builder-layout { grid-template-columns: 1fr; }
-        }
-
-        .template-selector {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .template-btn {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid var(--light-gray);
-            background: var(--white);
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: left;
-            font-family: 'Montserrat', sans-serif;
-            transition: all 0.2s;
-        }
-
-        .template-btn.active {
-            border-color: var(--epic-gold);
-            background: rgba(226, 183, 74, 0.1);
-        }
-
+        .template-selector { display: flex; gap: 15px; margin-bottom: 30px; }
+        .template-btn { flex: 1; padding: 15px; border: 2px solid var(--light-gray); background: var(--white); border-radius: 8px; cursor: pointer; text-align: left; font-family: 'Montserrat', sans-serif; transition: all 0.2s; }
+        .template-btn.active { border-color: var(--epic-gold); background: rgba(226, 183, 74, 0.1); }
         .template-btn h4 { margin: 0 0 5px 0; color: var(--epic-ink); font-size: 16px; }
         .template-btn p { margin: 0; font-size: 12px; color: #666; }
 
-        /* The actual mad libs sentence */
-        .draft-area {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 8px;
-            border: 1px solid var(--light-gray);
-            font-size: 24px;
-            line-height: 2;
-            font-weight: 300;
-            color: var(--dark-gray);
-        }
+        .draft-area { background: var(--white); padding: 40px; border-radius: 8px; border: 1px solid var(--light-gray); font-size: 24px; line-height: 2; font-weight: 300; color: var(--dark-gray); }
+        .blank { display: inline-block; min-width: 150px; padding: 0 10px; margin: 0 5px; border-bottom: 2px solid var(--epic-bg); background: rgba(82, 139, 153, 0.1); color: var(--epic-bg); font-weight: 600; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .blank.focused { background: var(--epic-gold); color: var(--white); border-bottom-color: var(--epic-gold); }
 
-        .blank {
-            display: inline-block;
-            min-width: 150px;
-            padding: 0 10px;
-            margin: 0 5px;
-            border-bottom: 2px solid var(--epic-bg);
-            background: rgba(82, 139, 153, 0.1);
-            color: var(--epic-bg);
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .word-bank-sidebar { background: var(--white); border: 1px solid var(--light-gray); border-radius: 8px; padding: 20px; max-height: 800px; overflow-y: auto; }
+        .word-bank-section { margin-bottom: 25px; }
+        .word-bank-section h4 { margin: 0 0 10px 0; font-size: 14px; color: var(--epic-ink); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--light-gray); padding-bottom: 5px; }
+        .word-chip { display: inline-block; background: var(--off-white); border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; font-size: 13px; margin: 0 5px 8px 0; cursor: pointer; transition: all 0.2s; }
+        .word-chip:hover { background: var(--epic-bg); color: var(--white); border-color: var(--epic-bg); }
 
-        .blank.focused {
-            background: var(--epic-gold);
-            color: var(--white);
-            border-bottom-color: var(--epic-gold);
-        }
-
-        /* Standard Word Banks Sidebar */
-        .word-bank-sidebar {
-            background: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            padding: 20px;
-            max-height: 600px;
-            overflow-y: auto;
-        }
-
-        .word-bank-section h4 {
-            margin: 0 0 10px 0;
-            font-size: 14px;
-            color: var(--epic-ink);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--light-gray);
-            padding-bottom: 5px;
-        }
-
-        .word-chip {
-            display: inline-block;
-            background: var(--off-white);
-            border: 1px solid #ccc;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            margin: 0 5px 8px 0;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .word-chip:hover {
-            background: var(--epic-bg);
-            color: var(--white);
-            border-color: var(--epic-bg);
-        }
-
+        .custom-word-input { display: flex; gap: 5px; margin-bottom: 20px; }
+        .custom-word-input input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: 'Montserrat', sans-serif;}
+        .custom-word-input button { background: var(--epic-ink); color: white; border: none; border-radius: 4px; padding: 0 10px; cursor: pointer; }
+        .error-msg { color: #ffcccc; font-size: 14px; margin-top: -15px; margin-bottom: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -290,10 +99,7 @@
     <!-- LANDING VIEW -->
     <div class="container" id="landing-view">
         <div class="eyebrow">Family Philanthropic Planning</div>
-        
-        <!-- FIXED: Headline text changed -->
-        <h1>Craft your family's <span>mission statement</span></h1>
-        
+        <h1><span>Craft</span> your family's mission statement</h1>
         <p class="intro-text">A guided workshop to craft a mission statement that sounds like your family — not a nonprofit brochure.</p>
         
         <div class="instruction-box">
@@ -303,7 +109,6 @@
         </div>
 
         <button class="btn-primary" onclick="showForm('participant-form')">Join a Session →</button>
-        <!-- FIXED: Facilitator link will center via CSS -->
         <button class="facilitator-link" onclick="showForm('facilitator-form')">Facilitator? Set up a session</button>
     </div>
 
@@ -313,7 +118,7 @@
         <div id="part-error" class="error-msg">Please enter a valid code and your name.</div>
         <div class="form-group">
             <label>Session Code</label>
-            <input type="text" id="part-session" placeholder="e.g., COBB-2026">
+            <input type="text" id="part-session" placeholder="e.g., COBB-2026" style="text-transform: uppercase;">
         </div>
         <div class="form-group">
             <label>Your Name</label>
@@ -332,8 +137,8 @@
             <input type="password" id="fac-pass" placeholder="Enter password">
         </div>
         <div class="form-group">
-            <label>Family / Session Name</label>
-            <input type="text" id="fac-session" placeholder="e.g., COBB-2026">
+            <label>Family Name (Creates Code)</label>
+            <input type="text" id="fac-session" placeholder="e.g., Cobb">
         </div>
         <div class="form-group">
             <label>Your Name</label>
@@ -348,7 +153,10 @@
         <div class="session-header">
             <div>
                 <h2>Part 1: Brain Dump</h2>
-                <p>Session Code: <strong id="display-session-code">---</strong></p>
+                <p>
+                    Session Code: <strong id="display-session-code">---</strong> 
+                    <button class="btn-copy" onclick="copyCode()">📋 Copy</button>
+                </p>
             </div>
             <div style="text-align: right;">
                 <div class="role-badge" id="display-role">Participant</div>
@@ -393,68 +201,154 @@
             </div>
         </div>
 
-        <!-- NEW: PART 2 BUILDER SECTION -->
+        <!-- PART 2 BUILDER SECTION -->
         <div class="builder-section">
             <h2>Part 2: Build It Together</h2>
-            <p style="margin-bottom: 30px; color: #666;">Choose a template. Click a blank, then click an idea from the quadrants above or the word banks below to fill it in.</p>
+            <p style="margin-bottom: 30px; color: #666;">Choose a template. Click a blank to focus it, then click an idea from the word banks to fill it in.</p>
             
             <div class="template-selector">
-                <div class="template-btn active">
+                <div class="template-btn active" onclick="setTemplate('problem')">
                     <h4>Problem Focused</h4>
-                    <p>Lead with what's broken</p>
+                    <p>Lead with what's broken and what you're doing about it.</p>
                 </div>
-                <div class="template-btn">
+                <div class="template-btn" onclick="setTemplate('action')">
                     <h4>Action Focused</h4>
-                    <p>Lead with what you do</p>
+                    <p>Lead with what you do and who you serve.</p>
                 </div>
-                <div class="template-btn">
+                <div class="template-btn" onclick="setTemplate('value')">
                     <h4>Value Focused</h4>
-                    <p>Lead with what you believe</p>
+                    <p>Lead with what you believe and why it drives you.</p>
                 </div>
             </div>
 
             <div class="builder-layout">
                 <!-- Draft Area -->
                 <div>
-                    <div class="draft-area">
-                        The [Family Name] exists to 
-                        <span class="blank focused">[ Action Word ]</span> 
-                        <span class="blank">[ The Problem ]</span> 
+                    <div class="draft-area" id="draft-display">
+                        We exist to 
+                        <span class="blank focused" onclick="focusBlank(this)" data-id="blank1">[ Action Word ]</span> 
+                        the 
+                        <span class="blank" onclick="focusBlank(this)" data-id="blank2">[ Problem ]</span> 
                         through 
-                        <span class="blank">[ How You Work ]</span> 
+                        <span class="blank" onclick="focusBlank(this)" data-id="blank3">[ How You Work ]</span> 
                         so that 
-                        <span class="blank">[ The Impact ]</span>.
+                        <span class="blank" onclick="focusBlank(this)" data-id="blank4">[ Impact ]</span>.
                     </div>
                 </div>
 
                 <!-- Word Bank Sidebar -->
                 <div class="word-bank-sidebar">
-                    <div class="word-bank-section" style="margin-bottom: 25px;">
-                        <h4>Action Words</h4>
-                        <span class="word-chip">Supports</span>
-                        <span class="word-chip">Invests in</span>
-                        <span class="word-chip">Empowers</span>
-                        <span class="word-chip">Builds</span>
-                        <span class="word-chip">Advocates for</span>
-                        <span class="word-chip">Disrupts</span>
+                    
+                    <div class="custom-word-input">
+                        <input type="text" id="custom-word" placeholder="Type your own word...">
+                        <button onclick="insertCustomWord()">Use</button>
                     </div>
 
-                    <div class="word-bank-section" style="margin-bottom: 25px;">
+                    <div class="word-bank-section">
                         <h4>Who You Serve</h4>
-                        <span class="word-chip">Children</span>
-                        <span class="word-chip">Families</span>
-                        <span class="word-chip">Women & girls</span>
-                        <span class="word-chip">Students</span>
-                        <span class="word-chip">Veterans</span>
+                        <div id="bank-who">
+                            <span class="word-chip" onclick="insertWord(this)">Children & youth</span>
+                            <span class="word-chip" onclick="insertWord(this)">Families</span>
+                            <span class="word-chip" onclick="insertWord(this)">Women & girls</span>
+                            <span class="word-chip" onclick="insertWord(this)">BIPOC communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">Students</span>
+                            <span class="word-chip" onclick="insertWord(this)">Immigrants</span>
+                            <span class="word-chip" onclick="insertWord(this)">Veterans</span>
+                            <span class="word-chip" onclick="insertWord(this)">People in recovery</span>
+                            <span class="word-chip" onclick="insertWord(this)">LGBTQ+ communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">Future generations</span>
+                            <span class="word-chip" onclick="insertWord(this)">Marginalized communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">Seniors</span>
+                            <span class="word-chip" onclick="insertWord(this)">Rural communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">People with disabilities</span>
+                        </div>
+                    </div>
+
+                    <div class="word-bank-section">
+                        <h4>Action Words</h4>
+                        <div id="bank-action">
+                            <span class="word-chip" onclick="insertWord(this)">Supports</span>
+                            <span class="word-chip" onclick="insertWord(this)">Champions</span>
+                            <span class="word-chip" onclick="insertWord(this)">Invests in</span>
+                            <span class="word-chip" onclick="insertWord(this)">Empowers</span>
+                            <span class="word-chip" onclick="insertWord(this)">Advances</span>
+                            <span class="word-chip" onclick="insertWord(this)">Builds</span>
+                            <span class="word-chip" onclick="insertWord(this)">Creates</span>
+                            <span class="word-chip" onclick="insertWord(this)">Drives</span>
+                            <span class="word-chip" onclick="insertWord(this)">Advocates for</span>
+                            <span class="word-chip" onclick="insertWord(this)">Strengthens</span>
+                            <span class="word-chip" onclick="insertWord(this)">Protects</span>
+                            <span class="word-chip" onclick="insertWord(this)">Nurtures</span>
+                            <span class="word-chip" onclick="insertWord(this)">Amplifies</span>
+                            <span class="word-chip" onclick="insertWord(this)">Cultivates</span>
+                            <span class="word-chip" onclick="insertWord(this)">Transforms</span>
+                            <span class="word-chip" onclick="insertWord(this)">Mobilizes</span>
+                            <span class="word-chip" onclick="insertWord(this)">Elevates</span>
+                            <span class="word-chip" onclick="insertWord(this)">Fuels</span>
+                            <span class="word-chip" onclick="insertWord(this)">Catalyzes</span>
+                            <span class="word-chip" onclick="insertWord(this)">Unlocks</span>
+                            <span class="word-chip" onclick="insertWord(this)">Centers</span>
+                            <span class="word-chip" onclick="insertWord(this)">Uplifts</span>
+                            <span class="word-chip" onclick="insertWord(this)">Fosters</span>
+                            <span class="word-chip" onclick="insertWord(this)">Partners with</span>
+                            <span class="word-chip" onclick="insertWord(this)">Equips</span>
+                            <span class="word-chip" onclick="insertWord(this)">Prioritizes</span>
+                            <span class="word-chip" onclick="insertWord(this)">Expands access for</span>
+                        </div>
+                    </div>
+
+                    <div class="word-bank-section">
+                        <h4>Belief Starters</h4>
+                        <div id="bank-belief">
+                            <span class="word-chip" onclick="insertWord(this)">Everyone deserves...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Change happens when...</span>
+                            <span class="word-chip" onclick="insertWord(this)">No one should have to...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Justice demands...</span>
+                            <span class="word-chip" onclick="insertWord(this)">True impact requires...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Communities thrive when...</span>
+                            <span class="word-chip" onclick="insertWord(this)">People have the right to...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Real progress means...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Healing begins when...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Opportunity shouldn't depend on...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Lasting change requires...</span>
+                        </div>
+                    </div>
+
+                    <div class="word-bank-section">
+                        <h4>Impact Language</h4>
+                        <div id="bank-impact">
+                            <span class="word-chip" onclick="insertWord(this)">Systemic change</span>
+                            <span class="word-chip" onclick="insertWord(this)">Equity and access</span>
+                            <span class="word-chip" onclick="insertWord(this)">Dignity and respect</span>
+                            <span class="word-chip" onclick="insertWord(this)">Lasting legacy</span>
+                            <span class="word-chip" onclick="insertWord(this)">Collective power</span>
+                            <span class="word-chip" onclick="insertWord(this)">Thriving communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">Generational impact</span>
+                            <span class="word-chip" onclick="insertWord(this)">Shared prosperity</span>
+                            <span class="word-chip" onclick="insertWord(this)">Voices heard and valued</span>
+                            <span class="word-chip" onclick="insertWord(this)">Community resilience</span>
+                            <span class="word-chip" onclick="insertWord(this)">Sustainable transformation</span>
+                        </div>
                     </div>
 
                     <div class="word-bank-section">
                         <h4>How You Work</h4>
-                        <span class="word-chip">Direct support</span>
-                        <span class="word-chip">Trust-based partnerships</span>
-                        <span class="word-chip">Capacity building</span>
-                        <span class="word-chip">Policy change</span>
+                        <div id="bank-how">
+                            <span class="word-chip" onclick="insertWord(this)">Trust-based partnerships</span>
+                            <span class="word-chip" onclick="insertWord(this)">Direct support</span>
+                            <span class="word-chip" onclick="insertWord(this)">Community collaboration</span>
+                            <span class="word-chip" onclick="insertWord(this)">Local organizing</span>
+                            <span class="word-chip" onclick="insertWord(this)">Advocacy</span>
+                            <span class="word-chip" onclick="insertWord(this)">Shared funding</span>
+                            <span class="word-chip" onclick="insertWord(this)">Capacity building</span>
+                            <span class="word-chip" onclick="insertWord(this)">Multi-year unrestricted funding</span>
+                            <span class="word-chip" onclick="insertWord(this)">Policy change</span>
+                            <span class="word-chip" onclick="insertWord(this)">Leadership development</span>
+                            <span class="word-chip" onclick="insertWord(this)">Grassroots grantmaking</span>
+                            <span class="word-chip" onclick="insertWord(this)">Community organizing</span>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -493,6 +387,13 @@
             document.querySelectorAll('input').forEach(input => input.value = '');
         }
 
+        function copyCode() {
+            navigator.clipboard.writeText(mySession);
+            const btn = document.querySelector('.btn-copy');
+            btn.innerText = '✅ Copied!';
+            setTimeout(() => { btn.innerText = '📋 Copy'; }, 2000);
+        }
+
         function showWorkspace() {
             document.getElementById('landing-view').style.display = 'none';
             document.getElementById('participant-form').style.display = 'none';
@@ -511,14 +412,14 @@
 
         function createSession() {
             const pass = document.getElementById('fac-pass').value.trim();
-            const sess = document.getElementById('fac-session').value.trim().toUpperCase();
+            const family = document.getElementById('fac-session').value.trim().replace(/[^a-zA-Z]/g, '').toUpperCase();
             const name = document.getElementById('fac-name').value.trim();
 
-            if (pass !== FACILITATOR_PASSWORD || !sess || !name) {
+            if (pass !== FACILITATOR_PASSWORD || !family || !name) {
                 document.getElementById('fac-error').style.display = 'block';
                 return;
             }
-            myRole = 'Facilitator'; myName = name; mySession = sess;
+            myRole = 'Facilitator'; myName = name; mySession = family + '-2026';
             showWorkspace();
         }
 
@@ -556,11 +457,84 @@
                     Object.values(quadData).forEach(idea => {
                         const div = document.createElement('div');
                         div.className = 'idea-item';
+                        // Add an onclick to let people insert ideas from the quadrants into the blanks
+                        div.onclick = function() { insertWordFromQuad(idea.text); };
                         div.innerHTML = `<span>${idea.text}</span><span class="idea-author">${idea.author}</span>`;
                         listDiv.appendChild(div);
                     });
                 });
             });
+        }
+
+        // --- BUILDER LOGIC ---
+        let currentFocusedBlank = null;
+
+        // Make the first blank focused by default on load
+        window.onload = function() {
+            const firstBlank = document.querySelector('.blank');
+            if(firstBlank) currentFocusedBlank = firstBlank;
+        };
+
+        function setTemplate(type) {
+            // Update active button styling
+            document.querySelectorAll('.template-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const draftArea = document.getElementById('draft-display');
+            
+            if (type === 'problem') {
+                draftArea.innerHTML = `We exist to <span class="blank focused" onclick="focusBlank(this)">[ Action Word ]</span> the <span class="blank" onclick="focusBlank(this)">[ Problem ]</span> through <span class="blank" onclick="focusBlank(this)">[ How You Work ]</span> so that <span class="blank" onclick="focusBlank(this)">[ Impact ]</span>.`;
+            } else if (type === 'action') {
+                draftArea.innerHTML = `Our family <span class="blank focused" onclick="focusBlank(this)">[ Action Word ]</span> <span class="blank" onclick="focusBlank(this)">[ Who You Serve ]</span> by focusing on <span class="blank" onclick="focusBlank(this)">[ Problem ]</span> to create <span class="blank" onclick="focusBlank(this)">[ Impact ]</span>.`;
+            } else if (type === 'value') {
+                draftArea.innerHTML = `Because we believe <span class="blank focused" onclick="focusBlank(this)">[ Belief Starter ]</span>, we use <span class="blank" onclick="focusBlank(this)">[ How You Work ]</span> to <span class="blank" onclick="focusBlank(this)">[ Action Word ]</span> <span class="blank" onclick="focusBlank(this)">[ Who You Serve ]</span>.`;
+            }
+            
+            // Reset focus to the first blank of the new template
+            currentFocusedBlank = draftArea.querySelector('.blank');
+        }
+
+        function focusBlank(element) {
+            document.querySelectorAll('.blank').forEach(b => b.classList.remove('focused'));
+            element.classList.add('focused');
+            currentFocusedBlank = element;
+        }
+
+        function insertWord(chipElement) {
+            if (!currentFocusedBlank) return;
+            currentFocusedBlank.innerText = chipElement.innerText;
+            currentFocusedBlank.style.color = '#333'; // Make text dark once filled
+            
+            // Auto-advance to next blank
+            autoAdvanceFocus();
+        }
+
+        function insertWordFromQuad(text) {
+            if (!currentFocusedBlank) return;
+            currentFocusedBlank.innerText = text;
+            currentFocusedBlank.style.color = '#333';
+            autoAdvanceFocus();
+        }
+
+        function insertCustomWord() {
+            const input = document.getElementById('custom-word');
+            const text = input.value.trim();
+            if (!text || !currentFocusedBlank) return;
+            
+            currentFocusedBlank.innerText = text;
+            currentFocusedBlank.style.color = '#333';
+            input.value = ''; // clear input
+            autoAdvanceFocus();
+        }
+
+        function autoAdvanceFocus() {
+            if(!currentFocusedBlank) return;
+            const allBlanks = Array.from(document.querySelectorAll('.blank'));
+            const currentIndex = allBlanks.indexOf(currentFocusedBlank);
+            
+            if (currentIndex >= 0 && currentIndex < allBlanks.length - 1) {
+                focusBlank(allBlanks[currentIndex + 1]);
+            }
         }
     </script>
 </body>
