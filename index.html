@@ -12,7 +12,7 @@
 
     <style>
         :root {
-            /* EPIC BRAND COLORS (From Image) */
+            /* EPIC BRAND COLORS */
             --epic-dark-teal: #1e5563;
             --epic-medium-teal: #4f8284;
             --epic-gold: #dead2f; 
@@ -23,13 +23,15 @@
             --off-white: #f5f5f5;
             --light-gray: #e0e0e0;
 
-            /* WORKSHOP 6-COLOR PALETTE (Mapped from Brand Services) */
+            /* WORKSHOP COLOR PALETTE */
             --c-problem: #904237; /* Nonprofits (Rust) */
             --c-belief: #4f8284;  /* Medium Teal */
             --c-impact: #5b7666;  /* Family Foundations (Sage) */
             --c-focus: #457093;   /* Individuals & Families (Blue) */
             --c-action: #1b3a5c;  /* Financial Advisors (Navy) */
             --c-how: #dead2f;     /* Golden Yellow */
+            --c-where: #1e5563;   /* Dark Teal */
+            --c-fund: #0d2b32;    /* Epic Ink */
         }
 
         body { font-family: 'Montserrat', sans-serif; background-color: var(--epic-dark-teal); color: var(--white); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
@@ -70,16 +72,12 @@
         .quadrant-card { background: var(--white); border: 1px solid var(--light-gray); border-radius: 8px; padding: 25px; display: flex; flex-direction: column; border-top-width: 6px; }
         .quadrant-card h3 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; }
         
-        /* Quadrant Top Borders */
         .quad-problem { border-top-color: var(--c-problem); }
         .quad-problem h3 { color: var(--c-problem); }
-        
         .quad-belief { border-top-color: var(--c-belief); }
         .quad-belief h3 { color: var(--c-belief); }
-        
         .quad-impact { border-top-color: var(--c-impact); }
         .quad-impact h3 { color: var(--c-impact); }
-        
         .quad-focus { border-top-color: var(--c-focus); }
         .quad-focus h3 { color: var(--c-focus); }
 
@@ -93,13 +91,11 @@
         .idea-item:hover { background: #f0f0f0; }
         .idea-author { font-size: 11px; color: #888; margin-left: 10px; }
         
-        /* Idea item borders matching colors */
         .item-problem { border-left-color: var(--c-problem); }
         .item-belief { border-left-color: var(--c-belief); }
         .item-impact { border-left-color: var(--c-impact); }
         .item-focus { border-left-color: var(--c-focus); }
 
-        /* Empty State Styling */
         .empty-state { color: #a0a0a0; font-style: italic; font-size: 14px; font-weight: 300; line-height: 1.6; padding: 5px; }
         .empty-state strong { font-weight: 600; font-style: normal; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #b0b0b0; display: block; margin-bottom: 5px; }
 
@@ -121,21 +117,20 @@
         
         .blank-problem { border-bottom-color: var(--c-problem); }
         .blank-problem.focused, .blank-problem.filled { background: var(--c-problem); color: var(--white); }
-        
         .blank-belief { border-bottom-color: var(--c-belief); }
         .blank-belief.focused, .blank-belief.filled { background: var(--c-belief); color: var(--white); }
-        
         .blank-impact { border-bottom-color: var(--c-impact); }
         .blank-impact.focused, .blank-impact.filled { background: var(--c-impact); color: var(--white); }
-        
         .blank-focus { border-bottom-color: var(--c-focus); }
         .blank-focus.focused, .blank-focus.filled { background: var(--c-focus); color: var(--white); }
-        
         .blank-action { border-bottom-color: var(--c-action); }
         .blank-action.focused, .blank-action.filled { background: var(--c-action); color: var(--white); }
-        
         .blank-how { border-bottom-color: var(--c-how); }
-        .blank-how.focused, .blank-how.filled { background: var(--c-how); color: var(--epic-ink); } /* Gold needs dark text */
+        .blank-how.focused, .blank-how.filled { background: var(--c-how); color: var(--epic-ink); } 
+        .blank-where { border-bottom-color: var(--c-where); }
+        .blank-where.focused, .blank-where.filled { background: var(--c-where); color: var(--white); }
+        .blank-fund { border-bottom-color: var(--c-fund); }
+        .blank-fund.focused, .blank-fund.filled { background: var(--c-fund); color: var(--white); }
 
         .btn-save { background: var(--epic-ink); color: var(--white); border: none; padding: 15px 30px; font-size: 16px; font-weight: 600; border-radius: 4px; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-top: 20px; width: 100%; transition: background 0.2s; }
         .btn-save:hover { background: var(--epic-medium-teal); }
@@ -145,25 +140,25 @@
         .word-bank-section { margin-bottom: 25px; }
         .word-bank-section h4 { margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--light-gray); padding-bottom: 5px; }
         
-        /* Section Headers matched to colors */
         .sec-focus h4 { color: var(--c-focus); border-bottom-color: var(--c-focus); }
         .sec-action h4 { color: var(--c-action); border-bottom-color: var(--c-action); }
-        .sec-belief h4 { color: var(--c-belief); border-bottom-color: var(--c-belief); }
         .sec-impact h4 { color: var(--c-impact); border-bottom-color: var(--c-impact); }
         .sec-how h4 { color: var(--c-how); border-bottom-color: var(--c-how); }
+        .sec-where h4 { color: var(--c-where); border-bottom-color: var(--c-where); }
 
         .word-chip { display: inline-block; background: var(--off-white); border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; font-size: 13px; margin: 0 5px 8px 0; cursor: pointer; transition: all 0.2s; color: var(--epic-ink); }
         
-        /* Chip hover states mapped to colors */
         .sec-focus .word-chip:hover { background: var(--c-focus); color: white; border-color: var(--c-focus); }
         .sec-action .word-chip:hover { background: var(--c-action); color: white; border-color: var(--c-action); }
-        .sec-belief .word-chip:hover { background: var(--c-belief); color: white; border-color: var(--c-belief); }
         .sec-impact .word-chip:hover { background: var(--c-impact); color: white; border-color: var(--c-impact); }
         .sec-how .word-chip:hover { background: var(--c-how); color: var(--epic-ink); border-color: var(--c-how); }
+        .sec-where .word-chip:hover { background: var(--c-where); color: white; border-color: var(--c-where); }
 
-        .custom-word-input { display: flex; gap: 5px; margin-bottom: 20px; }
-        .custom-word-input input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: 'Montserrat', sans-serif;}
-        .custom-word-input button { background: var(--epic-ink); color: white; border: none; border-radius: 4px; padding: 0 10px; cursor: pointer; }
+        /* Inline "Add Your Own" styling */
+        .custom-chip-container { display: inline-block; margin: 0 5px 8px 0; }
+        .custom-chip-input { background: transparent; border: 1px dashed #ccc; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-family: 'Montserrat', sans-serif; width: 140px; font-style: italic; color: #666; transition: all 0.2s;}
+        .custom-chip-input:focus { outline: none; border-color: var(--epic-ink); background: #fff; font-style: normal; color: var(--epic-ink);}
+        .custom-chip-input::placeholder { color: #aaa; }
 
         /* --- PART 3: DRAFTS GALLERY --- */
         .drafts-section { border-top: 4px solid var(--epic-gold); padding-top: 40px; margin-top: 40px; }
@@ -254,7 +249,6 @@
         </div>
 
         <div class="quadrant-grid">
-            <!-- Q1: Problem (Rust) -->
             <div class="quadrant-card quad-problem">
                 <h3>😟 What problem keeps you up at night?</h3>
                 <div class="input-row">
@@ -264,7 +258,6 @@
                 <div class="ideas-list" id="list-q1"></div>
             </div>
             
-            <!-- Q2: Belief/Why (Teal) -->
             <div class="quadrant-card quad-belief">
                 <h3>💙 Why do you care about this?</h3>
                 <div class="input-row">
@@ -274,7 +267,6 @@
                 <div class="ideas-list" id="list-q2"></div>
             </div>
             
-            <!-- Q3: Impact (Sage) -->
             <div class="quadrant-card quad-impact">
                 <h3>📊 What does success look like?</h3>
                 <div class="input-row">
@@ -284,7 +276,6 @@
                 <div class="ideas-list" id="list-q3"></div>
             </div>
             
-            <!-- Q4: Focus / Who (Steel Blue) -->
             <div class="quadrant-card quad-focus">
                 <h3>🎯 Who or what are you helping?</h3>
                 <div class="input-row">
@@ -307,7 +298,7 @@
                 </div>
                 <div class="template-btn" onclick="setTemplate('action')">
                     <h4>Action Focused</h4>
-                    <p style="margin:0; font-size:12px; color:#666;">Lead with who you serve.</p>
+                    <p style="margin:0; font-size:12px; color:#666;">Lead with what you do.</p>
                 </div>
                 <div class="template-btn" onclick="setTemplate('value')">
                     <h4>Value Focused</h4>
@@ -329,53 +320,66 @@
 
                 <!-- Word Bank Sidebar -->
                 <div class="word-bank-sidebar" id="word-sidebar">
-                    <div class="custom-word-input">
-                        <input type="text" id="custom-word" placeholder="Type your own word...">
-                        <button onclick="insertCustomWord()">Use</button>
-                    </div>
 
                     <div class="word-bank-section sec-focus">
                         <h4>Who You Serve</h4>
                         <div id="bank-who">
                             <span class="word-chip" onclick="insertWord(this)">Children & youth</span>
                             <span class="word-chip" onclick="insertWord(this)">Families</span>
+                            <span class="word-chip" onclick="insertWord(this)">Women & girls</span>
                             <span class="word-chip" onclick="insertWord(this)">BIPOC communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">Immigrants</span>
+                            <span class="word-chip" onclick="insertWord(this)">Veterans</span>
+                            <span class="word-chip" onclick="insertWord(this)">People in recovery</span>
+                            <span class="word-chip" onclick="insertWord(this)">LGBTQ+ communities</span>
                             <span class="word-chip" onclick="insertWord(this)">Future generations</span>
-                            <span class="word-chip" onclick="insertWord(this)">Marginalized communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">Seniors</span>
+                            <span class="word-chip" onclick="insertWord(this)">Rural communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">People with disabilities</span>
+                            <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="[+ add your own]" onkeypress="addCustomChip(event, 'bank-who', this)"></div>
                         </div>
                     </div>
 
                     <div class="word-bank-section sec-action">
                         <h4>Action Words</h4>
                         <div id="bank-action">
-                            <span class="word-chip" onclick="insertWord(this)">Supports</span>
-                            <span class="word-chip" onclick="insertWord(this)">Invests in</span>
-                            <span class="word-chip" onclick="insertWord(this)">Empowers</span>
-                            <span class="word-chip" onclick="insertWord(this)">Builds</span>
-                            <span class="word-chip" onclick="insertWord(this)">Advocates for</span>
-                            <span class="word-chip" onclick="insertWord(this)">Transforms</span>
-                            <span class="word-chip" onclick="insertWord(this)">Catalyzes</span>
-                            <span class="word-chip" onclick="insertWord(this)">Partners with</span>
-                        </div>
-                    </div>
-
-                    <div class="word-bank-section sec-belief">
-                        <h4>Belief Starters</h4>
-                        <div id="bank-belief">
-                            <span class="word-chip" onclick="insertWord(this)">Everyone deserves...</span>
-                            <span class="word-chip" onclick="insertWord(this)">Change happens when...</span>
-                            <span class="word-chip" onclick="insertWord(this)">Justice demands...</span>
-                            <span class="word-chip" onclick="insertWord(this)">Communities thrive when...</span>
+                            <span class="word-chip" onclick="insertWord(this)">Support(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Champion(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Invest(s) in</span>
+                            <span class="word-chip" onclick="insertWord(this)">Empower(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Advance(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Build(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Create(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Drive(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Advocate(s) for</span>
+                            <span class="word-chip" onclick="insertWord(this)">Strengthen(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Cultivate(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Transform(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Mobilize(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Elevate(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Catalyze(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Unlock(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Center(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Uplift(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Foster(s)</span>
+                            <span class="word-chip" onclick="insertWord(this)">Partner(s) with</span>
+                            <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="[+ add your own]" onkeypress="addCustomChip(event, 'bank-action', this)"></div>
                         </div>
                     </div>
 
                     <div class="word-bank-section sec-impact">
-                        <h4>Impact Language</h4>
+                        <h4>Impact & Change Words</h4>
                         <div id="bank-impact">
                             <span class="word-chip" onclick="insertWord(this)">Systemic change</span>
                             <span class="word-chip" onclick="insertWord(this)">Equity and access</span>
-                            <span class="word-chip" onclick="insertWord(this)">Lasting legacy</span>
+                            <span class="word-chip" onclick="insertWord(this)">Dignity and respect</span>
+                            <span class="word-chip" onclick="insertWord(this)">Collective power</span>
                             <span class="word-chip" onclick="insertWord(this)">Thriving communities</span>
+                            <span class="word-chip" onclick="insertWord(this)">Generational impact</span>
+                            <span class="word-chip" onclick="insertWord(this)">Shared prosperity</span>
+                            <span class="word-chip" onclick="insertWord(this)">Voices heard and valued</span>
+                            <span class="word-chip" onclick="insertWord(this)">Community resilience</span>
+                            <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="[+ add your own]" onkeypress="addCustomChip(event, 'bank-impact', this)"></div>
                         </div>
                     </div>
 
@@ -384,11 +388,28 @@
                         <div id="bank-how">
                             <span class="word-chip" onclick="insertWord(this)">Trust-based partnerships</span>
                             <span class="word-chip" onclick="insertWord(this)">Direct support</span>
+                            <span class="word-chip" onclick="insertWord(this)">Community collaboration</span>
                             <span class="word-chip" onclick="insertWord(this)">Advocacy</span>
+                            <span class="word-chip" onclick="insertWord(this)">Shared funding</span>
                             <span class="word-chip" onclick="insertWord(this)">Capacity building</span>
                             <span class="word-chip" onclick="insertWord(this)">Multi-year unrestricted funding</span>
+                            <span class="word-chip" onclick="insertWord(this)">Policy change</span>
+                            <span class="word-chip" onclick="insertWord(this)">Grassroots grantmaking</span>
+                            <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="[+ add your own]" onkeypress="addCustomChip(event, 'bank-how', this)"></div>
                         </div>
                     </div>
+
+                    <div class="word-bank-section sec-where">
+                        <h4>Where You Give</h4>
+                        <div id="bank-where">
+                            <span class="word-chip" onclick="insertWord(this)">Local</span>
+                            <span class="word-chip" onclick="insertWord(this)">Regional</span>
+                            <span class="word-chip" onclick="insertWord(this)">National</span>
+                            <span class="word-chip" onclick="insertWord(this)">International</span>
+                            <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="[+ add your own]" onkeypress="addCustomChip(event, 'bank-where', this)"></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -424,7 +445,6 @@
         let myRole = ''; let myName = ''; let mySession = ''; let justFamilyName = '';
         const FACILITATOR_PASSWORD = '3742';
 
-        // EMPTY STATE EXAMPLES FOR QUADRANTS
         const emptyStates = {
             q1: `<div class="empty-state"><strong>Examples:</strong>- Food insecurity<br>- Lack of arts funding</div>`,
             q2: `<div class="empty-state"><strong>Examples:</strong>- Everyone deserves a fair start<br>- Art heals communities</div>`,
@@ -458,7 +478,6 @@
             document.getElementById('participant-form').style.display = 'none';
             document.getElementById('facilitator-form').style.display = 'none';
             
-            // Set Body Background to Dark Teal, Workspace handles Fog
             document.body.style.backgroundColor = 'var(--epic-dark-teal)'; 
             document.getElementById('workspace-view').style.display = 'block';
             
@@ -540,11 +559,11 @@
                 sidebar.style.pointerEvents = 'auto';
 
                 if (type === 'problem') {
-                    draftArea.innerHTML = `We exist to <span class="blank blank-action focused" onclick="focusBlank(this)">[ Action Word ]</span> the <span class="blank blank-problem" onclick="focusBlank(this)">[ Problem ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ How You Work ]</span> so that <span class="blank blank-impact" onclick="focusBlank(this)">[ Impact ]</span>.`;
+                    draftArea.innerHTML = `The <span class="blank blank-fund focused" onclick="focusBlank(this)">[ Fund / Family Name ]</span> exists because <span class="blank blank-problem" onclick="focusBlank(this)">[ the problem ]</span> in <span class="blank blank-where" onclick="focusBlank(this)">[ where you give ]</span>. We <span class="blank blank-action" onclick="focusBlank(this)">[ action word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ who you serve ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ how you work ]</span>. We won't stop until <span class="blank blank-impact" onclick="focusBlank(this)">[ the change you want to see ]</span> because <span class="blank blank-belief" onclick="focusBlank(this)">[ your why ]</span>.`;
                 } else if (type === 'action') {
-                    draftArea.innerHTML = `Our family <span class="blank blank-action focused" onclick="focusBlank(this)">[ Action Word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ Who You Serve ]</span> by focusing on <span class="blank blank-problem" onclick="focusBlank(this)">[ Problem ]</span> to create <span class="blank blank-impact" onclick="focusBlank(this)">[ Impact ]</span>.`;
+                    draftArea.innerHTML = `The <span class="blank blank-fund focused" onclick="focusBlank(this)">[ Fund / Family Name ]</span> <span class="blank blank-action" onclick="focusBlank(this)">[ action word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ who you serve ]</span> in <span class="blank blank-where" onclick="focusBlank(this)">[ where you give ]</span> because <span class="blank blank-belief" onclick="focusBlank(this)">[ your why ]</span>. We focus on <span class="blank blank-impact" onclick="focusBlank(this)">[ the change you want to see ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ how you work ]</span>.`;
                 } else if (type === 'value') {
-                    draftArea.innerHTML = `Because we believe <span class="blank blank-belief focused" onclick="focusBlank(this)">[ Belief Starter ]</span>, we use <span class="blank blank-how" onclick="focusBlank(this)">[ How You Work ]</span> to <span class="blank blank-action" onclick="focusBlank(this)">[ Action Word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ Who You Serve ]</span>.`;
+                    draftArea.innerHTML = `Because <span class="blank blank-belief focused" onclick="focusBlank(this)">[ your why ]</span>, the <span class="blank blank-fund" onclick="focusBlank(this)">[ Fund / Family Name ]</span> <span class="blank blank-action" onclick="focusBlank(this)">[ action word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ who you serve ]</span> in <span class="blank blank-where" onclick="focusBlank(this)">[ where you give ]</span>. Our focus is <span class="blank blank-impact" onclick="focusBlank(this)">[ the change you want to see ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ how you work ]</span>.`;
                 }
                 currentFocusedBlank = draftArea.querySelector('.blank.focused');
             }
@@ -571,15 +590,27 @@
             autoAdvanceFocus();
         }
 
-        function insertCustomWord() {
-            const input = document.getElementById('custom-word');
-            const text = input.value.trim();
-            if (!text || !currentFocusedBlank || isFreestyle) return;
-            
-            currentFocusedBlank.innerText = text;
-            currentFocusedBlank.classList.add('filled');
-            input.value = ''; 
-            autoAdvanceFocus();
+        // Inline Add Custom Chip Logic
+        function addCustomChip(e, bankId, inputElem) {
+            if (e.key === 'Enter') {
+                const text = inputElem.value.trim();
+                if (!text) return;
+                
+                const bank = document.getElementById(bankId);
+                const chip = document.createElement('span');
+                chip.className = 'word-chip';
+                chip.innerText = text;
+                chip.onclick = function() { insertWord(this); };
+                
+                // Insert it right before the input container
+                bank.insertBefore(chip, inputElem.parentNode);
+                inputElem.value = '';
+
+                // Auto-insert it into the current blank if applicable
+                if (currentFocusedBlank && !isFreestyle) {
+                    insertWord(chip);
+                }
+            }
         }
 
         function autoAdvanceFocus() {
@@ -653,7 +684,6 @@
 
         // --- FIREBASE SYNCING ---
         function startFirebaseListeners() {
-            // 1. Listen for Ideas
             const mapClass = { 'q1': 'item-problem', 'q2': 'item-belief', 'q3': 'item-impact', 'q4': 'item-focus' };
             db.ref(`sessions/${mySession}/ideas`).on('value', (snapshot) => {
                 const allData = snapshot.val() || {};
@@ -676,7 +706,6 @@
                 });
             });
 
-            // 2. Listen for Drafts
             db.ref(`sessions/${mySession}/drafts`).on('value', (snapshot) => {
                 const draftsData = snapshot.val() || {};
                 const listDiv = document.getElementById('saved-drafts-list');
@@ -693,7 +722,6 @@
                     const div = document.createElement('div');
                     div.className = 'draft-card';
                     
-                    // Safely encode text to pass via data attribute to prevent quote errors
                     const safeText = draft.text.replace(/"/g, '&quot;');
                     
                     let actionsHtml = '';
@@ -715,11 +743,9 @@
                 });
             });
 
-            // 3. Listen for Final Statement Celebration
             db.ref(`sessions/${mySession}/finalStatement`).on('value', (snapshot) => {
                 const finalData = snapshot.val();
                 if (finalData && finalData.text) {
-                    // Hide everything else and show the celebration overlay
                     document.getElementById('workspace-view').style.display = 'none';
                     document.getElementById('celebration-view').style.display = 'flex';
                     document.getElementById('final-statement-text').innerText = `"${finalData.text}"`;
