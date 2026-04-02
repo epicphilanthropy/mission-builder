@@ -835,6 +835,16 @@ function logoutMission() {
                 timestamp: Date.now()
             });
 
+            const params = new URLSearchParams({
+                action: 'save',
+                session: mySession,
+                tab: 'mission',
+                name: 'Draft by ' + myName,
+                ranked: finalSentence
+            });
+            fetch(SCRIPT_URL + '?' + params.toString(), { mode: 'no-cors' })
+                .catch(e => console.log("Silent save error", e));
+
             if(isFreestyle) { document.getElementById('freewrite-box').value = ''; }
             
             const btn = document.querySelector('.btn-save');
@@ -842,6 +852,7 @@ function logoutMission() {
             btn.style.backgroundColor = "var(--epic-medium-teal)";
             setTimeout(() => { btn.innerText = "💾 Save This Draft"; btn.style.backgroundColor = "var(--epic-ink)"; }, 3000);
         }
+
 
         function deleteDraft(key) {
             if (confirm("Delete this draft?")) { db.ref(`sessions/${mySession}/drafts/${key}`).remove(); }
@@ -990,5 +1001,4 @@ function logoutMission() {
     </script>
 </body>
 </html>
-
 
