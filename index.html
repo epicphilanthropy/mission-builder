@@ -208,7 +208,9 @@
         .draft-card p { margin: 0; font-size: 22px; line-height: 1.8; font-weight: 300; }
         .draft-meta { font-size: 13px; color: #888; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         .draft-actions { position: absolute; top: 25px; right: 25px; display: flex; gap: 15px; }
+        .btn-edit { background: none; border: none; color: var(--epic-medium-teal); cursor: pointer; font-size: 14px; text-decoration: underline; font-family: 'Montserrat', sans-serif; font-weight: 600;}
         .btn-delete { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 14px; text-decoration: underline; font-family: 'Montserrat', sans-serif; font-weight: 600;}
+
         .btn-final { background: var(--epic-gold); color: var(--epic-ink); border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
         .btn-final:hover { opacity: 0.9; transform: translateY(-1px); }
 
@@ -569,6 +571,20 @@
         </div>
     </div>
 
+    <!-- EDIT DRAFT MODAL -->
+    <div id="edit-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13, 43, 50, 0.9); z-index: 1001; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+        <div class="help-content" style="max-width: 600px; text-align: left;">
+            <h2 style="margin-bottom: 15px; color: var(--epic-dark-teal);">✏️ Wordsmith Draft</h2>
+            <textarea id="edit-draft-text" style="width: 100%; height: 150px; padding: 15px; font-family: 'Montserrat', sans-serif; font-size: 18px; border: 2px solid var(--light-gray); border-radius: 6px; resize: vertical; box-sizing: border-box; margin-bottom: 20px;"></textarea>
+            <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                <button onclick="closeEditModal()" style="padding: 12px 20px; background: transparent; border: none; color: #888; cursor: pointer; font-weight: 600; font-family: 'Montserrat', sans-serif;">Cancel</button>
+                <button onclick="saveEditedDraft()" style="padding: 12px 25px; background: var(--epic-gold); color: var(--epic-ink); border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-family: 'Montserrat', sans-serif;">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- CELEBRATION VIEW -->
     <div id="celebration-view">
         <h3 id="celeb-family-name">👑 The Final Mission Statement 👑</h3>
@@ -903,9 +919,37 @@ function logoutMission() {
         }
 
 
-        function deleteDraft(key) {
+                function deleteDraft(key) {
             if (confirm("Delete this draft?")) { db.ref(`sessions/${mySession}/drafts/${key}`).remove(); }
         }
+
+        let currentEditKey = null;
+        function editDraft(key) {
+            db.ref(`sessions/${mySession}/drafts/${key}`).once('value').then((snapshot) => {
+                const draft = snapshot.val();
+                if (draft) {
+                    currentEditKey = key;
+                    document.getElementById('edit-draft-text').value = draft.text;
+                    document.getElementById('edit-modal').style.display = 'flex';
+                }
+            });
+        }
+        
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+            currentEditKey = null;
+        }
+        
+        function saveEditedDraft() {
+            if (currentEditKey) {
+                const newText = document.getElementById('edit-draft-text').value.trim();
+                if (newText) {
+                    db.ref(`sessions/${mySession}/drafts/${currentEditKey}`).update({ text: newText });
+                    closeEditModal();
+                }
+            }
+        }
+
 
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyw-5vYD_Yew9qCgMVQMJ8B_3v0nrLCrduLbAEJpXZ_uB69UrVGZcdWscq7I6kJ4HK0/exec';
 
@@ -1005,11 +1049,13 @@ function logoutMission() {
                     if (myRole === 'Facilitator') {
                         actionsHtml = `
                             <div class="draft-actions">
+                                <button class="btn-edit" onclick="editDraft('${key}')">✏️ Edit</button>
                                 <button class="btn-final" data-text="${safeText}" onclick="triggerCelebration(this.getAttribute('data-text'))">👑 Select as Final</button>
                                 <button class="btn-delete" onclick="deleteDraft('${key}')">Delete</button>
                             </div>
                         `;
                     }
+
 
                     div.innerHTML = `
                         <div class="draft-meta">${draft.template} Template • Saved by ${draft.author}</div>
