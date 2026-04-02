@@ -20,8 +20,8 @@
             --epic-fog: #d7e0e6;
             
             --white: #ffffff;
-            --off-white: #f5f5f5;
-            --light-gray: #e0e0e0;
+            --off-white: #f0f0f0;
+            --light-gray: #d7e0e6;
 
             /* WORKSHOP COLOR PALETTE */
             --c-problem: #904237; 
@@ -34,240 +34,70 @@
             --c-fund: #4f8284;    
         }
 
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--epic-dark-teal); color: var(--white); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .container { max-width: 800px; width: 90%; margin: 80px auto; text-align: center; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--epic-dark-teal); color: var(--white); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { max-width: 800px; width: 100%; margin: 40px auto; text-align: center; }
         .eyebrow { color: var(--epic-gold); font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
         
         h1 { font-weight: 600; font-size: 52px; line-height: 1.2; margin: 0 0 20px 0; }
         h1 span { font-style: italic; font-weight: 300; color: var(--epic-gold); }
 
-        .intro-text { font-size: 18px; font-weight: 300; line-height: 1.6; margin-bottom: 60px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .instruction-box { background: var(--off-white); color: var(--epic-ink); padding: 40px; border-radius: 8px; text-align: left; max-width: 500px; margin: 0 auto 40px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .instruction-box p { margin: 0 0 20px 0; font-size: 16px; line-height: 1.6; }
-        
-        .btn-primary { background-color: var(--epic-gold); color: var(--epic-ink); border: none; padding: 18px 45px; font-size: 18px; font-weight: 600; border-radius: 6px; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: opacity 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-primary { background-color: var(--epic-gold); color: var(--epic-ink); border: none; padding: 18px 45px; font-size: 18px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: opacity 0.3s ease; }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
         
-        .facilitator-link { display: block; margin-top: 20px; color: var(--epic-gold); font-size: 15px; text-decoration: underline; font-weight: 300; cursor: pointer; background: none; border: none; font-family: 'Montserrat', sans-serif; text-align: center; width: 100%; }
-        .form-container { display: none; max-width: 400px; margin: 0 auto; text-align: left; }
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 16px; color: var(--white); font-weight: 600; }
-        .form-group input { width: 100%; padding: 16px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 18px; box-sizing: border-box; background: rgba(255,255,255,0.1); color: var(--white); }
-        .form-group input::placeholder { color: rgba(255,255,255,0.5); }
-        .form-group input:focus { outline: none; background: rgba(255,255,255,0.2); border: 2px solid var(--epic-gold); }
-        .back-link { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 15px; display: block; margin-top: 20px; text-align: center; cursor: pointer; }
+        /* FORMS */
+        .form-container { display: none; max-width: 400px; margin: 0 auto; text-align: left; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 8px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .form-group input { width: 100%; padding: 12px; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 16px; box-sizing: border-box; }
 
-        /* --- WORKSPACE --- */
-        #workspace-view { display: none; width: 100%; max-width: 1200px; margin: 40px auto; background: var(--epic-fog); color: var(--epic-ink); border-radius: 8px; padding: 40px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+        /* WORKSPACE */
+        #workspace-view { display: none; width: 100%; max-width: 1200px; margin: 0 auto; background: var(--epic-fog); color: var(--epic-ink); border-radius: 8px; padding: 40px; box-sizing: border-box; position: relative; }
+        
         .session-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 20px; margin-bottom: 20px; }
-        .session-header h2 { margin: 0; font-size: 26px; font-weight: 600; }
-        .session-header p { margin: 5px 0 0 0; font-size: 15px; color: #555; display: flex; align-items: center; gap: 10px; }
-        .role-badge { background: var(--epic-gold); color: var(--epic-ink); padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-copy { background: #fff; border: 1px solid #ccc; padding: 6px 12px; border-radius: 4px; font-size: 13px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+        .btn-leave { background: #ff6b6b; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; }
         
-        .part-one-helper { font-size: 16px; color: #555; margin-bottom: 30px; font-weight: 400; line-height: 1.5; background: rgba(255,255,255,0.6); padding: 15px 20px; border-radius: 6px;}
-
-        /* --- QUADRANTS --- */
-        .quadrant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 50px;}
-        @media (max-width: 768px) { .quadrant-grid { grid-template-columns: 1fr; } }
+        /* BUILDER LAYOUT */
+        .builder-layout { display: grid; grid-template-columns: 1fr 350px; gap: 30px; margin-top: 30px; }
         
-        .quadrant-card { background: var(--white); border: 1px solid var(--light-gray); border-radius: 8px; padding: 25px; display: flex; flex-direction: column; border-top-width: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .quadrant-card h3 { margin: 0 0 15px 0; font-size: 18px; font-weight: 600; }
+        /* MAD LIBS DRAFT AREA */
+        .draft-area { background: var(--white); padding: 40px; border-radius: 8px; font-size: 24px; line-height: 2.2; font-weight: 300; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        .quad-problem { border-top-color: var(--c-problem); }
-        .quad-problem h3 { color: var(--c-problem); }
-        .quad-belief { border-top-color: var(--c-belief); }
-        .quad-belief h3 { color: var(--c-belief); }
-        .quad-impact { border-top-color: var(--c-impact); }
-        .quad-impact h3 { color: var(--c-impact); }
-        .quad-focus { border-top-color: var(--c-focus); }
-        .quad-focus h3 { color: var(--c-focus); }
-
-        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
-        .input-row input { flex: 1; padding: 14px; border: 2px solid var(--light-gray); border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 15px; }
-        .input-row input:focus { outline: none; border-color: var(--epic-medium-teal); }
-        .btn-add { color: var(--white); border: none; padding: 0 25px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 15px; font-family: 'Montserrat', sans-serif; }
-        
-        .ideas-list { flex: 1; background: var(--off-white); border-radius: 6px; padding: 15px; min-height: 140px; max-height: 200px; overflow-y: auto; border: 1px solid #eaeaea; }
-        
-        .idea-item { background: var(--white); padding: 12px 15px; border-radius: 6px; margin-bottom: 10px; font-size: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-left: 5px solid var(--light-gray); box-shadow: 0 2px 5px rgba(0,0,0,0.04); transition: transform 0.1s;}
-        .idea-item:hover { transform: scale(1.01); background: #fafafa; }
-        .idea-author { font-size: 12px; color: #888; margin-left: 10px; font-style: italic; }
-        
-        .item-problem { border-left-color: var(--c-problem); }
-        .item-belief { border-left-color: var(--c-belief); }
-        .item-impact { border-left-color: var(--c-impact); }
-        .item-focus { border-left-color: var(--c-focus); }
-
-        .empty-state { color: #888; font-style: italic; font-size: 14px; font-weight: 300; line-height: 1.8; padding: 10px; margin-top: 10px; background: #ebebeb; border-radius: 6px; }
-        .empty-state strong { font-weight: 600; font-style: normal; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #777; display: block; margin-bottom: 8px; }
-
-        /* --- BUILDER AREA --- */
-        .builder-section { border-top: 4px solid var(--epic-ink); padding-top: 40px; margin-top: 40px; }
-        
-        .step-instructions { background: rgba(255,255,255,0.6); padding: 20px; border-radius: 8px; border-left: 4px solid var(--epic-gold); margin-bottom: 30px; font-size: 16px; color: var(--epic-ink); }
-        .step-instructions p { margin: 5px 0; font-weight: 400; }
-        .step-instructions strong { font-weight: 600; }
-        .wordsmith-note { display: inline-block; background: rgba(222, 173, 47, 0.2); padding: 5px 10px; border-radius: 4px; font-size: 14px; font-style: italic; font-weight: 500; color: var(--epic-dark-teal); margin-top: 10px !important;}
-        
-        .builder-layout { display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
-        @media (max-width: 900px) { .builder-layout { grid-template-columns: 1fr; } }
-
-        .template-selector { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
-        .template-btn { flex: 1; min-width: 200px; padding: 20px; border: 2px solid var(--white); background: var(--white); border-radius: 8px; cursor: pointer; text-align: left; font-family: 'Montserrat', sans-serif; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .template-btn.active { border-color: var(--epic-gold); background: rgba(222, 173, 47, 0.1); border-width: 3px; }
-        .template-btn h4 { margin: 0 0 8px 0; color: var(--epic-ink); font-size: 18px; font-weight: 600; }
-
-        .draft-area { background: var(--white); padding: 45px; border-radius: 8px; border: 1px solid var(--white); font-size: 26px; line-height: 2.2; font-weight: 300; color: var(--epic-ink); box-shadow: 0 8px 25px rgba(0,0,0,0.06); min-height: 200px;}
-        #freewrite-box { display: none; width: 100%; height: 250px; padding: 25px; font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 300; line-height: 1.8; border: 2px solid #ddd; border-radius: 8px; resize: vertical; box-sizing: border-box; background: #fff; outline: none; }
-        #freewrite-box:focus { border-color: var(--epic-medium-teal); }
-
-        .blank { display: inline-block; min-width: 160px; padding: 2px 12px; margin: 0 6px; border-bottom: 4px solid #ccc; background: rgba(0,0,0,0.03); color: #777; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.2s; border-radius: 4px 4px 0 0; }
+        .blank { display: inline-block; min-width: 120px; padding: 2px 10px; margin: 0 6px; border-bottom: 3px solid #ccc; background: rgba(0,0,0,0.03); color: #777; font-weight: 600; text-align: center; cursor: pointer; border-radius: 4px 4px 0 0; }
+        .blank.focused { animation: breath 1.5s infinite ease-in-out; }
         
         @keyframes breath {
-            0% { filter: brightness(1); transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
-            50% { filter: brightness(1.1); transform: scale(1.02); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
-            100% { filter: brightness(1); transform: scale(1); box-shadow: 0 0 0 0 rgba(0,0,0,0); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+            100% { transform: scale(1); }
         }
 
-        .blank-problem { border-bottom-color: var(--c-problem); }
-        .blank-problem.focused { background: var(--c-problem); color: var(--white); animation: breath 2s infinite ease-in-out; }
-        .blank-problem.filled { background: var(--c-problem); color: var(--white); }
+        .blank-fund.focused, .blank-fund.filled { background: var(--c-fund); color: white; border-bottom-color: var(--c-fund); }
+        .blank-action.focused, .blank-action.filled { background: var(--c-action); color: white; border-bottom-color: var(--c-action); }
+        .blank-focus.focused, .blank-focus.filled { background: var(--c-focus); color: white; border-bottom-color: var(--c-focus); }
+        .blank-impact.focused, .blank-impact.filled { background: var(--c-impact); color: white; border-bottom-color: var(--c-impact); }
 
-        .blank-belief { border-bottom-color: var(--c-belief); }
-        .blank-belief.focused { background: var(--c-belief); color: var(--white); animation: breath 2s infinite ease-in-out; }
-        .blank-belief.filled { background: var(--c-belief); color: var(--white); }
-
-        .blank-impact { border-bottom-color: var(--c-impact); }
-        .blank-impact.focused { background: var(--c-impact); color: var(--white); animation: breath 2s infinite ease-in-out; }
-        .blank-impact.filled { background: var(--c-impact); color: var(--white); }
-
-        .blank-focus { border-bottom-color: var(--c-focus); }
-        .blank-focus.focused { background: var(--c-focus); color: var(--white); animation: breath 2s infinite ease-in-out; }
-        .blank-focus.filled { background: var(--c-focus); color: var(--white); }
-
-        .blank-action { border-bottom-color: var(--c-action); }
-        .blank-action.focused { background: var(--c-action); color: var(--white); animation: breath 2s infinite ease-in-out; }
-        .blank-action.filled { background: var(--c-action); color: var(--white); }
-
-        .blank-how { border-bottom-color: var(--c-how); }
-        .blank-how.focused { background: var(--c-how); color: var(--epic-ink); animation: breath 2s infinite ease-in-out; } 
-        .blank-how.filled { background: var(--c-how); color: var(--epic-ink); } 
-
-        .blank-where { border-bottom-color: var(--c-where); }
-        .blank-where.focused { background: var(--c-where); color: var(--white); animation: breath 2s infinite ease-in-out; }
-        .blank-where.filled { background: var(--c-where); color: var(--white); }
-
-        .blank-fund { border-bottom-color: var(--c-fund); }
-        .blank-fund.focused { background: var(--c-fund); color: var(--white); animation: breath 2s infinite ease-in-out; }
-        .blank-fund.filled { background: var(--c-fund); color: var(--white); }
-
-        .btn-save { background: var(--epic-ink); color: var(--white); border: none; padding: 20px 30px; font-size: 18px; font-weight: 600; border-radius: 6px; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-top: 25px; width: 100%; transition: background 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
-        .btn-save:hover { background: var(--epic-medium-teal); }
-
-        /* --- WORD BANK SIDEBAR --- */
-        .word-bank-sidebar { position: relative; background: var(--white); border: 1px solid var(--white); border-radius: 8px; padding: 25px; max-height: 700px; overflow-y: auto; box-shadow: 0 8px 25px rgba(0,0,0,0.06); scroll-behavior: smooth; }
+        /* ACCORDION SIDEBAR */
+        .word-bank-sidebar { background: var(--white); border-radius: 8px; padding: 20px; max-height: 600px; overflow-y: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        .word-bank-section { margin-bottom: 35px; padding: 10px; border-radius: 8px; transition: background-color 0.8s ease; }
+        details.word-bank-toggle { margin-bottom: 10px; background: var(--off-white); border-radius: 6px; border: 1px solid var(--light-gray); overflow: hidden; }
+        details.word-bank-toggle summary { padding: 15px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        details.word-bank-toggle summary::-webkit-details-marker { display: none; }
+        details.word-bank-toggle summary::after { content: '+'; font-size: 20px; color: var(--epic-medium-teal); }
+        details.word-bank-toggle[open] summary::after { content: '−'; }
+        details.word-bank-toggle[open] summary { border-bottom: 1px solid var(--light-gray); background: #eef2f5; }
         
-        @keyframes highlight-flash { 0% { background-color: rgba(222, 173, 47, 0.4); } 100% { background-color: transparent; } }
-        .flash-active { animation: highlight-flash 1.5s ease-out; }
-
-        .word-bank-section h4 { margin: 0 0 15px 0; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid var(--light-gray); padding-bottom: 8px; }
+        .toggle-content { padding: 15px; background: var(--white); }
         
-        .sec-fund h4 { color: var(--c-fund); border-bottom-color: var(--c-fund); }
-        .sec-problem h4 { color: var(--c-problem); border-bottom-color: var(--c-problem); }
-        .sec-belief h4 { color: var(--c-belief); border-bottom-color: var(--c-belief); }
-        .sec-focus h4 { color: var(--c-focus); border-bottom-color: var(--c-focus); }
-        .sec-action h4 { color: var(--c-action); border-bottom-color: var(--c-action); }
-        .sec-impact h4 { color: var(--c-impact); border-bottom-color: var(--c-impact); }
-        .sec-how h4 { color: var(--c-how); border-bottom-color: var(--c-how); }
-        .sec-where h4 { color: var(--c-where); border-bottom-color: var(--c-where); }
+        .word-chip { display: inline-block; background: var(--white); border: 2px solid #d0d0d0; padding: 8px 14px; border-radius: 20px; font-size: 14px; margin: 0 6px 10px 0; cursor: pointer; transition: all 0.2s; }
+        .word-chip:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        .word-chip { display: inline-block; background: var(--white); border: 2px solid #d0d0d0; padding: 10px 16px; border-radius: 25px; font-size: 15px; font-weight: 500; margin: 0 8px 12px 0; cursor: pointer; transition: all 0.2s; color: var(--epic-ink); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
-        .family-chip { border-color: var(--epic-gold); background-color: #fdfaf2; border-width: 2px; font-weight: 600; }
+        .btn-submit-draft { background: var(--epic-ink); color: white; width: 100%; padding: 15px; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px; }
 
-        .sec-fund .word-chip:hover { background: var(--c-fund); color: white; border-color: var(--c-fund); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .sec-problem .word-chip:hover { background: var(--c-problem); color: white; border-color: var(--c-problem); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .sec-belief .word-chip:hover { background: var(--c-belief); color: white; border-color: var(--c-belief); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .sec-focus .word-chip:hover { background: var(--c-focus); color: white; border-color: var(--c-focus); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .sec-action .word-chip:hover { background: var(--c-action); color: white; border-color: var(--c-action); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .sec-impact .word-chip:hover { background: var(--c-impact); color: white; border-color: var(--c-impact); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .sec-how .word-chip:hover { background: var(--c-how); color: var(--epic-ink); border-color: var(--c-how); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-        .sec-where .word-chip:hover { background: var(--c-where); color: white; border-color: var(--c-where); transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1);}
-
-        .custom-chip-container { display: inline-block; margin: 0 8px 12px 0; }
-        .custom-chip-input { background: #f9f9f9; border: 2px dashed #bbb; padding: 10px 16px; border-radius: 25px; font-size: 15px; font-family: 'Montserrat', sans-serif; width: 160px; font-style: italic; color: #555; transition: all 0.2s;}
-        .custom-chip-input:focus { outline: none; border-style: solid; border-color: var(--epic-ink); background: #fff; font-style: normal; color: var(--epic-ink);}
-        .custom-chip-input::placeholder { color: #999; }
-        /* --- WORD BANK TOGGLES --- */
-        .word-bank-toggle { margin-bottom: 12px; background: var(--off-white); border-radius: 6px; overflow: hidden; border: 1px solid var(--light-gray); }
-        .word-bank-toggle summary { padding: 12px 18px; font-size: 15px; font-weight: 600; color: var(--epic-ink); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.2s; font-family: 'Montserrat', sans-serif;}
-        .word-bank-toggle summary:hover { background: #eef2f5; }
-        .word-bank-toggle summary::-webkit-details-marker { display: none; }
-        .word-bank-toggle summary::after { content: '+'; color: var(--c-focus); font-size: 20px; font-weight: 600; }
-        .word-bank-toggle[open] summary::after { content: '−'; }
-        .word-bank-toggle[open] summary { border-bottom: 1px solid var(--light-gray); background: #eef2f5; }
-        .toggle-content { padding: 15px 15px 5px 15px; background: var(--white); }
-
-        /* --- MAIN SECTION TOGGLES --- */
-        details.section-toggle > summary { list-style: none; outline: none; }
-        details.section-toggle > summary::-webkit-details-marker { display: none; }
-        details.section-toggle > summary h4 { display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: opacity 0.2s; margin-bottom: 10px;}
-        details.section-toggle > summary h4:hover { opacity: 0.7; }
-        details.section-toggle > summary h4::after { content: '+'; font-size: 26px; font-weight: 300; }
-        details.section-toggle[open] > summary h4::after { content: '−'; }
-
-
-        /* --- PART 3: DRAFTS GALLERY --- */
-        .drafts-section { border-top: 4px solid var(--epic-gold); padding-top: 40px; margin-top: 40px; }
-        .draft-card { background: var(--white); padding: 35px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); position: relative; }
-        .draft-card p { margin: 0; font-size: 22px; line-height: 1.8; font-weight: 300; }
-        .draft-meta { font-size: 13px; color: #888; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
-        .draft-actions { position: absolute; top: 25px; right: 25px; display: flex; gap: 15px; }
-        .btn-edit { background: none; border: none; color: var(--epic-medium-teal); cursor: pointer; font-size: 14px; text-decoration: underline; font-family: 'Montserrat', sans-serif; font-weight: 600;}
-        .btn-delete { background: none; border: none; color: #ff6b6b; cursor: pointer; font-size: 14px; text-decoration: underline; font-family: 'Montserrat', sans-serif; font-weight: 600;}
-
-        .btn-final { background: var(--epic-gold); color: var(--epic-ink); border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; font-family: 'Montserrat', sans-serif; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
-        .btn-final:hover { opacity: 0.9; transform: translateY(-1px); }
-
-        /* --- CELEBRATION OVERLAY --- */
-        #celebration-view { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--epic-dark-teal); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; box-sizing: border-box; overflow: hidden;}
-        #celebration-view h3 { color: var(--epic-gold); font-size: 20px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; z-index: 2;}
-        #final-statement-text { font-size: 48px; font-weight: 300; line-height: 1.6; max-width: 1000px; color: var(--white); font-style: italic; z-index: 2;}
-        .confetti-piece { position: absolute; width: 12px; height: 30px; top: -20px; opacity: 0; z-index: 1;}
-
-        /* --- HELP MODAL SYSTEM --- */
-        .help-btn-floating { 
-            position: fixed; bottom: 30px; right: 30px; 
-            background: var(--epic-gold); color: var(--epic-ink); 
-            border: none; 
-            width: 60px; height: 60px; border-radius: 50%; 
-            font-size: 28px; font-weight: 600; 
-            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-            z-index: 900; font-family: 'Montserrat', sans-serif; 
-            transition: transform 0.2s; 
-            display: none; 
-            align-items: center; justify-content: center;
-        }
-        .help-btn-floating:hover { transform: scale(1.1); }
-
-        #help-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13, 43, 50, 0.9); z-index: 999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        .help-content { background: var(--white); color: var(--epic-ink); max-width: 650px; width: 100%; border-radius: 12px; padding: 40px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;}
-        .help-content h2 { margin-top: 0; color: var(--epic-dark-teal); font-size: 28px; }
-        .help-content h3 { font-size: 18px; color: var(--epic-medium-teal); margin-bottom: 5px; }
-        .help-content p { font-size: 16px; line-height: 1.6; margin-top: 0; margin-bottom: 20px; }
-        
-        .help-examples-box { background: var(--epic-fog); padding: 20px; border-radius: 8px; margin-bottom: 25px; font-size: 15px; border-left: 4px solid var(--epic-gold);}
-        .help-examples-box h4 { margin: 0 0 10px 0; font-size: 16px; }
-        .help-examples-box ul { margin: 0; padding-left: 20px; }
-        .help-examples-box li { margin-bottom: 8px; }
-
-        .btn-close-help { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: #888; transition: color 0.2s; }
-        .btn-close-help:hover { color: var(--c-problem); }
-        .btn-close-help-large { background: var(--epic-ink); color: var(--white); border: none; padding: 15px; width: 100%; border-radius: 6px; font-size: 18px; font-weight: 600; cursor: pointer; margin-top: 10px; font-family: 'Montserrat', sans-serif; }
-        .btn-close-help-large:hover { background: var(--epic-medium-teal); }
+        /* WORDSMITH MODAL */
+        #wordsmith-modal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 40px; border-radius: 8px; width: 90%; max-width: 600px; text-align: center; }
+        .modal-content textarea { width: 100%; height: 150px; padding: 15px; font-family: 'Montserrat'; font-size: 18px; margin-bottom: 20px; border: 2px solid var(--light-gray); border-radius: 6px; }
+        .btn-crown { background: var(--epic-gold); color: var(--epic-ink); padding: 15px 30px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; font-size: 16px;}
         
     </style>
 </head>
@@ -277,981 +107,243 @@
     <div class="container" id="landing-view">
         <div class="eyebrow">Family Philanthropic Planning</div>
         <h1><span>Craft</span> your family's mission statement</h1>
-        <p class="intro-text">A guided workshop to craft a mission statement that sounds like your family — not a nonprofit brochure.</p>
-        
-        <div class="instruction-box">
-            <p><strong>Step 1:</strong> Join the session using the code provided by your facilitator.</p>
-            <p><strong>Step 2:</strong> Brain dump your honest, unedited ideas into the four quadrants.</p>
-            <p>Your responses carry over as a shared word bank to build your statement together.</p>
-        </div>
-
-        <button class="btn-primary" onclick="showForm('participant-form')">Join a Session →</button>
-        <button class="facilitator-link" onclick="showForm('facilitator-form')">Facilitator? Set up a session</button>
+        <button class="btn-primary" onclick="document.getElementById('landing-view').style.display='none'; document.getElementById('participant-form').style.display='block';">Join a Session →</button>
     </div>
 
-    <!-- PARTICIPANT FORM -->
+    <!-- JOIN FORM -->
     <div class="container form-container" id="participant-form">
-        <div class="eyebrow" style="text-align: center;">Join Session</div>
-        <div id="part-error" class="error-msg" style="display:none; color: #ffcccc; margin-bottom: 15px;">Please enter a valid code.</div>
         <div class="form-group">
             <label>Session Code</label>
-            <input type="text" id="part-session" placeholder="e.g., COBB-2026" style="text-transform: uppercase;">
+            <input type="text" id="session-code" placeholder="e.g. COBB-2026" style="text-transform: uppercase;">
         </div>
         <div class="form-group">
             <label>Your Name</label>
-            <input type="text" id="part-name" placeholder="Your first name">
+            <input type="text" id="participant-name" placeholder="First Name">
         </div>
-        <button class="btn-primary" style="width: 100%;" onclick="joinSession()">Enter Workshop →</button>
-        <div class="back-link" onclick="goBack()">← Back to start</div>
-    </div>
-
-    <!-- FACILITATOR FORM -->
-    <div class="container form-container" id="facilitator-form">
-        <div class="eyebrow" style="text-align: center;">Create Session</div>
-        <div id="fac-error" class="error-msg" style="display:none; color: #ffcccc; margin-bottom: 15px;">Incorrect password or details.</div>
-        <div class="form-group">
-            <label>Facilitator Password</label>
-            <input type="password" id="fac-pass" placeholder="Enter password">
-        </div>
-        <div class="form-group">
-            <label>Family Name (Creates Code)</label>
-            <input type="text" id="fac-session" placeholder="e.g., Cobb">
-        </div>
-        <div class="form-group">
-            <label>Your Name</label>
-            <input type="text" id="fac-name" placeholder="e.g., Liza">
-        </div>
-        <button class="btn-primary" style="width: 100%;" onclick="createSession()">Start Session →</button>
-        <div class="back-link" onclick="goBack()">← Back to start</div>
+        <button class="btn-primary" style="width: 100%;" onclick="joinSession()">Enter Workshop</button>
     </div>
 
     <!-- WORKSPACE VIEW -->
     <div id="workspace-view">
         <div class="session-header">
             <div>
-                <h2>Part 1: Brain Dump</h2>
-                <p>
-                    Session Code: <strong id="display-session-code">---</strong> 
-                    <button class="btn-copy" onclick="copyCode()">📋 Copy Code</button>
-<button class="btn-copy" onclick="logoutMission()" style="background: #fff0f0; border-color: #ffcccc; color: #d32f2f; margin-left: 10px;">🚪 Leave Session</button>
-                </p>
+                <h2 id="display-session">Session: ---</h2>
+                <p>Welcome, <span id="display-name">---</span></p>
             </div>
-            <div style="text-align: right;">
-                <div class="role-badge" id="display-role">Participant</div>
-                <p style="margin-top: 8px;">Logged in as: <span id="display-name" style="font-weight: 600;">---</span></p>
-            </div>
-        </div>
-        
-        <div class="part-one-helper">
-            Type a short idea in any box below and click <strong>Add</strong>. Don't overthink it—these will become your word bank later! <br>
-            <em style="font-size: 14px; margin-top: 5px; display: inline-block;">(Need inspiration? Click the <strong>?</strong> button in the bottom right corner.)</em>
+            <button class="btn-leave" onclick="leaveSession()">Leave Session</button>
         </div>
 
-        <div class="quadrant-grid">
-            <div class="quadrant-card quad-problem">
-                <h3>😟 What problem keeps you up at night?</h3>
-                <div class="input-row">
-                    <input type="text" id="input-q1" placeholder="Type an idea..." onkeypress="handleEnter(event, 'q1')">
-                    <button class="btn-add" style="background: var(--c-problem);" onclick="addIdea('q1')">Add</button>
+        <div class="builder-layout">
+            <!-- DRAFT AREA -->
+            <div>
+                <div class="draft-area">
+                    <span class="blank blank-fund" id="blank-fund" data-target="details-fund" onclick="focusBlank('fund')">The [Family] Fund</span> exists to 
+                    <span class="blank blank-action" id="blank-action" data-target="details-action" onclick="focusBlank('action')">[Action]</span> 
+                    <span class="blank blank-focus" id="blank-focus" data-target="details-focus" onclick="focusBlank('focus')">[Who/What]</span>, 
+                    so that <span class="blank blank-impact" id="blank-impact" data-target="details-impact" onclick="focusBlank('impact')">[Impact/Change]</span>.
                 </div>
-                <div class="ideas-list" id="list-q1"></div>
-            </div>
-            
-            <div class="quadrant-card quad-belief">
-                <h3>💙 Why do you care about this?</h3>
-                <div class="input-row">
-                    <input type="text" id="input-q2" placeholder="Type an idea..." onkeypress="handleEnter(event, 'q2')">
-                    <button class="btn-add" style="background: var(--c-belief);" onclick="addIdea('q2')">Add</button>
-                </div>
-                <div class="ideas-list" id="list-q2"></div>
-            </div>
-            
-            <div class="quadrant-card quad-impact">
-                <h3>📊 What does success look like?</h3>
-                <div class="input-row">
-                    <input type="text" id="input-q3" placeholder="Type an idea..." onkeypress="handleEnter(event, 'q3')">
-                    <button class="btn-add" style="background: var(--c-impact);" onclick="addIdea('q3')">Add</button>
-                </div>
-                <div class="ideas-list" id="list-q3"></div>
-            </div>
-            
-            <div class="quadrant-card quad-focus">
-                <h3>🎯 Who or what are you helping?</h3>
-                <div class="input-row">
-                    <input type="text" id="input-q4" placeholder="Type an idea..." onkeypress="handleEnter(event, 'q4')">
-                    <button class="btn-add" style="background: var(--c-focus);" onclick="addIdea('q4')">Add</button>
-                </div>
-                <div class="ideas-list" id="list-q4"></div>
-            </div>
-        </div>
-
-        <!-- PART 2 BUILDER SECTION -->
-        <div class="builder-section">
-            <h2>Part 2: Build It Together</h2>
-            
-            <div class="step-instructions">
-                <p><strong>Step 1:</strong> Look at the large white box below. The actively highlighted blank is waiting for you.</p>
-                <p><strong>Step 2:</strong> Click a physical button from the Word Banks to fill it in. <em>(Your ideas from Part 1 are waiting for you at the top of the lists!)</em></p>
-                <p style="font-size: 14px; margin-top: 10px; color: #555;"><em>(Change your mind? Just click a different word to replace it!)</em></p>
-                <p class="wordsmith-note">Don't worry if it's not perfectly grammatically correct right now—we will wordsmith it together!</p>
-            </div>
-            
-            <div class="template-selector">
-                <div class="template-btn active" id="btn-problem" onclick="setTemplate('problem')">
-                    <h4>Problem Focused</h4>
-                    <p style="margin:0; font-size:13px; color:#666;">Lead with what's broken.</p>
-                </div>
-                <div class="template-btn" id="btn-action" onclick="setTemplate('action')">
-                    <h4>Action Focused</h4>
-                    <p style="margin:0; font-size:13px; color:#666;">Lead with what you do.</p>
-                </div>
-                <div class="template-btn" id="btn-value" onclick="setTemplate('value')">
-                    <h4>Value Focused</h4>
-                    <p style="margin:0; font-size:13px; color:#666;">Lead with what you believe.</p>
-                </div>
-                <div class="template-btn" id="btn-freestyle" onclick="setTemplate('freestyle')">
-                    <h4>✏️ Write Freely</h4>
-                    <p style="margin:0; font-size:13px; color:#666;">Ignore the blanks, just type.</p>
-                </div>
+                <button class="btn-submit-draft" onclick="submitDraft()">Save to Dashboard</button>
+                <button class="btn-submit-draft" style="background: var(--epic-gold); color: var(--epic-ink); margin-top: 10px;" onclick="openWordsmithModal()">👑 Crown Final Mission</button>
             </div>
 
-            <div class="builder-layout">
-                <div>
-                    <div class="draft-area" id="draft-display"></div>
-                    <textarea id="freewrite-box" placeholder="Type your family's mission statement here..."></textarea>
-                    
-                    <button class="btn-save" onclick="saveDraft()">💾 Save This Draft</button>
-                </div>
-
-                <!-- Word Bank Sidebar -->
-                <!-- Word Bank Sidebar -->
-                <div class="word-bank-sidebar" id="word-sidebar">
-
-                    <div class="word-bank-section sec-fund" id="section-fund">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-fund-header">Fund / Family Name</h4></summary>
-                            <div id="bank-fund">
-                                <span class="word-chip" onclick="insertWord(this)" id="chip-fam-1">Family</span>
-                                <span class="word-chip" onclick="insertWord(this)" id="chip-fam-2">Foundation</span>
-                                <span class="word-chip" onclick="insertWord(this)" id="chip-fam-3">Fund</span>
-                                <span class="word-chip" onclick="insertWord(this)" id="chip-fam-4">Trust</span>
-                                <span class="word-chip" onclick="insertWord(this)" id="chip-fam-5">Philanthropies</span>
-                                <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-fund', this)"></div>
-                            </div>
-                        </details>
+            <!-- SIDEBAR ACCORDIONS -->
+            <div class="word-bank-sidebar">
+                
+                <details class="word-bank-toggle" id="details-fund">
+                    <summary>Your Name</summary>
+                    <div class="toggle-content" id="bank-fund">
+                        <div class="word-chip" onclick="fillBlank('fund', 'Cobb Family Fund')">Cobb Family Fund</div>
+                        <div class="word-chip" onclick="fillBlank('fund', 'DividedSky Foundation')">DividedSky Foundation</div>
                     </div>
+                </details>
 
-                    <div class="word-bank-section sec-problem" id="section-problem">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-problem-header">The Problem</h4></summary>
-                            <div id="dynamic-bank-q1"></div>
-                            <div id="bank-problem">
-                                <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-problem', this)"></div>
-                            </div>
-                        </details>
+                <details class="word-bank-toggle" id="details-problem">
+                    <summary>The Problem</summary>
+                    <div class="toggle-content" id="bank-problem">
+                        <!-- Fetched from Firebase Brain Dump -->
                     </div>
+                </details>
 
-                    <div class="word-bank-section sec-belief" id="section-belief">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-belief-header">Your Why / Belief</h4></summary>
-                            <div id="dynamic-bank-q2"></div>
-                            <div id="bank-belief">
-                                <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-belief', this)"></div>
-                            </div>
-                        </details>
+                <details class="word-bank-toggle" id="details-belief">
+                    <summary>Your Why</summary>
+                    <div class="toggle-content" id="bank-belief">
+                        <!-- Fetched from Firebase Brain Dump -->
                     </div>
+                </details>
 
-                    <div class="word-bank-section sec-action" id="section-action">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-action-header">Action Words</h4></summary>
-                            <div id="bank-action">
-                                <span class="word-chip" onclick="insertWord(this)">Support(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Champion(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Invest(s) in</span>
-                                <span class="word-chip" onclick="insertWord(this)">Empower(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Advance(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Build(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Create(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Drive(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Advocate(s) for</span>
-                                <span class="word-chip" onclick="insertWord(this)">Strengthen(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Cultivate(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Transform(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Mobilize(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Elevate(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Catalyze(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Unlock(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Center(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Uplift(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Foster(s)</span>
-                                <span class="word-chip" onclick="insertWord(this)">Partner(s) with</span>
-                                <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-action', this)"></div>
-                            </div>
-                        </details>
+                <details class="word-bank-toggle" id="details-action">
+                    <summary>Action</summary>
+                    <div class="toggle-content" id="bank-action">
+                        <div class="word-chip" onclick="fillBlank('action', 'empower')">Empower</div>
+                        <div class="word-chip" onclick="fillBlank('action', 'invest in')">Invest in</div>
+                        <div class="word-chip" onclick="fillBlank('action', 'protect')">Protect</div>
+                        <div class="word-chip" onclick="fillBlank('action', 'dismantle')">Dismantle</div>
                     </div>
+                </details>
 
-                    <div class="word-bank-section sec-focus" id="section-who">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-who-header">Who / What You Serve</h4></summary>
-                            <div id="dynamic-bank-q4"></div>
-                            <div id="bank-who">
-                                <details class="word-bank-toggle">
-                                    <summary>🧑‍🤝‍🧑 People & Communities</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Children & youth</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Families</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Women & girls</span>
-                                        <span class="word-chip" onclick="insertWord(this)">BIPOC communities</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Immigrants & refugees</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Veterans</span>
-                                        <span class="word-chip" onclick="insertWord(this)">LGBTQ+ communities</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Seniors</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Rural communities</span>
-                                        <span class="word-chip" onclick="insertWord(this)">People with disabilities</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Indigenous populations</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🏠 Basic Needs & Crisis</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Food banks & emergency pantries</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Housing & homelessness</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Survivors of domestic abuse</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Survivors of human trafficking</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Crisis hotlines & suicide prevention</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Disaster response & recovery</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Emergency medical response</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Refugee crisis & resettlement</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Foster youth & child welfare</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Clean water access</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Poverty alleviation</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>📚 Education & Learning</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Early childhood education</span>
-                                        <span class="word-chip" onclick="insertWord(this)">K-12 students</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Higher education & scholarships</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Literacy programs</span>
-                                        <span class="word-chip" onclick="insertWord(this)">STEM education</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Vocational training</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🏥 Health & Wellness</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Mental health</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Medical research</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Healthcare access</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Rare diseases</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Reproductive health</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Addiction & recovery</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🌍 Environment & Climate</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Climate resilience</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Local ecosystems</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Clean waterways</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Public lands & parks</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Sustainable agriculture</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Renewable energy</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Conservation efforts</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🐾 Animals & Wildlife</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Companion animals</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Endangered species</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Local wildlife</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Marine life</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Farm & agricultural animals</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Animal sanctuaries</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>⚖️ Systems, Justice & Society</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Systemic justice</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Voting rights & democracy</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Criminal justice reform</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Public policy & legislation</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Human rights</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Civic engagement</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🤝 Economic Development</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Small businesses & entrepreneurs</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Local economies</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Neighborhood revitalization</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Workforce development</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Financial literacy</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🎨 Arts, Culture & History</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Local artists</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Historical preservation</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Cultural institutions</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Public broadcasting</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Arts education</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🕊️ Faith & Religion</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Faith-based communities</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Religious institutions</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Spiritual development</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Interfaith initiatives</span>
-                                    </div>
-                                </details>
-                                <details class="word-bank-toggle">
-                                    <summary>🌐 Global & Innovation</summary>
-                                    <div class="toggle-content">
-                                        <span class="word-chip" onclick="insertWord(this)">Developing nations</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Global health</span>
-                                        <span class="word-chip" onclick="insertWord(this)">International disaster relief</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Scientific research</span>
-                                        <span class="word-chip" onclick="insertWord(this)">Environmental technology</span>
-                                    </div>
-                                </details>
-                                <div class="custom-chip-container" style="margin-top: 15px; display: block;"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-who', this)"></div>
-                            </div>
-                        </details>
+                <details class="word-bank-toggle" id="details-focus">
+                    <summary>Who/What You Serve</summary>
+                    <div class="toggle-content" id="bank-focus">
+                        <div class="word-chip" onclick="fillBlank('focus', 'vulnerable youth')">Vulnerable Youth</div>
+                        <div class="word-chip" onclick="fillBlank('focus', 'animal welfare')">Animal Welfare</div>
+                        <div class="word-chip" onclick="fillBlank('focus', 'environmental conservation')">Environmental Conservation</div>
+                        <div class="word-chip" onclick="fillBlank('focus', 'systemic justice initiatives')">Systemic Justice Initiatives</div>
+                        <div class="word-chip" onclick="fillBlank('focus', 'faith-based organizations')">Faith-based Organizations</div>
                     </div>
+                </details>
 
-                    <div class="word-bank-section sec-impact" id="section-impact">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-impact-header">Impact & Change Words</h4></summary>
-                            <div id="dynamic-bank-q3"></div>
-                            <div id="bank-impact">
-                                <span class="word-chip" onclick="insertWord(this)">Systemic change</span>
-                                <span class="word-chip" onclick="insertWord(this)">Equity and access</span>
-                                <span class="word-chip" onclick="insertWord(this)">Dignity and respect</span>
-                                <span class="word-chip" onclick="insertWord(this)">Collective power</span>
-                                <span class="word-chip" onclick="insertWord(this)">Thriving communities</span>
-                                <span class="word-chip" onclick="insertWord(this)">Generational impact</span>
-                                <span class="word-chip" onclick="insertWord(this)">Shared prosperity</span>
-                                <span class="word-chip" onclick="insertWord(this)">Voices heard and valued</span>
-                                <span class="word-chip" onclick="insertWord(this)">Community resilience</span>
-                                <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-impact', this)"></div>
-                            </div>
-                        </details>
+                <details class="word-bank-toggle" id="details-impact">
+                    <summary>The Impact</summary>
+                    <div class="toggle-content" id="bank-impact">
+                        <div class="word-chip" onclick="fillBlank('impact', 'every child has a home')">Every child has a home</div>
+                        <div class="word-chip" onclick="fillBlank('impact', 'our ecosystems thrive')">Our ecosystems thrive</div>
+                        <div class="word-chip" onclick="fillBlank('impact', 'barriers are broken down')">Barriers are broken down</div>
                     </div>
+                </details>
 
-                    <div class="word-bank-section sec-how" id="section-how">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-how-header">How You Work</h4></summary>
-                            <div id="bank-how">
-                                <span class="word-chip" onclick="insertWord(this)">Trust-based partnerships</span>
-                                <span class="word-chip" onclick="insertWord(this)">Direct support</span>
-                                <span class="word-chip" onclick="insertWord(this)">Community collaboration</span>
-                                <span class="word-chip" onclick="insertWord(this)">Advocacy</span>
-                                <span class="word-chip" onclick="insertWord(this)">Shared funding</span>
-                                <span class="word-chip" onclick="insertWord(this)">Capacity building</span>
-                                <span class="word-chip" onclick="insertWord(this)">Multi-year unrestricted funding</span>
-                                <span class="word-chip" onclick="insertWord(this)">Policy change</span>
-                                <span class="word-chip" onclick="insertWord(this)">Grassroots grantmaking</span>
-                                <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-how', this)"></div>
-                            </div>
-                        </details>
-                    </div>
-
-                    <div class="word-bank-section sec-where" id="section-where">
-                        <details class="section-toggle">
-                            <summary><h4 id="bank-where-header">Where You Give</h4></summary>
-                            <div id="bank-where">
-                                <span class="word-chip" onclick="insertWord(this)">Local</span>
-                                <span class="word-chip" onclick="insertWord(this)">Regional</span>
-                                <span class="word-chip" onclick="insertWord(this)">National</span>
-                                <span class="word-chip" onclick="insertWord(this)">International</span>
-                                <div class="custom-chip-container"><input type="text" class="custom-chip-input" placeholder="+ Add your own" onkeypress="addCustomChip(event, 'bank-where', this)"></div>
-                            </div>
-                        </details>
-                   </div>
-               </div>
-           </div>
-       </div>
-
-        <!-- PART 3: COMPARE DRAFTS -->
-        <div class="drafts-section">
-            <h2>Part 3: Compare & Refine</h2>
-            <p style="margin-bottom: 30px; font-size: 18px; color: #666;">Read each one out loud. Notice which one makes the family sit up straight. That's usually the one.</p>
-            <div id="saved-drafts-list"></div>
-        </div>
-    </div>
-
-    <!-- HELP MODAL OVERLAY -->
-    <button class="help-btn-floating" id="help-btn" onclick="openHelp()">?</button>
-    
-    <div id="help-modal">
-        <div class="help-content">
-            <button class="btn-close-help" onclick="closeHelp()">✖</button>
-            <h2>How to use this tool</h2>
-            
-            <h3>Part 1: Brain Dump</h3>
-            <p>Don't worry about writing a perfect sentence yet. Just type your raw thoughts into the four colored boxes (The Problem, Your Why, Impact, Who You Serve) and click <strong>Add</strong>.</p>
-            
-            <!-- EXAMPLES MOVED HERE -->
-            <div class="help-examples-box">
-                <h4>Stuck? Here are some examples:</h4>
-                <ul>
-                    <li><strong>The Problem:</strong> Food insecurity, lack of arts funding, climate change, youth mental health crisis.</li>
-                    <li><strong>Your Why:</strong> Everyone deserves a fair start, art heals communities, health is a human right.</li>
-                    <li><strong>Impact:</strong> Higher graduation rates, cleaner local rivers, thriving local arts scene.</li>
-                    <li><strong>Who You Serve:</strong> First-generation students, single mothers, marginalized neighborhoods, small-scale farmers.</li>
-                </ul>
-            </div>
-
-            <h3>Part 2: Build It Together</h3>
-            <p>Pick a template style. You will see a sentence with empty blanks. The active blank will lightly pulse to let you know it's ready. Just <strong>click a word</strong> from the Word Banks on the right to instantly fill the blank. Then, click "Save This Draft."</p>
-            
-            <h3>Part 3: Compare</h3>
-            <p>Any draft anyone saves will show up here. Your facilitator will read them out loud, and together you will pick the final winner!</p>
-            
-            <button class="btn-close-help-large" onclick="closeHelp()">Got it, let's go! →</button>
-        </div>
-    </div>
-
-    <!-- EDIT DRAFT MODAL -->
-    <div id="edit-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13, 43, 50, 0.9); z-index: 1001; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
-        <div class="help-content" style="max-width: 600px; text-align: left;">
-            <h2 style="margin-bottom: 15px; color: var(--epic-dark-teal);">✏️ Wordsmith Draft</h2>
-            <textarea id="edit-draft-text" style="width: 100%; height: 150px; padding: 15px; font-family: 'Montserrat', sans-serif; font-size: 18px; border: 2px solid var(--light-gray); border-radius: 6px; resize: vertical; box-sizing: border-box; margin-bottom: 20px;"></textarea>
-            <div style="display: flex; gap: 15px; justify-content: flex-end;">
-                <button onclick="closeEditModal()" style="padding: 12px 20px; background: transparent; border: none; color: #888; cursor: pointer; font-weight: 600; font-family: 'Montserrat', sans-serif;">Cancel</button>
-                <button onclick="saveEditedDraft()" style="padding: 12px 25px; background: var(--epic-gold); color: var(--epic-ink); border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-family: 'Montserrat', sans-serif;">Save Changes</button>
             </div>
         </div>
     </div>
 
-
-
-    <!-- CELEBRATION VIEW -->
-    <div id="celebration-view">
-        <h3 id="celeb-family-name">👑 The Final Mission Statement 👑</h3>
-        <div id="final-statement-text"></div>
-        
-        <!-- NEW ESCAPE HATCH BUTTON -->
-        <button onclick="logoutMission()" style="margin-top: 50px; padding: 15px 30px; background: transparent; border: 2px solid var(--epic-gold); color: var(--white); font-size: 16px; border-radius: 6px; cursor: pointer; z-index: 10; font-family: 'Montserrat', sans-serif;">🚪 Start a New Session</button>
+    <!-- WORDSMITH MODAL -->
+    <div id="wordsmith-modal">
+        <div class="modal-content">
+            <h2 style="color: var(--epic-dark-teal);">Wordsmith & Crown Final</h2>
+            <p>Make your final edits before locking it in.</p>
+            <textarea id="final-edit-box"></textarea>
+            <button class="btn-crown" onclick="submitFinalMission()">Submit 👑 FINAL MISSION</button>
+            <button onclick="document.getElementById('wordsmith-modal').style.display='none'" style="display:block; margin: 15px auto 0; background:none; border:none; cursor:pointer; text-decoration:underline;">Cancel</button>
+        </div>
     </div>
 
-
-
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-function logoutMission() {
-    localStorage.removeItem('epicSession');
-    localStorage.removeItem('epicName');
-    localStorage.removeItem('epicRole');
-    location.reload(); // Refresh the page to show the login screen
-}
-
-        // --- 1. FIREBASE INIT ---
+        // --- 1. FIREBASE CONFIGURATION (PASTE YOUR KEYS HERE) ---
         const firebaseConfig = {
-            apiKey: "AIzaSyDzYW4EeXy_0hrzs-ADKEhF9y6CKjvF6Q0",
-            authDomain: "epic-mission-builder.firebaseapp.com",
-            databaseURL: "https://epic-mission-builder-default-rtdb.firebaseio.com",
-            projectId: "epic-mission-builder",
-            storageBucket: "epic-mission-builder.firebasestorage.app",
-            messagingSenderId: "561834463026",
-            appId: "1:561834463026:web:06a1f86f5a41ba3fff112b"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
-        if(!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+        
+        // Initialize Firebase
+        if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
         const db = firebase.database();
 
-        let myRole = ''; let myName = ''; let mySession = ''; let justFamilyName = '';
-        const FACILITATOR_PASSWORD = '3742';
-        const CONTROL_PANEL_URL = 'https://script.google.com/macros/s/AKfycbw7Q6VeJIu5FcU2kyNDI6MIRiQ2HIwP5WtXTW9aCN1-mEDXd9mhDUlfo88BX15_LSo/exec';
+        // --- 2. GOOGLE APPS SCRIPT URL ---
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbw7Q6VeJIu5FcU2kyNDI6MIRiQ2HIwP5WtXTW9aCN1-mEDXd9mhDUlfo88BX15_LSo/exec';
 
+        // --- 3. STATE VARIABLES ---
+        let currentSession = "";
+        let currentUser = "";
+        let currentBlank = "";
 
-        const emptyStates = {
-            q1: `<div class="empty-state"><strong>Examples:</strong>- Food insecurity<br>- Lack of arts funding<br>- Climate change<br>- Unequal access to healthcare<br>- Youth mental health crisis</div>`,
-            q2: `<div class="empty-state"><strong>Examples:</strong>- Everyone deserves a fair start<br>- Art heals communities<br>- Education is the great equalizer<br>- We must protect our planet<br>- Health is a human right</div>`,
-            q3: `<div class="empty-state"><strong>Examples:</strong>- Higher graduation rates<br>- More stable housing<br>- Cleaner local rivers<br>- Thriving local arts scene<br>- Reduced food waste</div>`,
-            q4: `<div class="empty-state"><strong>Examples:</strong>- First-generation students<br>- Local environmental groups<br>- Single mothers<br>- Marginalized neighborhoods<br>- Small-scale farmers</div>`
-        };
+        // --- 4. SESSION LOGIC (POST to GAS) ---
+        function joinSession() {
+            const code = document.getElementById('session-code').value.trim().toUpperCase();
+            const name = document.getElementById('participant-name').value.trim();
+            
+            if(!code || !name) { alert("Please enter both a code and a name."); return; }
 
-        // --- 2. UI NAVIGATION & HELP ---
-        function openHelp() { document.getElementById('help-modal').style.display = 'flex'; }
-        function closeHelp() { document.getElementById('help-modal').style.display = 'none'; }
-
-        function showForm(formId) {
-            document.getElementById('landing-view').style.display = 'none';
+            // Alert for demo - in production this checks the GAS lock status
+            currentSession = code;
+            currentUser = name;
+            
             document.getElementById('participant-form').style.display = 'none';
-            document.getElementById('facilitator-form').style.display = 'none';
-            document.getElementById(formId).style.display = 'block';
+            document.getElementById('workspace-view').style.display = 'block';
+            document.getElementById('display-session').innerText = "Session: " + code;
+            document.getElementById('display-name').innerText = name;
         }
 
-        function goBack() {
-            document.getElementById('participant-form').style.display = 'none';
-            document.getElementById('facilitator-form').style.display = 'none';
+        function leaveSession() {
+            currentSession = "";
+            currentUser = "";
+            document.getElementById('workspace-view').style.display = 'none';
             document.getElementById('landing-view').style.display = 'block';
         }
 
-        function copyCode() {
-            navigator.clipboard.writeText(mySession);
-            const btn = document.querySelector('.btn-copy');
-            btn.innerText = '✅ Copied!';
-            setTimeout(() => { btn.innerText = '📋 Copy Code'; }, 2000);
-        }
-
-        function showWorkspace() {
-            document.getElementById('landing-view').style.display = 'none';
-            document.getElementById('participant-form').style.display = 'none';
-            document.getElementById('facilitator-form').style.display = 'none';
-            
-            document.body.style.backgroundColor = 'var(--epic-dark-teal)'; 
-            document.getElementById('workspace-view').style.display = 'block';
-            document.getElementById('help-btn').style.display = 'flex'; 
-            
-            document.getElementById('display-session-code').innerText = mySession;
-            document.getElementById('display-name').innerText = myName;
-            document.getElementById('display-role').innerText = myRole;
-            
-            if(justFamilyName) {
-                document.getElementById('celeb-family-name').innerText = `👑 The ${justFamilyName} Family Mission Statement 👑`;
-                
-                document.getElementById('chip-fam-1').innerText = `${justFamilyName} Family`;
-                document.getElementById('chip-fam-2').innerText = `${justFamilyName} Foundation`;
-                document.getElementById('chip-fam-3').innerText = `${justFamilyName} Fund`;
-                document.getElementById('chip-fam-4').innerText = `${justFamilyName} Trust`;
-                document.getElementById('chip-fam-5').innerText = `${justFamilyName} Philanthropies`;
-            }
-
-
-
-            if (myRole === 'Facilitator') {
-                document.getElementById('display-role').style.backgroundColor = 'var(--epic-ink)'; 
-                document.getElementById('display-role').style.color = 'var(--white)'; 
-            }
-            
-            setTemplate('problem'); 
-            startFirebaseListeners();
-        }
-
-        function createSession() {
-            const pass = document.getElementById('fac-pass').value.trim();
-            const family = document.getElementById('fac-session').value.trim().replace(/[^a-zA-Z]/g, '');
-            const name = document.getElementById('fac-name').value.trim();
-
-            if (pass !== FACILITATOR_PASSWORD || !family || !name) {
-                document.getElementById('fac-error').innerText = "Incorrect password or details.";
-                document.getElementById('fac-error').style.display = 'block'; return;
-            }
-            justFamilyName = family.charAt(0).toUpperCase() + family.slice(1);
-            myRole = 'Facilitator'; myName = name; mySession = family.toUpperCase() + '-2026';
-            
-            document.getElementById('fac-error').innerText = "Registering with Control Panel...";
-            document.getElementById('fac-error').style.color = "#ffffff";
-            document.getElementById('fac-error').style.display = 'block';
-
-            // SECURELY SEND TO GOOGLE SHEETS CONTROL PANEL
-            fetch(CONTROL_PANEL_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "createCode", sessionCode: mySession, familyName: justFamilyName })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    localStorage.setItem('epicSession', mySession);
-                    localStorage.setItem('epicName', myName);
-                    localStorage.setItem('epicRole', myRole);
-                    showWorkspace();
-                } else {
-                    document.getElementById('fac-error').innerText = "Error connecting to Control Panel.";
-                    document.getElementById('fac-error').style.color = "#ffcccc";
-                }
-            }).catch(e => {
-                document.getElementById('fac-error').innerText = "Network Error. Try again.";
-                document.getElementById('fac-error').style.color = "#ffcccc";
-            });
-        }
-
-        function joinSession() {
-            const sess = document.getElementById('part-session').value.trim().toUpperCase();
-            const name = document.getElementById('part-name').value.trim();
-
-            if (!sess || !name) { 
-                document.getElementById('part-error').innerText = "Please enter a valid code.";
-                document.getElementById('part-error').style.display = 'block'; 
-                return; 
-            }
-
-            document.getElementById('part-error').innerText = "Checking with Control Panel...";
-            document.getElementById('part-error').style.color = "#ffffff";
-            document.getElementById('part-error').style.display = 'block';
-
-            // ASK THE CONTROL PANEL IF THE CODE IS ACTIVE
-            fetch(CONTROL_PANEL_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "validateCode", sessionCode: sess })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.valid) {
-                    myRole = 'Participant'; myName = name; mySession = sess;
-                    justFamilyName = sess.split('-')[0];
-                    justFamilyName = justFamilyName.charAt(0) + justFamilyName.slice(1).toLowerCase();
-                    
-                    localStorage.setItem('epicSession', mySession);
-                    localStorage.setItem('epicName', myName);
-                    localStorage.setItem('epicRole', myRole);
-                    showWorkspace();
-                } else {
-                    document.getElementById('part-error').innerText = "Session is locked or invalid.";
-                    document.getElementById('part-error').style.color = "#ffcccc";
-                }
-            }).catch(e => {
-                document.getElementById('part-error').innerText = "Network Error. Try again.";
-                document.getElementById('part-error').style.color = "#ffcccc";
-            });
-        }
-
-        // --- 3. QUADRANT LOGIC ---
-        function handleEnter(e, quadId) { if (e.key === 'Enter') addIdea(quadId); }
-        
-        function addIdea(quadId) {
-            const inputField = document.getElementById('input-' + quadId);
-            const text = inputField.value.trim();
-            if (!text) return; 
-            db.ref(`sessions/${mySession}/ideas/${quadId}`).push({ text: text, author: myName, timestamp: Date.now() });
-            inputField.value = '';
-        }
-
-        // --- 4. TEMPLATES & BUILDER ---
-        let currentFocusedBlank = null;
-        let isFreestyle = false;
-
-        function setTemplate(type) {
-            document.querySelectorAll('.template-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btn-' + type).classList.add('active');
-
-            const draftArea = document.getElementById('draft-display');
-            const freewriteBox = document.getElementById('freewrite-box');
-            const sidebar = document.getElementById('word-sidebar');
-
-            if (type === 'freestyle') {
-                isFreestyle = true;
-                draftArea.style.display = 'none';
-                freewriteBox.style.display = 'block';
-                sidebar.style.opacity = '0.3'; 
-                sidebar.style.pointerEvents = 'none'; 
-            } else {
-                isFreestyle = false;
-                draftArea.style.display = 'block';
-                freewriteBox.style.display = 'none';
-                sidebar.style.opacity = '1';
-                sidebar.style.pointerEvents = 'auto';
-
-                if (type === 'problem') {
-                    draftArea.innerHTML = `The <span class="blank blank-fund focused" onclick="focusBlank(this)">[ Fund / Family Name ]</span> exists because <span class="blank blank-problem" onclick="focusBlank(this)">[ the problem ]</span> in <span class="blank blank-where" onclick="focusBlank(this)">[ where you give ]</span>. We <span class="blank blank-action" onclick="focusBlank(this)">[ action word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ who you serve ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ how you work ]</span>. We won't stop until <span class="blank blank-impact" onclick="focusBlank(this)">[ impact & change ]</span> because <span class="blank blank-belief" onclick="focusBlank(this)">[ your why ]</span>.`;
-                } else if (type === 'action') {
-                    draftArea.innerHTML = `The <span class="blank blank-fund focused" onclick="focusBlank(this)">[ Fund / Family Name ]</span> <span class="blank blank-action" onclick="focusBlank(this)">[ action word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ who you serve ]</span> in <span class="blank blank-where" onclick="focusBlank(this)">[ where you give ]</span> because <span class="blank blank-belief" onclick="focusBlank(this)">[ your why ]</span>. We focus on <span class="blank blank-impact" onclick="focusBlank(this)">[ impact & change ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ how you work ]</span>.`;
-                } else if (type === 'value') {
-                    draftArea.innerHTML = `Because <span class="blank blank-belief focused" onclick="focusBlank(this)">[ your why ]</span>, the <span class="blank blank-fund" onclick="focusBlank(this)">[ Fund / Family Name ]</span> <span class="blank blank-action" onclick="focusBlank(this)">[ action word ]</span> <span class="blank blank-focus" onclick="focusBlank(this)">[ who you serve ]</span> in <span class="blank blank-where" onclick="focusBlank(this)">[ where you give ]</span>. Our focus is <span class="blank blank-impact" onclick="focusBlank(this)">[ impact & change ]</span> through <span class="blank blank-how" onclick="focusBlank(this)">[ how you work ]</span>.`;
-                }
-                
-                const firstBlank = draftArea.querySelector('.blank.focused');
-                if (firstBlank) focusBlank(firstBlank);
-            }
-        }
-
-        function focusBlank(element) {
-            if(isFreestyle) return;
+        // --- 5. AUTO-OPEN MAGIC & BLANK FOCUS ---
+        function focusBlank(category) {
+            // Remove highlight from all
             document.querySelectorAll('.blank').forEach(b => b.classList.remove('focused'));
-            element.classList.add('focused');
-            currentFocusedBlank = element;
-
-            let targetSectionId = null;
-            if (element.classList.contains('blank-fund')) targetSectionId = 'section-fund';
-            else if (element.classList.contains('blank-problem')) targetSectionId = 'section-problem';
-            else if (element.classList.contains('blank-belief')) targetSectionId = 'section-belief';
-            else if (element.classList.contains('blank-focus')) targetSectionId = 'section-who';
-            else if (element.classList.contains('blank-action')) targetSectionId = 'section-action';
-            else if (element.classList.contains('blank-impact')) targetSectionId = 'section-impact';
-            else if (element.classList.contains('blank-how')) targetSectionId = 'section-how';
-            else if (element.classList.contains('blank-where')) targetSectionId = 'section-where';
-
-            if (targetSectionId) {
-                const targetSection = document.getElementById(targetSectionId);
-                const sidebar = document.getElementById('word-sidebar');
-                
-                if (targetSection && sidebar) {
-                    // NEW: Auto-open the accordion if it is closed
-                    const toggle = targetSection.querySelector('details.section-toggle');
-                    if(toggle && !toggle.open) { toggle.open = true; }
-
-                    sidebar.scrollTo({ top: targetSection.offsetTop - 20, behavior: 'smooth' });
-                    document.querySelectorAll('.word-bank-section').forEach(sec => sec.classList.remove('flash-active'));
-                    setTimeout(() => { targetSection.classList.add('flash-active'); }, 300); 
-                }
-            }
-
-
-        }
-
-        function insertWord(chipElement) {
-            if (!currentFocusedBlank || isFreestyle) return;
-            currentFocusedBlank.innerText = chipElement.innerText;
-            currentFocusedBlank.classList.add('filled');
-            autoAdvanceFocus();
-        }
-
-        function insertWordFromQuad(text) {
-            if (!currentFocusedBlank || isFreestyle) return;
-            currentFocusedBlank.innerText = text;
-            currentFocusedBlank.classList.add('filled');
-            autoAdvanceFocus();
-        }
-
-        function addCustomChip(e, bankId, inputElem) {
-            if (e.key === 'Enter') {
-                const text = inputElem.value.trim();
-                if (!text) return;
-                
-                const bank = document.getElementById(bankId);
-                const chip = document.createElement('span');
-                chip.className = 'word-chip';
-                chip.innerText = text;
-                chip.onclick = function() { insertWord(this); };
-                
-                bank.insertBefore(chip, inputElem.parentNode);
-                inputElem.value = '';
-
-                if (currentFocusedBlank && !isFreestyle) { insertWord(chip); }
-            }
-        }
-
-        function autoAdvanceFocus() {
-            if(!currentFocusedBlank || isFreestyle) return;
-            const allBlanks = Array.from(document.querySelectorAll('.blank'));
-            const currentIndex = allBlanks.indexOf(currentFocusedBlank);
             
-            if (currentIndex >= 0 && currentIndex < allBlanks.length - 1) { focusBlank(allBlanks[currentIndex + 1]); } 
-            else { currentFocusedBlank.classList.remove('focused'); currentFocusedBlank = null; }
+            // Add highlight to clicked
+            const blankEl = document.getElementById('blank-' + category);
+            blankEl.classList.add('focused');
+            currentBlank = category;
+
+            // Auto-open magic: Close all accordions, then open the right one
+            document.querySelectorAll('.word-bank-toggle').forEach(acc => acc.removeAttribute('open'));
+            const targetAccordion = document.getElementById(blankEl.dataset.target);
+            if(targetAccordion) {
+                targetAccordion.setAttribute('open', 'true');
+                targetAccordion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
-        // --- 5. SAVING & FIREBASE LISTENERS ---
-        function saveDraft() {
-            let finalSentence = "";
-            let templateName = document.querySelector('.template-btn.active h4').innerText.replace('✏️ ', '');
-
-            if (isFreestyle) {
-                finalSentence = document.getElementById('freewrite-box').value.trim();
-                if (!finalSentence) return;
-            } else {
-                finalSentence = document.getElementById('draft-display').innerText.replace(/\n/g, '').replace(/\s+/g, ' ').trim();
+        // --- 6. FILL BLANKS & REMOVE 'THE' LOGIC ---
+        function fillBlank(category, text) {
+            if(category === 'fund') {
+                // Logic to prevent double "The"
+                text = text.replace(/^The\s+/i, '');
             }
-
-            db.ref(`sessions/${mySession}/drafts`).push({
-                text: finalSentence,
-                author: myName,
-                template: templateName,
-                timestamp: Date.now()
-            });
-
-            const params = new URLSearchParams({
-                action: 'save',
-                session: mySession,
-                tab: 'mission',
-                name: 'Draft by ' + myName,
-                ranked: finalSentence
-            });
-            fetch(SCRIPT_URL + '?' + params.toString(), { mode: 'no-cors' })
-                .catch(e => console.log("Silent save error", e));
-
-            if(isFreestyle) { document.getElementById('freewrite-box').value = ''; }
             
-            const btn = document.querySelector('.btn-save');
-            btn.innerText = "✅ Saved to Compare List!";
-            btn.style.backgroundColor = "var(--epic-medium-teal)";
-            setTimeout(() => { btn.innerText = "💾 Save This Draft"; btn.style.backgroundColor = "var(--epic-ink)"; }, 3000);
+            const blankEl = document.getElementById('blank-' + category);
+            blankEl.innerText = text;
+            blankEl.classList.remove('focused');
+            blankEl.classList.add('filled');
         }
 
-
-                function deleteDraft(key) {
-            if (confirm("Delete this draft?")) { db.ref(`sessions/${mySession}/drafts/${key}`).remove(); }
+        // --- 7. SUBMIT TO GOOGLE SHEET (DRAFTS & FINAL) ---
+        function getDraftText() {
+            const fund = document.getElementById('blank-fund').innerText;
+            const action = document.getElementById('blank-action').innerText;
+            const focus = document.getElementById('blank-focus').innerText;
+            const impact = document.getElementById('blank-impact').innerText;
+            return `The ${fund} exists to ${action} ${focus}, so that ${impact}.`;
         }
 
-        let currentEditKey = null;
-        function editDraft(key) {
-            db.ref(`sessions/${mySession}/drafts/${key}`).once('value').then((snapshot) => {
-                const draft = snapshot.val();
-                if (draft) {
-                    currentEditKey = key;
-                    document.getElementById('edit-draft-text').value = draft.text;
-                    document.getElementById('edit-modal').style.display = 'flex';
-                }
-            });
-        }
-        
-        function closeEditModal() {
-            document.getElementById('edit-modal').style.display = 'none';
-            currentEditKey = null;
-        }
-        
-        function saveEditedDraft() {
-            if (currentEditKey) {
-                const newText = document.getElementById('edit-draft-text').value.trim();
-                if (newText) {
-                    db.ref(`sessions/${mySession}/drafts/${currentEditKey}`).update({ text: newText });
-                    closeEditModal();
-                }
-            }
+        function submitDraft() {
+            const draft = getDraftText();
+            sendToSheet(currentUser, draft);
+            alert("Draft saved to Dashboard!");
         }
 
-
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyw-5vYD_Yew9qCgMVQMJ8B_3v0nrLCrduLbAEJpXZ_uB69UrVGZcdWscq7I6kJ4HK0/exec';
-
-        function triggerCelebration(encodedText) {
-            if (confirm("Are you sure? This will lock in the final mission statement and show it to everyone.")) {
-                // 1. Save to Firebase for the confetti
-                db.ref(`sessions/${mySession}/finalStatement`).set({ text: encodedText });
-                
-                // 2. SEND A COPY TO YOUR SPREADSHEET!
-                const params = new URLSearchParams({
-                    action: 'save',
-                    session: mySession,
-                    tab: 'mission',
-                    name: '👑 FINAL MISSION', // <-- THIS IS THE MAGIC WORD!
-                    ranked: encodedText
-                });
-                
-                fetch(SCRIPT_URL + '?' + params.toString(), { mode: 'no-cors' })
-                    .catch(e => console.log("Silent save error", e));
-            }
+        function openWordsmithModal() {
+            document.getElementById('final-edit-box').value = getDraftText();
+            document.getElementById('wordsmith-modal').style.display = 'flex';
         }
 
-        function fireConfetti() {
-            const container = document.getElementById('celebration-view');
-            const colors = ['#904237', '#4f8284', '#5b7666', '#457093', '#1b3a5c', '#dead2f'];
-            for(let i=0; i<80; i++) {
-                let conf = document.createElement('div');
-                conf.className = 'confetti-piece';
-                conf.style.left = Math.random() * 100 + 'vw';
-                conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
-                conf.style.animationDelay = `${Math.random() * 2}s`;
-                container.appendChild(conf);
-            }
-        }
-        
-        const style = document.createElement('style');
-        style.innerHTML = `@keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1;} 100% { transform: translateY(110vh) rotate(720deg); opacity: 1;} }`;
-        document.head.appendChild(style);
-
-        function startFirebaseListeners() {
-            const mapClass = { 'q1': 'item-problem', 'q2': 'item-belief', 'q3': 'item-impact', 'q4': 'item-focus' };
-            const dynamicBankMapping = { 'q1': 'dynamic-bank-q1', 'q2': 'dynamic-bank-q2', 'q3': 'dynamic-bank-q3', 'q4': 'dynamic-bank-q4' };
-            
-            db.ref(`sessions/${mySession}/ideas`).on('value', (snapshot) => {
-                const allData = snapshot.val() || {};
-                
-                ['q1', 'q2', 'q3', 'q4'].forEach(quadId => {
-                    const listDiv = document.getElementById('list-' + quadId);
-                    const dynamicBankDiv = document.getElementById(dynamicBankMapping[quadId]);
-                    const quadData = allData[quadId] || {};
-                    
-                    listDiv.innerHTML = ''; 
-                    if(dynamicBankDiv) dynamicBankDiv.innerHTML = '';
-                    
-                    if (Object.keys(quadData).length > 0) {
-                        Object.values(quadData).forEach(idea => {
-                            const div = document.createElement('div');
-                            div.className = `idea-item ${mapClass[quadId]}`;
-                            div.onclick = function() { insertWordFromQuad(idea.text); };
-                            div.innerHTML = `<span>${idea.text}</span><span class="idea-author">${idea.author}</span>`;
-                            listDiv.appendChild(div);
-
-                            if (dynamicBankDiv) {
-                                const chip = document.createElement('span');
-                                chip.className = 'word-chip family-chip';
-                                chip.innerText = idea.text;
-                                chip.onclick = function() { insertWord(this); };
-                                dynamicBankDiv.appendChild(chip);
-                            }
-                        });
-                    } else {
-                        listDiv.insertAdjacentHTML('beforeend', emptyStates[quadId]);
-                    }
-                });
-            });
-
-            db.ref(`sessions/${mySession}/drafts`).on('value', (snapshot) => {
-                const draftsData = snapshot.val() || {};
-                const listDiv = document.getElementById('saved-drafts-list');
-                
-                if (Object.keys(draftsData).length === 0) {
-                    listDiv.innerHTML = '<p style="color: #888; font-style: italic; font-size: 18px;">No drafts saved yet. Build one above and click "Save This Draft"!</p>';
-                    return;
-                }
-
-                listDiv.innerHTML = ''; 
-                
-                Object.keys(draftsData).forEach(key => {
-                    const draft = draftsData[key];
-                    const div = document.createElement('div');
-                    div.className = 'draft-card';
-                    
-                    const safeText = draft.text.replace(/"/g, '&quot;');
-                    
-                    let actionsHtml = '';
-                    if (myRole === 'Facilitator') {
-                        actionsHtml = `
-                            <div class="draft-actions">
-                                <button class="btn-edit" onclick="editDraft('${key}')">✏️ Edit</button>
-                                <button class="btn-final" data-text="${safeText}" onclick="triggerCelebration(this.getAttribute('data-text'))">👑 Select as Final</button>
-                                <button class="btn-delete" onclick="deleteDraft('${key}')">Delete</button>
-                            </div>
-                        `;
-                    }
-
-
-                    div.innerHTML = `
-                        <div class="draft-meta">${draft.template} Template • Saved by ${draft.author}</div>
-                        <p>"${draft.text}"</p>
-                        ${actionsHtml}
-                    `;
-                    listDiv.appendChild(div);
-                });
-            });
-
-            db.ref(`sessions/${mySession}/finalStatement`).on('value', (snapshot) => {
-                const finalData = snapshot.val();
-                if (finalData && finalData.text) {
-                    document.getElementById('workspace-view').style.display = 'none';
-                    document.getElementById('help-btn').style.display = 'none'; 
-                    document.getElementById('celebration-view').style.display = 'flex';
-                    document.getElementById('final-statement-text').innerText = `"${finalData.text}"`;
-                    fireConfetti();
-                }
-            });
+        function submitFinalMission() {
+            const finalStatement = document.getElementById('final-edit-box').value;
+            sendToSheet("👑 FINAL MISSION", finalStatement);
+            document.getElementById('wordsmith-modal').style.display = 'none';
+            alert("Final Mission Crowned! Check the dashboard.");
         }
 
-        // --- NEW: AUTO-LOGIN FEATURE ---
-        window.onload = function() {
-            const savedSession = localStorage.getItem('epicSession');
-            const savedName = localStorage.getItem('epicName');
-            const savedRole = localStorage.getItem('epicRole');
+        function sendToSheet(name, responseText) {
+            const payload = {
+                sessionCode: currentSession,
+                name: name,
+                tool: "Mission Statement",
+                response: responseText
+            };
 
-            if (savedSession && savedName && savedRole) {
-                mySession = savedSession;
-                myName = savedName;
-                myRole = savedRole;
-                justFamilyName = savedSession.split('-')[0];
-                justFamilyName = justFamilyName.charAt(0) + justFamilyName.slice(1).toLowerCase();
-                
-                showWorkspace();
-            }
-        };
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                console.log("Sent to Control Panel successfully.");
+            }).catch(err => console.error(err));
+        }
+
     </script>
 </body>
 </html>
+
 
