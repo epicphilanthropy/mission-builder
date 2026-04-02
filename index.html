@@ -603,6 +603,8 @@ function logoutMission() {
 
         let myRole = ''; let myName = ''; let mySession = ''; let justFamilyName = '';
         const FACILITATOR_PASSWORD = '3742';
+        const CONTROL_PANEL_URL = 'https://script.google.com/macros/s/AKfycbw7Q6VeJIu5FcU2kyNDI6MIRiQ2HIwP5WtXTW9aCN1-mEDXd9mhDUlfo88BX15_LSo/exec';
+
 
         const emptyStates = {
             q1: `<div class="empty-state"><strong>Examples:</strong>- Food insecurity<br>- Lack of arts funding<br>- Climate change<br>- Unequal access to healthcare<br>- Youth mental health crisis</div>`,
@@ -673,34 +675,76 @@ function logoutMission() {
             const name = document.getElementById('fac-name').value.trim();
 
             if (pass !== FACILITATOR_PASSWORD || !family || !name) {
+                document.getElementById('fac-error').innerText = "Incorrect password or details.";
                 document.getElementById('fac-error').style.display = 'block'; return;
             }
             justFamilyName = family.charAt(0).toUpperCase() + family.slice(1);
             myRole = 'Facilitator'; myName = name; mySession = family.toUpperCase() + '-2026';
             
-            // NEW: Save login info to the browser
-            localStorage.setItem('epicSession', mySession);
-            localStorage.setItem('epicName', myName);
-            localStorage.setItem('epicRole', myRole);
+            document.getElementById('fac-error').innerText = "Registering with Control Panel...";
+            document.getElementById('fac-error').style.color = "#ffffff";
+            document.getElementById('fac-error').style.display = 'block';
 
-            showWorkspace();
+            // SECURELY SEND TO GOOGLE SHEETS CONTROL PANEL
+            fetch(CONTROL_PANEL_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "createCode", sessionCode: mySession, familyName: justFamilyName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    localStorage.setItem('epicSession', mySession);
+                    localStorage.setItem('epicName', myName);
+                    localStorage.setItem('epicRole', myRole);
+                    showWorkspace();
+                } else {
+                    document.getElementById('fac-error').innerText = "Error connecting to Control Panel.";
+                    document.getElementById('fac-error').style.color = "#ffcccc";
+                }
+            }).catch(e => {
+                document.getElementById('fac-error').innerText = "Network Error. Try again.";
+                document.getElementById('fac-error').style.color = "#ffcccc";
+            });
         }
 
         function joinSession() {
             const sess = document.getElementById('part-session').value.trim().toUpperCase();
             const name = document.getElementById('part-name').value.trim();
 
-            if (!sess || !name) { document.getElementById('part-error').style.display = 'block'; return; }
-            myRole = 'Participant'; myName = name; mySession = sess;
-            justFamilyName = sess.split('-')[0];
-            justFamilyName = justFamilyName.charAt(0) + justFamilyName.slice(1).toLowerCase();
-            
-            // NEW: Save login info to the browser
-            localStorage.setItem('epicSession', mySession);
-            localStorage.setItem('epicName', myName);
-            localStorage.setItem('epicRole', myRole);
+            if (!sess || !name) { 
+                document.getElementById('part-error').innerText = "Please enter a valid code.";
+                document.getElementById('part-error').style.display = 'block'; 
+                return; 
+            }
 
-            showWorkspace();
+            document.getElementById('part-error').innerText = "Checking with Control Panel...";
+            document.getElementById('part-error').style.color = "#ffffff";
+            document.getElementById('part-error').style.display = 'block';
+
+            // ASK THE CONTROL PANEL IF THE CODE IS ACTIVE
+            fetch(CONTROL_PANEL_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "validateCode", sessionCode: sess })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.valid) {
+                    myRole = 'Participant'; myName = name; mySession = sess;
+                    justFamilyName = sess.split('-')[0];
+                    justFamilyName = justFamilyName.charAt(0) + justFamilyName.slice(1).toLowerCase();
+                    
+                    localStorage.setItem('epicSession', mySession);
+                    localStorage.setItem('epicName', myName);
+                    localStorage.setItem('epicRole', myRole);
+                    showWorkspace();
+                } else {
+                    document.getElementById('part-error').innerText = "Session is locked or invalid.";
+                    document.getElementById('part-error').style.color = "#ffcccc";
+                }
+            }).catch(e => {
+                document.getElementById('part-error').innerText = "Network Error. Try again.";
+                document.getElementById('part-error').style.color = "#ffcccc";
+            });
         }
 
         // --- 3. QUADRANT LOGIC ---
@@ -875,7 +919,7 @@ function logoutMission() {
                     action: 'save',
                     session: mySession,
                     tab: 'mission',
-                    name: 'Family Draft',
+                    name: '👑 FINAL MISSION', // <-- THIS IS THE MAGIC WORD!
                     ranked: encodedText
                 });
                 
@@ -883,6 +927,7 @@ function logoutMission() {
                     .catch(e => console.log("Silent save error", e));
             }
         }
+
         function fireConfetti() {
             const container = document.getElementById('celebration-view');
             const colors = ['#904237', '#4f8284', '#5b7666', '#457093', '#1b3a5c', '#dead2f'];
