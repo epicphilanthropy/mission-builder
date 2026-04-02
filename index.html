@@ -313,6 +313,7 @@
                 <p>
                     Session Code: <strong id="display-session-code">---</strong> 
                     <button class="btn-copy" onclick="copyCode()">📋 Copy Code</button>
+<button class="btn-copy" onclick="logoutMission()" style="background: #fff0f0; border-color: #ffcccc; color: #d32f2f; margin-left: 10px;">🚪 Leave Session</button>
                 </p>
             </div>
             <div style="text-align: right;">
@@ -575,6 +576,13 @@
     </div>
 
     <script>
+function logoutMission() {
+    localStorage.removeItem('epicSession');
+    localStorage.removeItem('epicName');
+    localStorage.removeItem('epicRole');
+    location.reload(); // Refresh the page to show the login screen
+}
+
         // --- 1. FIREBASE INIT ---
         const firebaseConfig = {
             apiKey: "AIzaSyDzYW4EeXy_0hrzs-ADKEhF9y6CKjvF6Q0",
@@ -982,3 +990,5 @@
     </script>
 </body>
 </html>
+
+
